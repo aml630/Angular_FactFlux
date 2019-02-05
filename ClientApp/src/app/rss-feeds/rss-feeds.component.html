@@ -1,0 +1,35 @@
+<div class='col-sm-7 body-content'>
+
+  <ul>
+    <li *ngFor="let feed of foundFeeds">
+      <h3>{{feed.feedTitle}}</h3>
+      <img height=100 width=100 src={{feed.feedImage}}>
+      <button class="btn-danger" onclick="return confirm('Are you sure?')" (click)="DeleteFeed(feed.feedId)">Delete</button>
+      <button class="btn-warning" (click)="FillEdit(feed)">Edit</button>
+      <button class="btn-success" (click)="GetArticles(feed.feedId)">Get Articles</button>
+    </li>
+  </ul>
+
+  <form *ngIf="showEdit" [formGroup]="form">
+    <input formControlName="feedTitle">
+    <input formControlName="feedLink">
+    <input formControlName="feedImage">
+    <Button class="btn-primary" (click)='UpdateFeed(form.value)'>Update</Button>
+    <Button class="btn-warning" (click)='HideEdit()'>Hide</Button>
+  </form>
+
+</div>
+
+<p *ngFor="let article of foundArticles">{{article.articleTitle}}</p>
+
+<div class='col-sm-5'>
+  <form #feedForm="ngForm">
+    <div class="form-group">
+      <input name="feedTitle" ngModel>
+    </div>
+    <div class="form-group">
+      <input name="feedLink" ngModel>
+    </div>
+    <Button class="btn-primary" (click)='CreateFeed(feedForm.value)'> Create New Feed</Button>
+  </form>
+</div>

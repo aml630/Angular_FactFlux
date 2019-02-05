@@ -1,0 +1,5 @@
+.d-flex {
+    display: inline-flex;
+    flex-wrap: wrap;
+    padding: 10px;
+}
