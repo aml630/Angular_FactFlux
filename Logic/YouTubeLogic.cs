@@ -1,9 +1,13 @@
-﻿using Google.Apis.Services;
+﻿using FactFluxV3.Models;
+using Google.Apis.Services;
 using Google.Apis.YouTube.v3;
 using Google.Apis.YouTube.v3.Data;
 using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
-using System.Threading.Tasks;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
 
 namespace FactFluxV3.Logic
 {
@@ -39,6 +43,31 @@ namespace FactFluxV3.Logic
             newVids = new List<SearchResult>(searchListResponse.Items);
 
             return newVids;
+        }
+
+        public List<Article> CheckNewsEntityForVideos(Rssfeeds feed)
+        {
+            var videoArticleList = new List<Article>();
+
+            if (feed.VideoLink == null)
+            {
+                return videoArticleList;
+            }
+
+            var videoList = GetVidsForFeed(feed.VideoLink);
+
+            var vidListResult = videoList.Where(x => x.Id.VideoId != null).ToList();
+
+            var newArticleLogic = new ArticleLogic();
+
+            foreach (var video in vidListResult)
+            {
+                var newVid = newArticleLogic.CreateArticleFromVideo(feed, video);
+
+                videoArticleList.Add(newVid);
+            }
+
+            return videoArticleList;
         }
     }
 }

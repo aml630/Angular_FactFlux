@@ -5,12 +5,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel.Syndication;
 using System.Threading.Tasks;
+using System.Xml;
 
 namespace FactFluxV3.Logic
 {
     public class ArticleLogic
     {
-        public Article CreateArticleFromRSSFeed(Rssfeeds foundFeed, SyndicationItem articleItem, bool isDuplicate = false)
+        public Article CreateArticleFromRSSItem(Rssfeeds foundFeed, SyndicationItem articleItem, bool isDuplicate = false)
         {
             var newArticleLinke = new Article();
 
@@ -72,6 +73,31 @@ namespace FactFluxV3.Logic
             }
 
             return newArticleLinke;
+        }
+
+        public List<Article> CheckNewsEntityForArticles(Rssfeeds feed)
+        {
+            var articleList = new List<Article>();
+
+            var r = XmlReader.Create(feed.FeedLink);
+
+            var rssArticleList = SyndicationFeed.Load(r);
+
+            var newArticleLogic = new ArticleLogic();
+
+
+            foreach (var articleItem in rssArticleList.Items)
+            {
+                Article newArticle = newArticleLogic.CreateArticleFromRSSItem(feed, articleItem);
+
+                articleList.Add(newArticle);
+
+                var wordLogLogic = new WordLogLogic();
+
+                wordLogLogic.LogWordsUsed(newArticle);
+            }
+
+            return articleList;
         }
     }
 }

@@ -18,21 +18,21 @@ namespace FactFluxV3.Controllers
     [ApiController]
     public class RssfeedsController : ControllerBase
     {
-        private readonly IConfiguration _configuration;
+        private readonly IConfiguration Configuration;
 
-        private readonly FactFluxV3Context _context;
+        private readonly FactFluxV3Context Context;
 
         public RssfeedsController(FactFluxV3Context context, IConfiguration configuration)
         {
-            _context = context;
-            _configuration = configuration;
+            Context = context;
+            Configuration = configuration;
         }
 
         // GET: api/Rssfeeds
         [HttpGet]
         public IEnumerable<Rssfeeds> GetRssfeeds()
         {
-            return _context.Rssfeeds;
+            return Context.Rssfeeds;
         }
 
         // GET: api/Rssfeeds/5
@@ -44,7 +44,7 @@ namespace FactFluxV3.Controllers
                 return BadRequest(ModelState);
             }
 
-            var rssfeeds = await _context.Rssfeeds.FindAsync(id);
+            var rssfeeds = await Context.Rssfeeds.FindAsync(id);
 
             if (rssfeeds == null)
             {
@@ -68,11 +68,11 @@ namespace FactFluxV3.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(rssfeeds).State = EntityState.Modified;
+            Context.Entry(rssfeeds).State = EntityState.Modified;
 
             try
             {
-                await _context.SaveChangesAsync();
+                await Context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -103,8 +103,8 @@ namespace FactFluxV3.Controllers
 
             try
             {
-                _context.Rssfeeds.Add(rssfeeds);
-                await _context.SaveChangesAsync();
+                Context.Rssfeeds.Add(rssfeeds);
+                await Context.SaveChangesAsync();
             }
             catch (Exception ex)
             {
@@ -123,21 +123,21 @@ namespace FactFluxV3.Controllers
                 return BadRequest(ModelState);
             }
 
-            var rssfeeds = await _context.Rssfeeds.FindAsync(id);
+            var rssfeeds = await Context.Rssfeeds.FindAsync(id);
             if (rssfeeds == null)
             {
                 return NotFound();
             }
 
-            _context.Rssfeeds.Remove(rssfeeds);
-            await _context.SaveChangesAsync();
+            Context.Rssfeeds.Remove(rssfeeds);
+            await Context.SaveChangesAsync();
 
             return Ok(rssfeeds);
         }
 
         private bool RssfeedsExists(int id)
         {
-            return _context.Rssfeeds.Any(e => e.FeedId == id);
+            return Context.Rssfeeds.Any(e => e.FeedId == id);
         }
 
         [HttpPost("{id}/GetArticles")]
@@ -145,48 +145,22 @@ namespace FactFluxV3.Controllers
         {
             Rssfeeds foundFeed;
 
-            var articleList = new List<Article>();
+            List<Article> articleList;
 
             using (FactFluxV3Context db = new FactFluxV3Context())
             {
                 foundFeed = db.Rssfeeds.Where(x => x.FeedId == id).FirstOrDefault();
             }
 
-            var r = XmlReader.Create(foundFeed.FeedLink);
+            var articleLogic = new ArticleLogic();
 
-            var rssArticleList = SyndicationFeed.Load(r);
+            articleList = articleLogic.CheckNewsEntityForArticles(foundFeed);
 
-            var newArticleLogic = new ArticleLogic();
+            var newYouTubeLogic = new YouTubeLogic(Configuration);
 
+            var vidList = newYouTubeLogic.CheckNewsEntityForVideos(foundFeed);
 
-            foreach (var articleItem in rssArticleList.Items)
-            {
-                Article newArticle = newArticleLogic.CreateArticleFromRSSFeed(foundFeed, articleItem);
-
-                articleList.Add(newArticle);
-
-                var rssFeedLogic = new RssfeedsLogic();
-
-                rssFeedLogic.LogWordsUsed(newArticle);
-            }
-
-            var newYouTubeLogic = new YouTubeLogic(_configuration);
-
-            if (foundFeed.VideoLink == null)
-            {
-                return articleList;
-            }
-
-            var videoList = newYouTubeLogic.GetVidsForFeed(foundFeed.VideoLink);
-
-            var vidListResult = videoList.Where(x => x.Id.VideoId != null).ToList();
-
-            foreach (var video in vidListResult)
-            {
-                var newVid = newArticleLogic.CreateArticleFromVideo(foundFeed, video);
-
-                articleList.Add(newVid);
-            }
+            articleList.AddRange(vidList);
 
             return articleList;
         }
