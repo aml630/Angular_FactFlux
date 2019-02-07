@@ -4,8 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using FactFluxV3.Models;
 using Google.Apis.YouTube.v3;
 using Google.Apis.Services;
 using Microsoft.IdentityModel.Protocols;
@@ -34,7 +32,9 @@ namespace FactFluxV3.Controllers
 
         private async Task<List<SearchResult>> GetVidsForFeed(string channelId)
         {
-            var youtTubeApiKey = configuration["IntegrationSettings:YouTube:Default"];
+            List<SearchResult> newVids;
+
+            var youtTubeApiKey = configuration["IntegrationSettings:YouTube:ApiKey"];
 
             var youtubeService = new YouTubeService(new BaseClientService.Initializer()
             {
@@ -48,12 +48,11 @@ namespace FactFluxV3.Controllers
             searchListRequest.ChannelId = channelId;
             searchListRequest.Order = 0;
 
-            // Call the search.list method to retrieve results matching the specified query term.
             var searchListResponse = await searchListRequest.ExecuteAsync().ConfigureAwait(false);
 
-            var listOfVids = new List<SearchResult>(searchListResponse.Items);
+            newVids = new List<SearchResult>(searchListResponse.Items);
 
-            return listOfVids;
+            return newVids;
         }
     }
 }

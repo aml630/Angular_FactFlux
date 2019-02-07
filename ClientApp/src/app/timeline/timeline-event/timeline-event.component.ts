@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Article } from '../../article';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-timeline-event',
@@ -12,10 +13,15 @@ export class TimelineEventComponent implements OnInit {
   @Input() index: number
   @Input() feedImage: string
   
-  constructor() {
+  constructor(private sanitizer: DomSanitizer) {
   }
 
   ngOnInit() {
+  }
+
+  vidUrl(url: string) {
+    let urlString = 'https://www.youtube.com/embed/'+url;
+    return this.sanitizer.bypassSecurityTrustUrl(urlString);
   }
 
 }

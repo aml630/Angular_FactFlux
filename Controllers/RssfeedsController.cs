@@ -9,18 +9,23 @@ using System.Xml;
 using System.ServiceModel.Syndication;
 using FactFluxV3.Models;
 using FactFluxV3.Logic;
+using Microsoft.Extensions.Configuration;
 
 namespace FactFluxV3.Controllers
 {
+
     [Route("api/[controller]")]
     [ApiController]
     public class RssfeedsController : ControllerBase
     {
+        private readonly IConfiguration _configuration;
+
         private readonly FactFluxV3Context _context;
 
-        public RssfeedsController(FactFluxV3Context context)
+        public RssfeedsController(FactFluxV3Context context, IConfiguration configuration)
         {
             _context = context;
+            _configuration = configuration;
         }
 
         // GET: api/Rssfeeds
@@ -153,6 +158,7 @@ namespace FactFluxV3.Controllers
 
             var newArticleLogic = new ArticleLogic();
 
+
             foreach (var articleItem in rssArticleList.Items)
             {
                 Article newArticle = newArticleLogic.CreateArticleFromRSSFeed(foundFeed, articleItem);
@@ -164,7 +170,25 @@ namespace FactFluxV3.Controllers
                 rssFeedLogic.LogWordsUsed(newArticle);
             }
 
+            var newYouTubeLogic = new YouTubeLogic(_configuration);
+
+            if (foundFeed.VideoLink == null)
+            {
+                return articleList;
+            }
+
+            var videoList = newYouTubeLogic.GetVidsForFeed(foundFeed.VideoLink);
+
+            var vidListResult = videoList.Where(x => x.Id.VideoId != null).ToList();
+
+            foreach (var video in vidListResult)
+            {
+                var newVid = newArticleLogic.CreateArticleFromVideo(foundFeed, video);
+
+                articleList.Add(newVid);
+            }
+
             return articleList;
-        }       
+        }
     }
 }

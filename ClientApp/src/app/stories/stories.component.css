@@ -15,6 +15,12 @@
     width: 100%;
 }
 
+.youTube {
+  height: auto;
+  width: auto;
+  border-radius: 15px;
+}
+
 /* ---------------- */
 
 @import url(https://fonts.googleapis.com/css?family=Roboto:400,500,700);

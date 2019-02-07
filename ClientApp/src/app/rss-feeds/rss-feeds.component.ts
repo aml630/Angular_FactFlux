@@ -28,6 +28,7 @@ export class RssFeedsComponent implements OnInit {
       feedTitle: ['', Validators.required],
       feedLink: ['', Validators.required],
       feedImage: [],
+      videoLink:[],
       feedId:[]
     });
   }

@@ -1,4 +1,5 @@
 ﻿using FactFluxV3.Models;
+using Google.Apis.YouTube.v3.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,7 +32,38 @@ namespace FactFluxV3.Logic
                 
                 if(isDupe!=null)
                 {
-                    isDupe.ArticleTitle = "Dupe--" + isDupe.ArticleTitle;
+                    isDupe.ArticleTitle = "DupeArt--" + isDupe.ArticleTitle;
+                    return isDupe;
+                }
+
+                db.Article.Add(newArticleLinke);
+                db.SaveChanges();
+            }
+
+            return newArticleLinke;
+        }
+
+        public Article CreateArticleFromVideo(Rssfeeds foundFeed, SearchResult video, bool isDuplicate = false)
+        {
+            var newArticleLinke = new Article();
+
+            string articleTitle = video.Snippet.Title;
+
+            newArticleLinke.ArticleTitle = articleTitle;
+            newArticleLinke.ArticleUrl = video.Id.VideoId;
+            newArticleLinke.DatePublished = video.Snippet.PublishedAt?? DateTime.UtcNow;
+            newArticleLinke.DateAdded = DateTime.UtcNow;
+            newArticleLinke.FeedId = foundFeed.FeedId;
+            newArticleLinke.Active = true;
+            newArticleLinke.ArticleType = 2;
+
+            using (FactFluxV3Context db = new FactFluxV3Context())
+            {
+                var isDupe = db.Article.Where(x => x.ArticleTitle == newArticleLinke.ArticleTitle).FirstOrDefault();
+
+                if (isDupe != null)
+                {
+                    isDupe.ArticleTitle = "DupeVid--" + isDupe.ArticleTitle;
                     return isDupe;
                 }
 
