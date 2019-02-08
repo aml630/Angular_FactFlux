@@ -30,8 +30,8 @@ namespace FactFluxV3.Logic
             using (FactFluxV3Context db = new FactFluxV3Context())
             {
                 var isDupe = db.Article.Where(x => x.ArticleTitle == newArticleLinke.ArticleTitle).FirstOrDefault();
-                
-                if(isDupe!=null)
+
+                if (isDupe != null)
                 {
                     isDupe.ArticleTitle = "DupeArt--" + isDupe.ArticleTitle;
                     return isDupe;
@@ -52,7 +52,7 @@ namespace FactFluxV3.Logic
 
             newArticleLinke.ArticleTitle = articleTitle;
             newArticleLinke.ArticleUrl = video.Id.VideoId;
-            newArticleLinke.DatePublished = video.Snippet.PublishedAt?? DateTime.UtcNow;
+            newArticleLinke.DatePublished = video.Snippet.PublishedAt ?? DateTime.UtcNow;
             newArticleLinke.DateAdded = DateTime.UtcNow;
             newArticleLinke.FeedId = foundFeed.FeedId;
             newArticleLinke.Active = true;
@@ -98,6 +98,49 @@ namespace FactFluxV3.Logic
             }
 
             return articleList;
+        }
+
+        public List<Article> GetArticlesFromSearchString(string word)
+        {
+            List<Article> orderedArticleList;
+
+            using (var db = new FactFluxV3Context())
+            {
+                var findWord = db.Words.Where(x => x.Word == word).FirstOrDefault();
+
+                var childWords = db.ParentWords.Where(x => x.ParentWordId == findWord.WordId).Select(x => x.ChildWordId).ToList();
+
+                var childWordStrings = db.Words.Where(x => childWords.Contains(x.WordId)).ToList();
+
+                var fullArticleList = new List<Article>();
+
+                foreach (var wordd in childWordStrings)
+                {
+                    string childBegin = wordd.Word + " ";
+                    string childEnd = " " + wordd.Word;
+                    string childMiddle = " " + wordd.Word + " ";
+
+                    var childArticleList = db.Article.Where(x =>
+                       (x.ArticleTitle.ToLower().StartsWith(childBegin) || x.ArticleTitle.ToLower().EndsWith(childEnd) || x.ArticleTitle.ToLower().Contains(childMiddle)) && !fullArticleList.Contains(x)
+                       ).ToList();
+
+                    fullArticleList.AddRange(childArticleList);
+                }
+
+                string beginning = word + " ";
+                string end = " " + word;
+                string middle = " " + word + " ";
+
+                var articleList = db.Article.Where(x =>
+               (x.ArticleTitle.ToLower().StartsWith(beginning) || x.ArticleTitle.ToLower().EndsWith(end) || x.ArticleTitle.ToLower().Contains(middle)) && !fullArticleList.Contains(x)
+                ).ToList();
+
+                fullArticleList.AddRange(articleList);
+
+                orderedArticleList = fullArticleList.OrderByDescending(x => x.DatePublished).ToList();
+            }
+
+            return orderedArticleList;
         }
     }
 }

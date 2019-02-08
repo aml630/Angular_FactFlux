@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using FactFluxV3.Models;
+using FactFluxV3.Logic;
 
 namespace FactFluxV3.Controllers
 {
@@ -49,44 +50,14 @@ namespace FactFluxV3.Controllers
         [HttpGet("timeline/{word}")]
         public List<Article> GetTimelineArticle([FromRoute] string word, int page = 1, int pageSize = 10)
         {
-            var findWord = _context.Words.Where(x => x.Word == word).FirstOrDefault();
+            var articleLogic = new ArticleLogic();
 
-            var childWords = _context.ParentWords.Where(x => x.ParentWordId == findWord.WordId).Select(x => x.ChildWordId).ToList();
-
-            var childWordStrings = _context.Words.Where(x => childWords.Contains(x.WordId)).ToList();
-
-            var fullArticleList = new List<Article>();
-
-            foreach (var wordd in childWordStrings)
-            {
-                string childBegin = wordd.Word + " ";
-                string childEnd = " " + wordd.Word;
-                string childMiddle = " " + wordd.Word + " ";
-
-                var childArticleList = _context.Article.Where(x =>
-                   (x.ArticleTitle.ToLower().StartsWith(childBegin) || x.ArticleTitle.ToLower().EndsWith(childEnd) || x.ArticleTitle.ToLower().Contains(childMiddle)) && !fullArticleList.Contains(x)
-                   ).ToList();
-
-
-                fullArticleList.AddRange(childArticleList);
-            }
-
-            string beginning = word + " ";
-            string end = " " + word;
-            string middle = " " + word + " ";
-
-            var articleList = _context.Article.Where(x =>
-           (x.ArticleTitle.ToLower().StartsWith(beginning) || x.ArticleTitle.ToLower().EndsWith(end) || x.ArticleTitle.ToLower().Contains(middle)) && !fullArticleList.Contains(x)
-            ).ToList();
-
-            fullArticleList.AddRange(articleList);
-
-            var orderedList = fullArticleList.OrderByDescending(x => x.DatePublished).ToList();
+            List<Article> orderedList = articleLogic.GetArticlesFromSearchString(word);
 
             return orderedList;
         }
 
-
+   
         // PUT: api/Articles/5
         [HttpPut("{id}")]
         public async Task<IActionResult> PutArticle([FromRoute] int id, [FromBody] Article article)

@@ -20,7 +20,32 @@ namespace FactFluxV3.Logic
             Configuration = configuration;
         }
 
-        public List<SearchResult> GetVidsForFeed(string channelId)
+        public List<Article> CheckNewsEntityForVideos(Rssfeeds feed)
+        {
+            var videoArticleList = new List<Article>();
+
+            if (feed.VideoLink == null)
+            {
+                return videoArticleList;
+            }
+
+            var videoList = GetVidsForNewsEntity(feed.VideoLink);
+
+            var vidListResult = videoList.Where(x => x.Id.VideoId != null).ToList();
+
+            var newArticleLogic = new ArticleLogic();
+
+            foreach (var video in vidListResult)
+            {
+                var newVid = newArticleLogic.CreateArticleFromVideo(feed, video);
+
+                videoArticleList.Add(newVid);
+            }
+
+            return videoArticleList;
+        }
+
+        public List<SearchResult> GetVidsForNewsEntity(string channelId)
         {
             List<SearchResult> newVids;
 
@@ -43,31 +68,6 @@ namespace FactFluxV3.Logic
             newVids = new List<SearchResult>(searchListResponse.Items);
 
             return newVids;
-        }
-
-        public List<Article> CheckNewsEntityForVideos(Rssfeeds feed)
-        {
-            var videoArticleList = new List<Article>();
-
-            if (feed.VideoLink == null)
-            {
-                return videoArticleList;
-            }
-
-            var videoList = GetVidsForFeed(feed.VideoLink);
-
-            var vidListResult = videoList.Where(x => x.Id.VideoId != null).ToList();
-
-            var newArticleLogic = new ArticleLogic();
-
-            foreach (var video in vidListResult)
-            {
-                var newVid = newArticleLogic.CreateArticleFromVideo(feed, video);
-
-                videoArticleList.Add(newVid);
-            }
-
-            return videoArticleList;
         }
     }
 }

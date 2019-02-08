@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using FactFluxV3.Models;
 using System.Net.Http.Headers;
 using System.IO;
+using FactFluxV3.Logic;
 
 namespace FactFluxV3.Controllers
 {
@@ -122,57 +123,13 @@ namespace FactFluxV3.Controllers
         [HttpPost("AddImage/{contentType}/{contentId}")]
         public async Task<IActionResult> PostImageToWord([FromRoute] string contentType, int contentId)
         {
-            var newFileName = string.Empty;
+            var filesUploaded = HttpContext.Request.Form.Files;
 
-            if (HttpContext.Request.Form.Files != null)
+            if (filesUploaded != null)
             {
-                var fileName = string.Empty;
+                var imageLogic = new ImageLogic();
 
-                var files = HttpContext.Request.Form.Files;
-
-                foreach (var file in files)
-                {
-                    if (file.Length > 0)
-                    {
-                        //Getting FileName
-                        fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
-
-                        //Assigning Unique Filename (Guid)
-                        var myUniqueFileName = Convert.ToString(Guid.NewGuid());
-
-                        //Getting file Extension
-                        var FileExtension = Path.GetExtension(fileName);
-
-                        string startupPath = Environment.CurrentDirectory;
-
-                        // concating  FileName + FileExtension
-                        newFileName = myUniqueFileName + FileExtension;
-
-                        // Combines two strings into a path.
-                        fileName = Path.Combine(startupPath, "ClientApp\\src\\assets\\images") + $@"\{newFileName}";
-
-                        var savePath = "/assets/images/" + newFileName;
-
-                        using (FileStream fs = System.IO.File.Create(fileName))
-                        {
-                            file.CopyTo(fs);
-                            fs.Flush();
-                        }
-
-                        var newImage = new Images()
-                        {
-                            ContentType = contentType,
-                            ContentId = contentId,
-                            ImageLocation = savePath
-                        };
-
-                        using (var db = new FactFluxV3Context())
-                        {
-                            db.Images.Add(newImage);
-                            db.SaveChanges();
-                        }
-                    }
-                }
+                imageLogic.CreateImage(contentType, contentId, filesUploaded);
             }
             return Ok();
         }
