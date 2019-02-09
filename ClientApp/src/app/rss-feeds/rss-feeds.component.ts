@@ -73,6 +73,13 @@ export class RssFeedsComponent implements OnInit {
       console.log(this.foundArticles)
     }, error => console.error(error));
   }
+
+  GetAllArticles() {
+    this.http.post<Article[]>(this.base + 'api/RssFeeds/GetAllArticles', null).subscribe(result => {
+      this.foundArticles = result;
+      console.log(this.foundArticles)
+    }, error => console.error(error));
+  }
 }
 
 interface Article {

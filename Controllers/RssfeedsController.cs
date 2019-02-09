@@ -10,6 +10,7 @@ using System.ServiceModel.Syndication;
 using FactFluxV3.Models;
 using FactFluxV3.Logic;
 using Microsoft.Extensions.Configuration;
+using Hangfire;
 
 namespace FactFluxV3.Controllers
 {
@@ -152,6 +153,14 @@ namespace FactFluxV3.Controllers
                 foundFeed = db.Rssfeeds.Where(x => x.FeedId == id).FirstOrDefault();
             }
 
+            articleList = GetAllResourcesFromFeed(foundFeed);
+
+            return articleList;
+        }
+
+        public List<Article> GetAllResourcesFromFeed(Rssfeeds foundFeed)
+        {
+            List<Article> articleList;
             var articleLogic = new ArticleLogic();
 
             articleList = articleLogic.CheckNewsEntityForArticles(foundFeed);
@@ -161,8 +170,25 @@ namespace FactFluxV3.Controllers
             var vidList = newYouTubeLogic.CheckNewsEntityForVideos(foundFeed);
 
             articleList.AddRange(vidList);
-
             return articleList;
+        }
+
+        [HttpPost("GetAllArticles")]
+        public string GetArticlessForAll()
+        {
+            List<Rssfeeds> allFeeds;
+
+            using (FactFluxV3Context db = new FactFluxV3Context())
+            {
+                allFeeds = db.Rssfeeds.ToList();
+
+                foreach (var feed in allFeeds)
+                {
+                    BackgroundJob.Enqueue(() => GetAllResourcesFromFeed(feed));
+                }
+            }
+
+            return "Success";
         }
     }
 }
