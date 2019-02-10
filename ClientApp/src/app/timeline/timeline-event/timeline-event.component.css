@@ -1,3 +1,48 @@
+.youtube_videos{
+  list-style:none;
+  margin:0 auto;
+  display:block;
+  padding:0;
+}
+.youtube_videos .youtube{
+  display:inline-block;
+  margin-bottom:1em;
+  margin-right:0.5em;
+  margin-left:0.5em;
+  margin-top:0; 
+}
+.youtube,.thumb{
+  width:100%;
+  max-width: 450px;
+  margin-left: auto;
+  margin-right: auto;
+  height:250px;
+  cursor:pointer;
+  position:relative;
+}
+.youtube_video{
+  width:385px;
+  height:250px;
+}
+.thumb,.youtube_video{
+  padding:5px;
+  background:#34495e;
+  border:0;
+  outline:0;
+}
+
+/* = Responsive comming soon :)
+---------------------------------*/
+/* Desktop */
+@media (min-width:980px) {}
+/* Mobile */
+@media (max-width:480px) {}
+/* Tablet */
+@media (max-width:767px) {}
+@media (min-width:768px) and (max-width:979px) {}
+
+
+
 /* -------------------------------- 
 
 Primary style

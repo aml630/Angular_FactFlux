@@ -44,7 +44,7 @@ namespace FactFluxV3.Logic
             return newArticleLinke;
         }
 
-        public Article CreateArticleFromVideo(Rssfeeds foundFeed, SearchResult video, bool isDuplicate = false)
+        public Article CreateArticleFromVideo(Rssfeeds foundFeed, SearchResult video)
         {
             var newArticleLinke = new Article();
 
@@ -91,6 +91,11 @@ namespace FactFluxV3.Logic
                 Article newArticle = newArticleLogic.CreateArticleFromRSSItem(feed, articleItem);
 
                 articleList.Add(newArticle);
+
+                if (newArticle.ArticleTitle.StartsWith("DupeArt"))
+                {
+                    break;
+                }
 
                 var wordLogLogic = new WordLogLogic();
 

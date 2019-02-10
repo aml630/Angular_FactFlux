@@ -4,8 +4,6 @@ using Google.Apis.YouTube.v3;
 using Google.Apis.YouTube.v3.Data;
 using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 
 
@@ -40,6 +38,15 @@ namespace FactFluxV3.Logic
                 var newVid = newArticleLogic.CreateArticleFromVideo(feed, video);
 
                 videoArticleList.Add(newVid);
+
+                if (newVid.ArticleTitle.StartsWith("DupeVid"))
+                {
+                    break;
+                }
+
+                var wordLogLogic = new WordLogLogic();
+
+                wordLogLogic.LogWordsUsed(newVid);
             }
 
             return videoArticleList;
