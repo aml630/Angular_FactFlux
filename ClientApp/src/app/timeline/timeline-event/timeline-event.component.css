@@ -30,6 +30,27 @@
   border:0;
   outline:0;
 }
+.youtube:after{
+  content:url("https://www.shareicon.net/data/512x512/2016/08/18/814951_movie_512x512.png");
+  transform: scale(.2);
+  position:absolute;
+  top:80px;
+  left:110px;
+  width:165px;
+  height:40px;
+  padding:0;
+  margin:0;
+  padding:5px;
+  color:transparent;
+  -webkit-transition:all 0.8s ease;
+  -moz-transition:all 0.8s ease;
+  -o-transition:all 0.8s ease;
+  transition:all 0.8s ease;
+}
+.youtube:hover:after{
+  transform: scale(.3);
+}
+
 
 /* = Responsive comming soon :)
 ---------------------------------*/
