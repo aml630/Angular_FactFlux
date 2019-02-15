@@ -316,11 +316,13 @@ namespace FactFluxV3.Models
 
                 entity.Property(e => e.EmbedHtml).IsRequired();
 
+                entity.Property(e => e.TweetText).IsRequired();
+
                 entity.HasOne(d => d.TwitterUser)
                     .WithMany(p => p.Tweets)
                     .HasForeignKey(d => d.TwitterUserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Tweets__TwitterU__787EE5A0");
+                    .HasConstraintName("FK__Tweets__TwitterU__7B5B524B");
             });
 
             modelBuilder.Entity<TwitterUsers>(entity =>

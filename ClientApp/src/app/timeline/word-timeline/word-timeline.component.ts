@@ -33,9 +33,14 @@ export class WordTimelineComponent implements OnInit {
     });
   }
 
-  getImageForArticle(id: number) {
-    let feed = this.rssFeeds.filter(x => x.feedId == id)[0];
-    return feed.feedImage
+  getImageForArticle(article: Article) {
+    debugger;
+    if (article.articleType === 1 || article.articleType === 2) {
+      let feed = this.rssFeeds.filter(x => x.feedId == article.feedId)[0];
+      return feed.feedImage
+    }else {
+      return "https://aquaprosprinklers.com/wp-content/uploads/2018/02/TWITTER.png";
+    }
   }
 
   GetFeeds() {

@@ -12,27 +12,19 @@ export class TimelineEventComponent implements OnInit {
   @Input() article: Article
   @Input() index: number
   @Input() feedImage: string
-  @ViewChild("vid", {read: ElementRef}) vid: ElementRef;
-
+  @ViewChild("vid", { read: ElementRef }) vid: ElementRef;
 
   constructor(private sanitizer: DomSanitizer) {
   }
 
   ngOnInit() {
-
-
-
-    // this.getVideos(this.video);
-
   }
 
   ngAfterViewInit(): void {
-    if(this.vid)
-    {
+    if (this.vid) {
       this.getVideos(this.vid.nativeElement)
     }
-
-}
+  }
 
   getVideos(el) {
     var img = document.createElement("img");
@@ -63,14 +55,4 @@ export class TimelineEventComponent implements OnInit {
       this.parentNode.replaceChild(iframe, this);
     }, false);
   }
-
-
-
-  // vidUrl(url: string) {
-  //   let urlString = 'https://www.youtube.com/embed/'+url;
-  //   return this.sanitizer.bypassSecurityTrustUrl(urlString);
-  // }
-
-
-
 }

@@ -80,6 +80,7 @@ namespace FactFluxV3.Controllers
                 var newTweet = new Tweets()
                 {
                     EmbedHtml = oembedTweet.HTML,
+                    TweetText = tweet.FullText,
                     DateCreated = DateTime.UtcNow,
                     DateTweeted = tweet.TweetLocalCreationDate,
                     TwitterUserId = twitterUser.TwitterUserId

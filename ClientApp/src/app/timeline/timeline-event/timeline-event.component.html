@@ -18,3 +18,14 @@
     <span class="cd-date">{{article.datePublished | date: 'dd/MM/yyyy'}}</span>
   </div>
 </div>
+
+
+<div *ngIf="article.articleType===3" class="cd-timeline-block" [ngClass]="{'even': index % 2 != 0}">
+  <div class="cd-timeline-img cd-picture" [ngStyle]="{'background-image': 'url(' + feedImage + ')'}">
+  </div>
+  <div class="cd-timeline-content">
+    <h2>{{article.articleTitle}}</h2>
+
+    <span class="cd-date">{{article.datePublished | date: 'dd/MM/yyyy'}}</span>
+  </div>
+</div>

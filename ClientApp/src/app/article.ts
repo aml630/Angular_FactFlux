@@ -1,7 +1,7 @@
 export interface Article {
-    ArticleTitle: string;
-    ArticleUrl: string;
-    ArticleType: number;
-    DatePublished: Date; 
-    FeedId: number;
+    articleTitle: string;
+    articleUrl: string;
+    articleType: number;
+    aatePublished: Date; 
+    feedId: number;
 }

@@ -1,5 +1,5 @@
 <body>
   <section id="cd-timeline" class="cd-container" *ngFor="let art of articles; let i=index">
-  <app-timeline-event [article] = "art" [index] = "i" [feedImage] = "getImageForArticle(art.feedId)" ></app-timeline-event>
+  <app-timeline-event [article] = "art" [index] = "i" [feedImage] = "getImageForArticle(art)" ></app-timeline-event>
   </section> <!-- cd-timeline -->
 </body>
