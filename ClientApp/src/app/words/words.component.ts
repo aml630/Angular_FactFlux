@@ -97,7 +97,7 @@ export class WordsComponent implements OnInit {
     this.selectedFile = event.target.files[0]
   }
 
-  onUpload(theWord:string, theWordId: number) {
+  onUpload(theWord: string, theWordId: number) {
     const uploadData = new FormData();
     uploadData.append('myFile', this.selectedFile, this.selectedFile.name);
 
