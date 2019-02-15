@@ -148,7 +148,7 @@ namespace FactFluxV3.Logic
 
             var tweetList = db.Tweets.Where(x =>
      (x.TweetText.ToLower().StartsWith(beginning) || x.TweetText.ToLower().EndsWith(end) || x.TweetText.ToLower().Contains(middle)) && !fullArticleList.Select(y => y.ArticleId).Contains(x.TweetId)
-      ).Select(g => new Article { ArticleId = g.TweetId, ArticleTitle = g.TweetText, ArticleUrl = g.TweetText, ArticleType = 3, Active = true, DatePublished = g.DateTweeted, FeedId = g.TwitterUserId }).ToList();
+      ).Select(g => new Article { ArticleId = g.TweetId, ArticleTitle = g.TweetText, ArticleUrl = g.EmbedHtml, ArticleType = 3, Active = true, DatePublished = g.DateTweeted, FeedId = g.TwitterUserId }).ToList();
 
             articleList.AddRange(tweetList);
 

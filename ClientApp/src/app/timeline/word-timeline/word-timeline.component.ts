@@ -34,7 +34,6 @@ export class WordTimelineComponent implements OnInit {
   }
 
   getImageForArticle(article: Article) {
-    debugger;
     if (article.articleType === 1 || article.articleType === 2) {
       let feed = this.rssFeeds.filter(x => x.feedId == article.feedId)[0];
       return feed.feedImage
