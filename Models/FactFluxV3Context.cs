@@ -331,6 +331,8 @@ namespace FactFluxV3.Models
 
                 entity.Property(e => e.DateCreated).HasColumnType("datetime");
 
+                entity.Property(e => e.Image).HasMaxLength(90);
+
                 entity.Property(e => e.TwitterUsername)
                     .IsRequired()
                     .HasMaxLength(70);

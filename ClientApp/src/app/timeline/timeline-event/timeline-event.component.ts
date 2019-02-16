@@ -26,18 +26,19 @@ export class TimelineEventComponent implements OnInit {
       this.getVideos(this.vid.nativeElement)
     }
 
+    this.loadTwitter();
+  }
+
+  private loadTwitter() {
     !function (d, s, id) {
-      var js: any,
-        fjs = d.getElementsByTagName(s)[0],
-        p = 'https';
+      var js: any, fjs = d.getElementsByTagName(s)[0], p = 'https';
       if (!d.getElementById(id)) {
         js = d.createElement(s);
         js.id = id;
         js.src = p + "://platform.twitter.com/widgets.js";
         fjs.parentNode.insertBefore(js, fjs);
       }
-    }
-      (document, "script", "twitter-wjs");
+    } (document, "script", "twitter-wjs");
   }
 
   getVideos(el) {

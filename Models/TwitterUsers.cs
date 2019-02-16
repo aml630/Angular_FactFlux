@@ -13,6 +13,7 @@ namespace FactFluxV3.Models
         public int TwitterUserId { get; set; }
         public string TwitterUsername { get; set; }
         public DateTime DateCreated { get; set; }
+        public string Image { get; set; }
 
         public ICollection<Tweets> Tweets { get; set; }
     }

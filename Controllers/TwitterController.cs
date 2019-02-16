@@ -73,26 +73,40 @@ namespace FactFluxV3.Controllers
 
             List<Tweets> foundTweets = new List<Tweets>();
 
-            foreach (var tweet in recentUserTweets)
+            using (var db = new FactFluxV3Context())
             {
-                var oembedTweet = Tweet.GetOEmbedTweet(tweet.Id);
+                var lookupUser = db.TwitterUsers.Where(x => x.TwitterUserId == twitterUser.TwitterUserId).FirstOrDefault();
 
-                var newTweet = new Tweets()
-                {
-                    EmbedHtml = oembedTweet.HTML,
-                    TweetText = tweet.FullText,
-                    DateCreated = DateTime.UtcNow,
-                    DateTweeted = tweet.TweetLocalCreationDate,
-                    TwitterUserId = twitterUser.TwitterUserId
-                };
+                lookupUser.Image = realTwitterUser.ProfileImageUrl;
 
-                using (var db = new FactFluxV3Context())
+                foreach (var tweet in recentUserTweets)
                 {
-                    db.Tweets.Add(newTweet);
-                    db.SaveChanges();
+                    var newTweet = new Tweets()
+                    {
+                        EmbedHtml = "",
+                        TweetText = tweet.FullText,
+                        DateCreated = DateTime.UtcNow,
+                        DateTweeted = tweet.TweetLocalCreationDate,
+                        TwitterUserId = twitterUser.TwitterUserId
+                    };
+
+                    var isDupe = db.Tweets.Where(x => x.TweetText == tweet.FullText).FirstOrDefault();
+
+                    if (isDupe != null)
+                    {
+                        newTweet.TweetText = "DupeTweet--" + isDupe.TweetText;
+                    }
+                    else
+                    {
+                        newTweet.EmbedHtml = Tweet.GetOEmbedTweet(tweet.Id).HTML;
+
+                        db.Tweets.Add(newTweet);
+
+                        db.SaveChanges();
+                    }
+
+                    foundTweets.Add(newTweet);
                 }
-
-                foundTweets.Add(newTweet);
             }
 
             return foundTweets;
