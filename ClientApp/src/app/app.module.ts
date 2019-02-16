@@ -53,11 +53,13 @@ import { ShellComponent } from './shell/shell.component';
           { path: 'rss-feeds', component: RssFeedsComponent },
           { path: 'words', component: WordsComponent },
           { path: 'word-parents', component: WordParentsComponent },
-          { path: 'time/:word', component: WordTimelineComponent },
-          { path: 'stories', component: StoriesComponent }
+          // { path: 'time/:word', component: WordTimelineComponent },
+          { path: 'stories1', component: StoriesComponent }
         ]
       },
-      { path: 'front-page', component: FrontPageComponent }
+      { path: 'front-page', component: FrontPageComponent },
+      { path: 'stories', component: StoriesComponent },
+      { path: 'time/:word', component: WordTimelineComponent },
     ])
   ],
   providers: [],

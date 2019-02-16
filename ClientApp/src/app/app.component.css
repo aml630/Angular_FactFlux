@@ -1,5 +1,5 @@
 .body-content {
-  background-color: grey;
+  background-color: #e9f0f5;
 }
 
 .header {
@@ -8,6 +8,7 @@
 display: flex;
 flex-wrap: wrap;
 justify-content: space-around;
+margin: 15px;
 }
 
 .header .headerSection {
@@ -26,8 +27,8 @@ justify-content: space-around;
 .sidebar-content {
 height: 1000px;
 background:#FFF;
-margin: 10px;
-float:right;
+
+padding: 5px;
 }
 
 .blackShadow

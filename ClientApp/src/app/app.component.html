@@ -1,32 +1,36 @@
 <div class='container-fluid'>
   <div class="header">
     <div class="purpleShadow headerSection">
-      <span>TimeLines</span>
+      <span><a [routerLink]='["/stories"]'>TimeLines</a></span>
     </div>
     <div class="greenShadow headerSection">
-        <span>Factoids</span>
-      </div>
+      <span>Factoids</span>
+    </div>
   </div>
   <div class='row'>
-    <div class='col-sm-10 body-content'>
-      <router-outlet></router-outlet>
+    <div class='col-sm-10'>
+      <div class="body-content blackShadow">
+        <router-outlet></router-outlet>
+      </div>
     </div>
-    <div class='col-sm-2 sidebar-content blackShadow'>
-      	<!-- Icon-only Branded Twitter button -->
-	<a class="share-btn share-btn-branded share-btn-twitter"
-  href="https://twitter.com/share?url=http%3A%2F%2Fcodepen.io%2Fsunnysingh%2Fpen%2FOPxbgq&text=Share Buttons Demo&via=sunnyismoi"
-  title="Share on Twitter">
- <span class="share-btn-icon"></span>
- <span class="share-btn-text-sr">Twitter</span>
-</a>
+    <div class='col-sm-2'>
+      <div class="sidebar-content blackShadow">
+        <!-- Icon-only Branded Twitter button -->
+        <a class="share-btn share-btn-branded share-btn-twitter"
+          href="https://twitter.com/share?url=http%3A%2F%2Fcodepen.io%2Fsunnysingh%2Fpen%2FOPxbgq&text=Share Buttons Demo&via=sunnyismoi"
+          title="Share on Twitter">
+          <span class="share-btn-icon"></span>
+          <span class="share-btn-text-sr">Twitter</span>
+        </a>
 
-<!-- Icon-only Branded Facebook button -->
-<a class="share-btn share-btn-branded share-btn-facebook"
-  href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Fcodepen.io%2Fsunnysingh%2Fpen%2FOPxbgq"
-  title="Share on Facebook">
- <span class="share-btn-icon"></span>
- <span class="share-btn-text-sr">Facebook</span>
-</a>
+        <!-- Icon-only Branded Facebook button -->
+        <a class="share-btn share-btn-branded share-btn-facebook"
+          href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Fcodepen.io%2Fsunnysingh%2Fpen%2FOPxbgq"
+          title="Share on Facebook">
+          <span class="share-btn-icon"></span>
+          <span class="share-btn-text-sr">Facebook</span>
+        </a>
+      </div>
     </div>
   </div>
 </div>

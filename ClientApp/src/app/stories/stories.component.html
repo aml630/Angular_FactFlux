@@ -1,7 +1,14 @@
-<button (click)="ToggleType(1)" class="btn btn-warning">People</button>
+<!-- <button (click)="ToggleType(1)" class="btn btn-warning">People</button>
 <button (click)="ToggleType(2)" class="btn btn-success">Places</button>
 <button (click)="ToggleType(3)" class="btn btn-primary">Things</button>
-<br>
+<br> -->
+
+<div class="timeLineDescription">
+
+    <p>News timelines for today</p>
+    <p>A tool for putting the news cycle in context</p>
+</div>
+
 <div class="flexBox" *ngFor="let word of mainStories">
  
     <div [routerLink]="'/time/' + word.word" class="blog-card spring-fever" [ngStyle]="{'background': !word.images[0] ?'url(https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Cat03.jpg/1200px-Cat03.jpg)': 'url('+ word.images[0].imageLocation+') no-repeat center'}">
@@ -24,3 +31,5 @@
         </div><!-- /.blog-card -->
     </div>
 </div>
+<br>
+<button class="showMoreButton">Show More</button>

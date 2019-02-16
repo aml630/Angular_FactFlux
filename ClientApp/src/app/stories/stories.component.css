@@ -21,6 +21,18 @@
   border-radius: 15px;
 }
 
+.timeLineDescription {
+  font-size: 35px;
+  text-align: center;
+}
+
+.showMoreButton {
+  width: 100%;
+  background-color: rebeccapurple;
+  color: white;
+  font-weight: bold;
+}
+
 /* ---------------- */
 
 @import url(https://fonts.googleapis.com/css?family=Roboto:400,500,700);
