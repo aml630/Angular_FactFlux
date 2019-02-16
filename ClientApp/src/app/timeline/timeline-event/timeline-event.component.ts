@@ -13,6 +13,7 @@ export class TimelineEventComponent implements OnInit {
   @Input() index: number
   @Input() feedImage: string
   @ViewChild("vid", { read: ElementRef }) vid: ElementRef;
+  @ViewChild("tweet", { read: ElementRef }) tweet: ElementRef;
 
   constructor(private sanitizer: DomSanitizer) {
   }
@@ -20,13 +21,14 @@ export class TimelineEventComponent implements OnInit {
   ngOnInit() {
   }
 
-
   ngAfterViewInit(): void {
     if (this.vid) {
       this.getVideos(this.vid.nativeElement)
     }
 
-    this.loadTwitter();
+    if (this.tweet) {
+      this.loadTwitter()
+    }
   }
 
   private loadTwitter() {
