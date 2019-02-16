@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
@@ -10,14 +10,16 @@ import { WordsComponent } from './words/words.component';
 import { WordTimelineComponent } from './timeline/word-timeline/word-timeline.component';
 import { TimelineEventComponent } from './timeline/timeline-event/timeline-event.component';
 import { StoriesComponent } from './stories/stories.component';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { WordParentsComponent } from './word-parents/word-parents.component';
-import {ButtonModule} from 'primeng/button';
-import {CardModule} from 'primeng/card';
-import {AccordionModule} from 'primeng/accordion';     //accordion and accordion tab
-import {TabMenuModule} from 'primeng/tabmenu';
-import {MenuModule} from 'primeng/menu';
+import { ButtonModule } from 'primeng/button';
+import { CardModule } from 'primeng/card';
+import { AccordionModule } from 'primeng/accordion';     //accordion and accordion tab
+import { TabMenuModule } from 'primeng/tabmenu';
+import { MenuModule } from 'primeng/menu';
 import { HeaderComponent } from './header/header.component';
+import { FrontPageComponent } from './front-page/front-page.component';
+import { ShellComponent } from './shell/shell.component';
 
 
 @NgModule({
@@ -30,23 +32,32 @@ import { HeaderComponent } from './header/header.component';
     TimelineEventComponent,
     StoriesComponent,
     WordParentsComponent,
-    HeaderComponent
-    ],
+    HeaderComponent,
+    FrontPageComponent,
+    ShellComponent
+  ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     HttpClientModule,
-    FormsModule, 
+    FormsModule,
     ReactiveFormsModule,
     ButtonModule,
     BrowserAnimationsModule, AccordionModule, TabMenuModule,
-    CardModule, MenuModule, 
+    CardModule, MenuModule,
     RouterModule.forRoot([
-      { path: '', component: WordsComponent, pathMatch: 'full' },
-      { path: 'rss-feeds', component: RssFeedsComponent },
-      { path: 'words', component: WordsComponent },
-      { path: 'word-parents', component: WordParentsComponent },
-      { path: 'time/:word', component: WordTimelineComponent },
-      { path: 'stories', component: StoriesComponent }
+      {
+        path: '',
+        component: ShellComponent,
+        children: [
+          { path: '', component: WordsComponent, pathMatch: 'full' },
+          { path: 'rss-feeds', component: RssFeedsComponent },
+          { path: 'words', component: WordsComponent },
+          { path: 'word-parents', component: WordParentsComponent },
+          { path: 'time/:word', component: WordTimelineComponent },
+          { path: 'stories', component: StoriesComponent }
+        ]
+      },
+      { path: 'front-page', component: FrontPageComponent }
     ])
   ],
   providers: [],
