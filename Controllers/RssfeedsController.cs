@@ -173,6 +173,15 @@ namespace FactFluxV3.Controllers
             return articleList;
         }
 
+        public List<Tweets> GetAllResourcesFromTwitterUser(TwitterUsers twitterUser)
+        {
+            var twitterLogic = new TwitterLogic(Configuration);
+
+            var tweetList = twitterLogic.GetTweetsForUser(twitterUser);
+            
+            return tweetList;
+        }
+
         [HttpPost("GetAllArticles")]
         public string GetArticlessForAll()
         {
@@ -185,6 +194,13 @@ namespace FactFluxV3.Controllers
                 foreach (var feed in allFeeds)
                 {
                     BackgroundJob.Enqueue(() => GetAllResourcesFromFeed(feed));
+                }
+
+                var allTwitterAccounts = db.TwitterUsers.ToList();
+
+                foreach (var twtUser in allTwitterAccounts)
+                {
+                    BackgroundJob.Enqueue(() => GetAllResourcesFromTwitterUser(twtUser));
                 }
             }
 

@@ -41,7 +41,7 @@ namespace FactFluxV3.Logic
 
                 if (newVid.ArticleTitle.StartsWith("DupeVid"))
                 {
-                    break;
+                    continue;
                 }
 
                 var wordLogLogic = new WordLogLogic();

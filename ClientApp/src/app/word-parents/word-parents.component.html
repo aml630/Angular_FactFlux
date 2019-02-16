@@ -17,7 +17,7 @@
 </div>
 
 <div class="p-2" *ngFor="let word of wordParents">
-  <button class="btn btn-primary">{{word.parentWord.word}}</button>
+  <button *ngIf="word.parentWord.word" class="btn btn-primary">{{word.parentWord.word}}</button>
   <button class="btn-small btn-warning">{{word.childWord.word}}</button>
   <button class="btn-danger" (click)="DeleteChild(word.wordJoinId)">Delete</button>
   <br>

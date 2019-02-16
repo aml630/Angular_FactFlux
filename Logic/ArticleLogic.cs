@@ -94,7 +94,7 @@ namespace FactFluxV3.Logic
 
                 if (newArticle.ArticleTitle.StartsWith("DupeArt"))
                 {
-                    break;
+                    continue;
                 }
 
                 var wordLogLogic = new WordLogLogic();
