@@ -23,13 +23,35 @@ namespace FactFluxV3.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<Stories> Stories()
+        public IEnumerable<Stories> Stories(int pageNumber = 1)
         {
-            var storyList = _context.Words.Where(x => x.Main).Select(x => new Stories() {
+            int Page = pageNumber;
+
+            int RecordsPerPage = 3;
+
+            var storyList = _context.Words.Where(x => x.Main).Select(x => new Stories()
+            {
                 WordId = x.WordId,
                 Word = x.Word,
                 Type = x.Type,
-                Images = _context.Images.Where(z=>z.ContentType == "Word" && z.ContentId == x.WordId).ToList()
+                Images = _context.Images.Where(z => z.ContentType == "Word" && z.ContentId == x.WordId).ToList()
+            });
+
+            var pagedList = storyList.Skip((Page - 1) * RecordsPerPage).Take(RecordsPerPage).ToList();
+
+
+            return pagedList;
+        }
+
+        [HttpGet("GetMatching/{letters}")]
+        public List<Stories> GetMatchingWords([FromRoute] string letters)
+        {
+            var storyList = _context.Words.Where(x => x.Word.Contains(letters)).Select(x => new Stories()
+            {
+                WordId = x.WordId,
+                Word = x.Word,
+                Type = x.Type,
+                Images = _context.Images.Where(z => z.ContentType == "Word" && z.ContentId == x.WordId).ToList()
             }).ToList();
 
             return storyList;

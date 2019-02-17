@@ -7,4 +7,10 @@ namespace FactFluxV3.Models
     {
         public List<Images> Images { get; set; }
     }
+
+    public partial class PagedResponse
+    {
+        public List<Stories> Images { get; set; }
+        public int PageNumber { get; set; }
+    }
 }
