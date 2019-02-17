@@ -2,54 +2,9 @@
   background-color: #e9f0f5;
 }
 
-.header {
-  width: 100%;
-  height: 50px;
-display: flex;
-flex-wrap: wrap;
-justify-content: space-around;
-margin: 15px;
-}
-
-.header .headerSection {
-  width: 40%;
+.blackShadow {
   position: relative;
-  text-align: center;
-}
-
-.headerSection span{
-  margin: 0;
-  position: absolute;               /* 2 */
-  top: 50%;                         /* 3 */
-  transform: translate(0, -50%)    /* 4 */
-}
-
-.sidebar-content {
-height: 1000px;
-background:#FFF;
-
-padding: 5px;
-}
-
-.blackShadow
-{
-  	position:relative;
-    -webkit-box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
-       -moz-box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
-            box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
-}
-
-.purpleShadow
-{
-  	position:relative;
-    -webkit-box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(15, 230, 61, 0.1) inset;
-       -moz-box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(15, 230, 61, 0.1) inset;
-            box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgb(200, 34, 34) inset;
-}
-.greenShadow
-{
-  	position:relative;
-    -webkit-box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgb(142, 255, 142) inset;
-       -moz-box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgb(142, 255, 142) inset;
-            box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgb(142, 255, 142) inset;
+  -webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
+  -moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
 }

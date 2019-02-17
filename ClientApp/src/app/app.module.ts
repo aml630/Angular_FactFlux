@@ -20,6 +20,8 @@ import { MenuModule } from 'primeng/menu';
 import { HeaderComponent } from './header/header.component';
 import { FrontPageComponent } from './front-page/front-page.component';
 import { ShellComponent } from './shell/shell.component';
+import { SidebarComponent } from './sidebar/sidebar.component';
+import { CustomHeaderComponent } from './custom-header/custom-header.component';
 
 
 @NgModule({
@@ -34,12 +36,14 @@ import { ShellComponent } from './shell/shell.component';
     WordParentsComponent,
     HeaderComponent,
     FrontPageComponent,
-    ShellComponent
+    ShellComponent,
+    SidebarComponent,
+    CustomHeaderComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     HttpClientModule,
-    FormsModule,
+    FormsModule,    
     ReactiveFormsModule,
     ButtonModule,
     BrowserAnimationsModule, AccordionModule, TabMenuModule,

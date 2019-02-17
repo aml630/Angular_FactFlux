@@ -52,7 +52,7 @@ namespace FactFluxV3.Controllers
                 Word = x.Word,
                 Type = x.Type,
                 Images = _context.Images.Where(z => z.ContentType == "Word" && z.ContentId == x.WordId).ToList()
-            }).ToList();
+            }).Take(30).ToList();
 
             return storyList;
         }

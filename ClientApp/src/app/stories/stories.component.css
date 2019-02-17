@@ -5,6 +5,10 @@
     margin: 15px;
 }
 
+.searchForm {
+  border-radius: 15px;
+}
+
 .image {
     height: 100px;
     width: 100%;
