@@ -105,7 +105,7 @@ namespace FactFluxV3.Logic
             return articleList;
         }
 
-        public List<Article> GetArticlesFromSearchString(string word)
+        public List<Article> GetArticlesFromSearchString(string word, int[] articleTypes = null)
         {
             List<Article> orderedArticleList;
 
@@ -121,12 +121,12 @@ namespace FactFluxV3.Logic
 
                 foreach (var childWord in childWordStrings)
                 {
-                    List<Article> childArticleList = GetArticlesFromWord(childWord.Word, db, fullArticleList);
+                    List<Article> childArticleList = GetArticlesFromWord(childWord.Word, db, fullArticleList, articleTypes);
 
                     fullArticleList.AddRange(childArticleList);
                 }
 
-                List<Article> articleList = GetArticlesFromWord(word, db, fullArticleList);
+                List<Article> articleList = GetArticlesFromWord(word, db, fullArticleList, articleTypes);
 
                 fullArticleList.AddRange(articleList);
 
@@ -136,23 +136,45 @@ namespace FactFluxV3.Logic
             return orderedArticleList;
         }
 
-        private List<Article> GetArticlesFromWord(string word, FactFluxV3Context db, List<Article> fullArticleList)
+        private List<Article> GetArticlesFromWord(string word, FactFluxV3Context db, List<Article> fullArticleList, int[] articleTypes = null)
         {
             string beginning = word + " ";
             string end = " " + word;
             string middle = " " + word + " ";
 
-            var articleList = db.Article.Where(x =>
-           (x.ArticleTitle.ToLower().StartsWith(beginning) || x.ArticleTitle.ToLower().EndsWith(end) || x.ArticleTitle.ToLower().Contains(middle)) && !fullArticleList.Contains(x)
-            ).ToList();
+            var articleListQuery = db.Article.Where(x =>
+           (x.ArticleTitle.ToLower().StartsWith(beginning) || x.ArticleTitle.ToLower().EndsWith(end) || x.ArticleTitle.ToLower().Contains(middle)) && !fullArticleList.Contains(x));
 
-            var tweetList = db.Tweets.Where(x =>
-     (x.TweetText.ToLower().StartsWith(beginning) || x.TweetText.ToLower().EndsWith(end) || x.TweetText.ToLower().Contains(middle)) && !fullArticleList.Select(y => y.ArticleId).Contains(x.TweetId)
-      ).Select(g => new Article { ArticleId = g.TweetId, ArticleTitle = g.TweetText, ArticleUrl = g.EmbedHtml, ArticleType = 3, Active = true, DatePublished = g.DateTweeted, FeedId = g.TwitterUserId }).ToList();
+            if (articleTypes != null)
+            {
+                articleListQuery = articleListQuery.Where(x => articleTypes.Contains(x.ArticleType));
+            }
 
-            articleList.AddRange(tweetList);
+            var articleList = articleListQuery.ToList();
+
+            if (articleTypes == null || articleTypes.Contains(3))
+            {
+                List<Article> tweetList = GetTweetListAsArticles(db, fullArticleList, beginning, end, middle);
+
+                articleList.AddRange(tweetList);
+            }
 
             return articleList;
+        }
+
+        private static List<Article> GetTweetListAsArticles(FactFluxV3Context db, List<Article> fullArticleList, string beginning, string end, string middle)
+        {
+            return db.Tweets.Where(x => (x.TweetText.ToLower().StartsWith(beginning) || x.TweetText.ToLower().EndsWith(end) || x.TweetText.ToLower().Contains(middle)) && !fullArticleList.Select(y => y.ArticleId).Contains(x.TweetId)).Select(g =>
+            new Article
+            {
+                ArticleId = g.TweetId,
+                ArticleTitle = g.TweetText,
+                ArticleUrl = g.EmbedHtml,
+                ArticleType = 3,
+                Active = true,
+                DatePublished = g.DateTweeted,
+                FeedId = g.TwitterUserId
+            }).ToList();
         }
     }
 }

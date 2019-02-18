@@ -48,16 +48,16 @@ namespace FactFluxV3.Controllers
         }
 
         [HttpGet("timeline/{word}")]
-        public List<Article> GetTimelineArticle([FromRoute] string word, int page = 1, int pageSize = 10)
+        public List<Article> GetTimelineArticle([FromRoute] string word, int[] articleTypes, int page = 1, int pageSize = 10)
         {
             var articleLogic = new ArticleLogic();
 
-            List<Article> orderedList = articleLogic.GetArticlesFromSearchString(word);
+            List<Article> orderedList = articleLogic.GetArticlesFromSearchString(word, articleTypes);
 
             return orderedList;
         }
 
-   
+
         // PUT: api/Articles/5
         [HttpPut("{id}")]
         public async Task<IActionResult> PutArticle([FromRoute] int id, [FromBody] Article article)

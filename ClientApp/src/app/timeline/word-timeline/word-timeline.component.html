@@ -1,4 +1,11 @@
 <body>
+
+  <div class="filterSection">
+    <button (click)="toggleType(1)"> <i class="fa fa-newspaper"></i>News</button>
+    <button (click)="toggleType(2)"> <i class="fa fa-youtube"></i>Videos</button>
+    <button (click)="toggleType(3)"> <i class="fa fa-twitter"></i>Tweets</button>
+  </div>
+
   <section id="cd-timeline" class="cd-container" *ngFor="let art of articles; let i=index">
   <app-timeline-event [article] = "art" [index] = "i" [feedImage] = "getImageForArticle(art)" ></app-timeline-event>
   </section> <!-- cd-timeline -->

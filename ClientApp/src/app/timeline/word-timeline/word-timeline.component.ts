@@ -15,6 +15,7 @@ export class WordTimelineComponent implements OnInit {
   base: string = document.getElementsByTagName('base')[0].href;
   articles: Article[];
   rssFeeds: RssFeed[];
+  articleTypes = [1, 2, 3];
 
 
   constructor(private activatedRoute: ActivatedRoute, private http: HttpClient) { }
@@ -22,22 +23,43 @@ export class WordTimelineComponent implements OnInit {
   ngOnInit() {
     this.activatedRoute.params.subscribe(params => {
       this.word = params['word'];
-
-      this.http.get<Article[]>(this.base + `api/Articles/timeline/${this.word}`).subscribe(result => {
-        this.articles = result;
-        console.log(this.articles);
-      }, error => console.error(error));
-
+      this.GetArticlesVidsTweets();
       this.GetFeeds();
-
     });
+  }
+
+  private GetArticlesVidsTweets() {
+
+    let path = `api/Articles/timeline/${this.word}?`;
+
+    for (let type in this.articleTypes) {
+      path += `articleTypes=${this.articleTypes[type]}&`
+    }
+    path = path.substring(0, path.length - 1);
+
+    this.http.get<Article[]>(this.base + path).subscribe(result => {
+      this.articles = result;
+    }, error => console.error(error));
+  }
+
+
+  toggleType(articleType: number) {
+    let doesContain = this.articleTypes.indexOf(articleType);
+
+    if (doesContain == -1) {
+      this.articleTypes.push(articleType);
+    } else {
+      this.articleTypes.splice(doesContain, 1);
+    }
+
+    this.GetArticlesVidsTweets();
   }
 
   getImageForArticle(article: Article) {
     if (article.articleType === 1 || article.articleType === 2) {
       let feed = this.rssFeeds.filter(x => x.feedId == article.feedId)[0];
       return feed.feedImage
-    }else {
+    } else {
       return "https://aquaprosprinklers.com/wp-content/uploads/2018/02/TWITTER.png";
     }
   }
