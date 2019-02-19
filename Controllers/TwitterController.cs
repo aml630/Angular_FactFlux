@@ -1,11 +1,11 @@
-﻿
-using Microsoft.AspNetCore.Mvc;
-using Tweetinvi;
-using Microsoft.Extensions.Configuration;
-using FactFluxV3.Models;
-using System;
-using System.Linq;
+﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using FactFluxV3.Models;
+using Microsoft.Extensions.Configuration;
 using FactFluxV3.Logic;
 
 namespace FactFluxV3.Controllers
@@ -14,12 +14,15 @@ namespace FactFluxV3.Controllers
     [ApiController]
     public class TwitterController : ControllerBase
     {
+        private readonly FactFluxV3Context _context;
         private readonly IConfiguration Configuration;
 
-        public TwitterController(IConfiguration configuration)
+        public TwitterController(FactFluxV3Context context, IConfiguration configuration)
         {
+            _context = context;
             Configuration = configuration;
         }
+
 
         [HttpPost("AddUser/{twitterUser}")]
         public TwitterUsers CreateTwitterUser([FromRoute] string twitterUser)
@@ -46,6 +49,108 @@ namespace FactFluxV3.Controllers
         {
             var twitterLogic = new TwitterLogic(Configuration);
             return twitterLogic.GetTweetsForAllUsers();
+        }
+
+        // GET: api/Twitter
+        [HttpGet]
+        public IEnumerable<TwitterUsers> GetTwitterUsers()
+        {
+            return _context.TwitterUsers;
+        }
+
+        // GET: api/Twitter/5
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetTwitterUsers([FromRoute] int id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var twitterUsers = await _context.TwitterUsers.FindAsync(id);
+
+            if (twitterUsers == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(twitterUsers);
+        }
+
+        // PUT: api/Twitter/5
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutTwitterUsers([FromRoute] int id, [FromBody] TwitterUsers twitterUsers)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (id != twitterUsers.TwitterUserId)
+            {
+                return BadRequest();
+            }
+
+            _context.Entry(twitterUsers).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!TwitterUsersExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
+        }
+
+        // POST: api/Twitter
+        [HttpPost]
+        public async Task<IActionResult> PostTwitterUsers([FromBody] TwitterUsers twitterUsers)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            _context.TwitterUsers.Add(twitterUsers);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction("GetTwitterUsers", new { id = twitterUsers.TwitterUserId }, twitterUsers);
+        }
+
+        // DELETE: api/Twitter/5
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteTwitterUsers([FromRoute] int id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var twitterUsers = await _context.TwitterUsers.FindAsync(id);
+            if (twitterUsers == null)
+            {
+                return NotFound();
+            }
+
+            _context.TwitterUsers.Remove(twitterUsers);
+            await _context.SaveChangesAsync();
+
+            return Ok(twitterUsers);
+        }
+
+        private bool TwitterUsersExists(int id)
+        {
+            return _context.TwitterUsers.Any(e => e.TwitterUserId == id);
         }
     }
 }
