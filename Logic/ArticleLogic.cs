@@ -105,7 +105,7 @@ namespace FactFluxV3.Logic
             return articleList;
         }
 
-        public List<Article> GetArticlesFromSearchString(string word, int[] articleTypes = null)
+        public List<Article> GetArticlesFromSearchString(string word, int[] articleTypes = null, string letterFilter = null)
         {
             List<Article> orderedArticleList;
 
@@ -129,6 +129,11 @@ namespace FactFluxV3.Logic
                 List<Article> articleList = GetArticlesFromWord(word, db, fullArticleList, articleTypes);
 
                 fullArticleList.AddRange(articleList);
+
+                if (!string.IsNullOrEmpty(letterFilter))
+                {
+                    fullArticleList = articleList.Where(x => x.ArticleTitle.ToLower().Contains(letterFilter.ToLower())).ToList();
+                }
 
                 orderedArticleList = fullArticleList.OrderByDescending(x => x.DatePublished).ToList();
             }

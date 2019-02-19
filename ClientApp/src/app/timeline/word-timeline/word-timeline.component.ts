@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { Article } from '../../article';
 import { RssFeed } from '../../rssFeed';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-word-timeline',
@@ -16,19 +17,26 @@ export class WordTimelineComponent implements OnInit {
   articles: Article[];
   rssFeeds: RssFeed[];
   articleTypes = [1, 2, 3];
+  filterLetters: FormControl;
 
 
   constructor(private activatedRoute: ActivatedRoute, private http: HttpClient) { }
 
   ngOnInit() {
+    this.filterLetters = new FormControl();
     this.activatedRoute.params.subscribe(params => {
       this.word = params['word'];
-      this.GetArticlesVidsTweets();
+
+      this.filterLetters.valueChanges.debounceTime(400).subscribe(x => {
+        this.GetArticlesVidsTweets(x);
+      })
+
+      this.GetArticlesVidsTweets(null);
       this.GetFeeds();
     });
   }
 
-  private GetArticlesVidsTweets() {
+  GetArticlesVidsTweets(typedStuff: string) {
 
     let path = `api/Articles/timeline/${this.word}?`;
 
@@ -36,6 +44,10 @@ export class WordTimelineComponent implements OnInit {
       path += `articleTypes=${this.articleTypes[type]}&`
     }
     path = path.substring(0, path.length - 1);
+
+    if (typedStuff !== null) {
+      path += `&letterFilter=${typedStuff}`
+    }
 
     this.http.get<Article[]>(this.base + path).subscribe(result => {
       this.articles = result;
@@ -52,7 +64,7 @@ export class WordTimelineComponent implements OnInit {
       this.articleTypes.splice(doesContain, 1);
     }
 
-    this.GetArticlesVidsTweets();
+    this.GetArticlesVidsTweets(null);
   }
 
   getImageForArticle(article: Article) {

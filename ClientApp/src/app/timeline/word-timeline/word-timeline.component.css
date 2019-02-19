@@ -1,3 +1,87 @@
+.searchBox input{
+  border-radius: 15px;
+}
+
+
+.filterSection {
+  text-align: center;
+}
+
+.btn-3 {
+  font-weight: 900;
+  letter-spacing: 1px;
+  transition: all 150ms linear;
+}
+
+.btn-3:hover {
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  box-shadow: 1px 1px 2px rgba(255, 255, 255, 0.2);
+  text-decoration: none;
+  transition: all 250ms linear;
+}
+
+.btn-3-video {
+  color: white;
+  font-size: 22px;
+  background: #e3403a;
+  border: 1px solid #da251f;
+  box-shadow: 0px 2px 0 #d6251f, 2px 4px 6px #e02a24;
+}
+
+.btn-3-video:hover {
+  background: #e02c26;
+  color: #ec817d;
+  text-shadow: -1px -1px 0 #c2211c;
+}
+
+.btn-3-twitter{
+  color: white;
+  font-size: 22px;
+  background: #38A1F3;
+  border: 1px solid #38A1F3;
+  box-shadow: 0px 2px 0 #38A1F3, 2px 4px 6px #38A1F3;
+}
+
+.btn-3-twitter:hover {
+  background: #38A1F3;
+  color: rgb(156, 209, 250);
+  text-shadow: -1px -1px 0 #38A1F3;
+}
+
+.btn-3-news{
+  color: white;
+  font-size: 22px;
+  background: rgb(243, 56, 159);
+  border: 1px solid rgb(243, 56, 159);
+  box-shadow: 0px 2px 0 rgb(243, 56, 159), 2px 4px 6px rgb(243, 56, 159);
+}
+
+.btn-3-news:hover {
+  background: rgb(243, 56, 159);
+  color: rgb(241, 151, 201);
+  text-shadow: -1px -1px 0 rgb(243, 56, 159);
+}
+
+.deactivated {
+  color: black;
+  font-size: 22px;
+  background: grey;
+  border: 1px solid grey;
+  box-shadow: 0px 2px 0 grey, 2px 4px 6px grey;
+}
+
+.deactivated:hover {
+  color: black;
+  font-size: 22px;
+  background: grey;
+  border: 1px solid grey;
+  box-shadow: 0px 2px 0 grey, 2px 4px 6px grey;
+}
+
+.fa {
+  margin-right: 15px;
+}
+
 /* -------------------------------- 
 
 Primary style
