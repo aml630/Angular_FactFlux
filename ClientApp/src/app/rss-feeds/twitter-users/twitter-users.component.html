@@ -4,4 +4,12 @@
   <Button class="btn-primary" (click)='CreateTwitterUser(form.value)'>Create</Button>
 </form>
 
-<p *ngFor="let article of foundTwitterUsers">{{article.twitterUsername}}</p>
+<div *ngFor="let tweeter of foundTwitterUsers">
+  <p>
+    {{tweeter.twitterUsername}}
+    <img height=100 width=100 src={{tweeter.image}}>
+  </p>
+  <button class="btn-warning" (click)="UpdateTwitterUser(tweeter)">Update</button>
+  <button class="btn-danger" (click)="DeleteTwitterUser(tweeter.twitterUserId)">Delete</button>
+
+</div>

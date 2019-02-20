@@ -86,10 +86,17 @@ namespace FactFluxV3.Controllers
                 return BadRequest(ModelState);
             }
 
+
             if (id != twitterUsers.TwitterUserId)
             {
                 return BadRequest();
             }
+
+            var twitterLogic = new TwitterLogic(Configuration);
+
+            var userInfo = twitterLogic.GetTwitterUserInfo(twitterUsers);
+
+            twitterUsers.Image = userInfo.ProfileImageUrlFullSize;
 
             _context.Entry(twitterUsers).State = EntityState.Modified;
 
@@ -123,7 +130,14 @@ namespace FactFluxV3.Controllers
 
             twitterUsers.DateCreated = DateTime.UtcNow;
 
+            var twitterLogic = new TwitterLogic(Configuration);
+
+            var userInfo = twitterLogic.GetTwitterUserInfo(twitterUsers);
+
+            twitterUsers.Image = userInfo.ProfileImageUrlFullSize;
+
             _context.TwitterUsers.Add(twitterUsers);
+
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetTwitterUsers", new { id = twitterUsers.TwitterUserId }, twitterUsers);

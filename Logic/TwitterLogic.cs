@@ -18,7 +18,18 @@ namespace FactFluxV3.Logic
             Configuration = configuration;
         }
 
-        public List<Tweets> GetTweetsForUser(TwitterUsers twitterUser)
+        public Tweetinvi.Models.IUser GetTwitterUserInfo(TwitterUsers twitterUser)
+        {
+            Auth.SetUserCredentials(Configuration["IntegrationSettings:Twitter:ConsumerKey"],
+                                    Configuration["IntegrationSettings:Twitter:ConsumerSecret"],
+                                    Configuration["IntegrationSettings:Twitter:AccessToken"],
+                                    Configuration["IntegrationSettings:Twitter:AccessTokenSecret"]);
+
+            return User.GetUserFromScreenName(twitterUser.TwitterUsername);
+        }
+
+
+            public List<Tweets> GetTweetsForUser(TwitterUsers twitterUser)
         {
             Auth.SetUserCredentials(Configuration["IntegrationSettings:Twitter:ConsumerKey"],
                                     Configuration["IntegrationSettings:Twitter:ConsumerSecret"],

@@ -30,8 +30,7 @@ export class TwitterUsersComponent implements OnInit {
     }, error => console.error(error));
   }
 
-  CreateTwitterUser(twitterForm: TwitterUser) {
-    
+  CreateTwitterUser(twitterForm: TwitterUser) {   
     this.http.post<TwitterUser>(this.base + 'api/Twitter', twitterForm).subscribe(result => {
       debugger;
     }, error => console.error(error));
