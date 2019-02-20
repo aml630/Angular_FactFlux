@@ -1,0 +1,7 @@
+<form [formGroup]="form" class="form-group border">
+  <label>User Name</label>
+  <input class="form-control" formControlName="twitterUsername">
+  <Button class="btn-primary" (click)='CreateTwitterUser(form.value)'>Create</Button>
+</form>
+
+<p *ngFor="let article of foundTwitterUsers">{{article.twitterUsername}}</p>

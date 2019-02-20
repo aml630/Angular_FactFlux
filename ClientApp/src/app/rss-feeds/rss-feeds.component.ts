@@ -1,9 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { FormsModule, FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
-import { forEach } from '@angular/router/src/utils/collection';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { RssFeed } from '../rssFeed';
-
 
 @Component({
   selector: 'app-rss-feeds',
@@ -28,8 +26,8 @@ export class RssFeedsComponent implements OnInit {
       feedTitle: ['', Validators.required],
       feedLink: ['', Validators.required],
       feedImage: [],
-      videoLink:[],
-      feedId:[]
+      videoLink: [],
+      feedId: []
     });
   }
 

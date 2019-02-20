@@ -44,7 +44,7 @@ namespace FactFluxV3.Controllers
             return newTwitterUser;
         }
 
-        [HttpPost]
+        [HttpPost("GetAllTweets")]
         public List<TwitterUsers> GetTweetsForUsers()
         {
             var twitterLogic = new TwitterLogic(Configuration);
@@ -120,6 +120,8 @@ namespace FactFluxV3.Controllers
             {
                 return BadRequest(ModelState);
             }
+
+            twitterUsers.DateCreated = DateTime.UtcNow;
 
             _context.TwitterUsers.Add(twitterUsers);
             await _context.SaveChangesAsync();

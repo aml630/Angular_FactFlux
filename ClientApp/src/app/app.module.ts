@@ -22,7 +22,7 @@ import { FrontPageComponent } from './front-page/front-page.component';
 import { ShellComponent } from './shell/shell.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { CustomHeaderComponent } from './custom-header/custom-header.component';
-
+import { TwitterUsersComponent } from './rss-feeds/twitter-users/twitter-users.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +38,8 @@ import { CustomHeaderComponent } from './custom-header/custom-header.component';
     FrontPageComponent,
     ShellComponent,
     SidebarComponent,
-    CustomHeaderComponent
+    CustomHeaderComponent,
+    TwitterUsersComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

@@ -10,6 +10,8 @@
       <button class="btn-success" (click)="GetArticles(feed.feedId)">Get Articles</button>
     </li>
   </ul>
+
+  <app-twitter-users></app-twitter-users>
 </div>
 
 <p *ngFor="let article of foundArticles">{{article.articleTitle}}</p>
