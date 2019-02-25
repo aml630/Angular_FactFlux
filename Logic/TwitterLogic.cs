@@ -29,14 +29,14 @@ namespace FactFluxV3.Logic
         }
 
 
-            public List<Tweets> GetTweetsForUser(TwitterUsers twitterUser)
+        public List<Tweets> GetTweetsForUser(TwitterUsers twitterUser)
         {
             Auth.SetUserCredentials(Configuration["IntegrationSettings:Twitter:ConsumerKey"],
                                     Configuration["IntegrationSettings:Twitter:ConsumerSecret"],
                                     Configuration["IntegrationSettings:Twitter:AccessToken"],
                                     Configuration["IntegrationSettings:Twitter:AccessTokenSecret"]);
 
-            var realTwitterUser =  User.GetUserFromScreenName(twitterUser.TwitterUsername);
+            var realTwitterUser = User.GetUserFromScreenName(twitterUser.TwitterUsername);
 
             var recentUserTweets = Timeline.GetUserTimeline(realTwitterUser.Id, 10);
 
@@ -98,6 +98,30 @@ namespace FactFluxV3.Logic
             }
 
             return listOfAccounts;
+        }
+
+        public List<Tweets> GetAllResourcesFromTwitterUser(TwitterUsers twitterUser)
+        {
+            var tweetList = GetTweetsForUser(twitterUser);
+
+            return tweetList;
+        }
+
+        public List<Tweets> GetAllTweetsForUserName(string twitterUserName)
+        {
+            using (var db = new FactFluxV3Context())
+            {
+                var twitterUser = db.TwitterUsers.Where(x => x.TwitterUsername.ToLower() == twitterUserName.ToLower()).FirstOrDefault();
+
+                if (twitterUser == null)
+                {
+                    throw new Exception("Twitter name does not exist in FactFlux");
+                }
+
+                var tweetList = GetTweetsForUser(twitterUser);
+
+                return tweetList;
+            }
         }
     }
 }

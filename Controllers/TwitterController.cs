@@ -51,6 +51,17 @@ namespace FactFluxV3.Controllers
             return twitterLogic.GetTweetsForAllUsers();
         }
 
+        [HttpPost("AddTweetsForUser/{twitterUser}")]
+        public List<Tweets> GetTweetsForSpecificUsers([FromRoute] string twitterUser)
+        {
+            var twitterLogic = new TwitterLogic(Configuration);
+
+            var tweetList = twitterLogic.GetAllTweetsForUserName(twitterUser);
+
+            return tweetList;
+        }
+
+
         // GET: api/Twitter
         [HttpGet]
         public IEnumerable<TwitterUsers> GetTwitterUsers()

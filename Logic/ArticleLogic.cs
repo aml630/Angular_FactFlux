@@ -79,14 +79,22 @@ namespace FactFluxV3.Logic
         {
             var articleList = new List<Article>();
 
+            SyndicationFeed syndyFeed;
+
             var r = XmlReader.Create(feed.FeedLink);
 
-            var rssArticleList = SyndicationFeed.Load(r);
+            try
+            {
+                syndyFeed = SyndicationFeed.Load(r);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
 
             var newArticleLogic = new ArticleLogic();
 
-
-            foreach (var articleItem in rssArticleList.Items)
+            foreach (var articleItem in syndyFeed.Items)
             {
                 Article newArticle = newArticleLogic.CreateArticleFromRSSItem(feed, articleItem);
 
@@ -105,9 +113,9 @@ namespace FactFluxV3.Logic
             return articleList;
         }
 
-        public List<Article> GetArticlesFromSearchString(string word, int[] articleTypes = null, string letterFilter = null)
+        public List<TimelineArticle> GetArticlesFromSearchString(string word, int[] articleTypes = null, string letterFilter = null)
         {
-            List<Article> orderedArticleList;
+            List<TimelineArticle> orderedArticleList;
 
             using (var db = new FactFluxV3Context())
             {
@@ -117,16 +125,16 @@ namespace FactFluxV3.Logic
 
                 var childWordStrings = db.Words.Where(x => childWords.Contains(x.WordId)).ToList();
 
-                var fullArticleList = new List<Article>();
+                var fullArticleList = new List<TimelineArticle>();
 
                 foreach (var childWord in childWordStrings)
                 {
-                    List<Article> childArticleList = GetArticlesFromWord(childWord.Word, db, fullArticleList, articleTypes);
+                    List<TimelineArticle> childArticleList = GetArticlesFromWord(childWord.Word, db, fullArticleList, articleTypes);
 
                     fullArticleList.AddRange(childArticleList);
                 }
 
-                List<Article> articleList = GetArticlesFromWord(word, db, fullArticleList, articleTypes);
+                List<TimelineArticle> articleList = GetArticlesFromWord(word, db, fullArticleList, articleTypes);
 
                 fullArticleList.AddRange(articleList);
 
@@ -141,36 +149,49 @@ namespace FactFluxV3.Logic
             return orderedArticleList;
         }
 
-        private List<Article> GetArticlesFromWord(string word, FactFluxV3Context db, List<Article> fullArticleList, int[] articleTypes = null)
+        private List<TimelineArticle> GetArticlesFromWord(string word, FactFluxV3Context db, List<TimelineArticle> fullArticleList, int[] articleTypes = null)
         {
             string beginning = word + " ";
             string end = " " + word;
             string middle = " " + word + " ";
 
             var articleListQuery = db.Article.Where(x =>
-           (x.ArticleTitle.ToLower().StartsWith(beginning) || x.ArticleTitle.ToLower().EndsWith(end) || x.ArticleTitle.ToLower().Contains(middle)) && !fullArticleList.Contains(x));
+            (x.ArticleTitle.ToLower().StartsWith(beginning) ||
+            x.ArticleTitle.ToLower().EndsWith(end) ||
+            x.ArticleTitle.ToLower().Contains(middle)) &&
+            !fullArticleList.Select(z => z.ArticleTitle).Contains(x.ArticleTitle));
 
             if (articleTypes != null)
             {
                 articleListQuery = articleListQuery.Where(x => articleTypes.Contains(x.ArticleType));
             }
 
-            var articleList = articleListQuery.ToList();
+            List<TimelineArticle> timeLineList = articleListQuery.Select(x => new TimelineArticle()
+            {
+                ArticleId = x.ArticleId,
+                ArticleTitle = x.ArticleTitle,
+                ArticleUrl = x.ArticleUrl,
+                ArticleType = x.ArticleType,
+                Active = true,
+                DatePublished = x.DatePublished,
+                FeedId = x.FeedId,
+                TimelineImage = db.Rssfeeds.Where(y => y.FeedId == x.FeedId).Select(y => y.FeedImage).FirstOrDefault()
+            }).ToList();
 
             if (articleTypes == null || articleTypes.Contains(3))
             {
-                List<Article> tweetList = GetTweetListAsArticles(db, fullArticleList, beginning, end, middle);
+                List<TimelineArticle> tweetList = GetTweetListAsArticles(db, fullArticleList, beginning, end, middle);
 
-                articleList.AddRange(tweetList);
+                timeLineList.AddRange(tweetList);
             }
 
-            return articleList;
+            return timeLineList;
         }
 
-        private static List<Article> GetTweetListAsArticles(FactFluxV3Context db, List<Article> fullArticleList, string beginning, string end, string middle)
+        private static List<TimelineArticle> GetTweetListAsArticles(FactFluxV3Context db, List<TimelineArticle> fullArticleList, string beginning, string end, string middle)
         {
             return db.Tweets.Where(x => (x.TweetText.ToLower().StartsWith(beginning) || x.TweetText.ToLower().EndsWith(end) || x.TweetText.ToLower().Contains(middle)) && !fullArticleList.Select(y => y.ArticleId).Contains(x.TweetId)).Select(g =>
-            new Article
+            new TimelineArticle
             {
                 ArticleId = g.TweetId,
                 ArticleTitle = g.TweetText,
@@ -178,7 +199,8 @@ namespace FactFluxV3.Logic
                 ArticleType = 3,
                 Active = true,
                 DatePublished = g.DateTweeted,
-                FeedId = g.TwitterUserId
+                FeedId = g.TwitterUserId,
+                TimelineImage = db.TwitterUsers.Where(y => y.TwitterUserId == g.TwitterUserId).Select(x => x.Image).FirstOrDefault()
             }).ToList();
         }
     }

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { TwitterUser } from '../../twitterUser';
+import { Tweet } from '../../tweet';
 
 @Component({
   selector: 'app-twitter-users',
@@ -13,7 +14,8 @@ export class TwitterUsersComponent implements OnInit {
   foundTwitterUsers: TwitterUser[];
   form: FormGroup;
   base: string = document.getElementsByTagName('base')[0].href;
-
+  foundTweets: Tweet[];
+  
   constructor(private formBuilder: FormBuilder, private http: HttpClient) { }
 
   ngOnInit() {
@@ -32,15 +34,24 @@ export class TwitterUsersComponent implements OnInit {
 
   CreateTwitterUser(twitterForm: TwitterUser) {   
     this.http.post<TwitterUser>(this.base + 'api/Twitter', twitterForm).subscribe(result => {
-      debugger;
+      this.GetTwitterUsers();
     }, error => console.error(error));
   }
 
   UpdateTwitterUser(TwitterUser: TwitterUser) {
-    this.http.put<TwitterUser>(this.base + 'api/Twitter/' + TwitterUser.twitterUserId, TwitterUser).subscribe(result => {
+    this.http.put<TwitterUser>(this.base + `api/Twitter/${TwitterUser.twitterUserId}`, TwitterUser).subscribe(result => {
+      this.GetTwitterUsers();
     }, error => console.error(error));
 
     this.GetTwitterUsers();
+  }
+
+  GetTweetsForUser(TwitterUser: TwitterUser){
+    this.http.post<Tweet[]>(this.base + `api/Twitter/AddTweetsForUser/${TwitterUser.twitterUsername}`, 
+    null).subscribe(result => {
+      this.foundTweets = result;
+    }, error => console.error(error));
+
   }
 
   DeleteTwitterUser(TwitterUserId: number) {
