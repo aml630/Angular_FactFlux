@@ -38,7 +38,7 @@ namespace FactFlux
             {
                 configuration.RootPath = "ClientApp/dist";
             });
-          
+
             services.AddDbContext<FactFluxV3Context>(options => options.UseSqlServer(connection));
 
             services.AddSingleton<IConfiguration>(Configuration);
@@ -64,12 +64,17 @@ namespace FactFlux
             //app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
+            app.UseAuthentication();
 
             app.UseMvc(routes =>
             {
+
                 routes.MapRoute(
                     name: "default",
                     template: "{controller}/{action=Index}/{id?}");
+
+                routes.MapSpaFallbackRoute("spa-fallback", new { controller = "Identity", action = "Index" });
+
             });
 
             app.UseSpa(spa =>
