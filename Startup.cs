@@ -31,9 +31,13 @@ namespace FactFlux
                 config.UseSqlServerStorage(connection);
             });
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddMvc()
+//    .AddRazorPagesOptions(options =>
+//{
+//    options.RootDirectory = "/Identity/Account/Login";
+//})
+.SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
-            // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {
                 configuration.RootPath = "ClientApp/dist";
@@ -73,7 +77,7 @@ namespace FactFlux
                     name: "default",
                     template: "{controller}/{action=Index}/{id?}");
 
-                routes.MapSpaFallbackRoute("spa-fallback", new { controller = "Identity", action = "Index" });
+                routes.MapSpaFallbackRoute("spa-fallback", new { controller = "Identity", action = "Login" });
 
             });
 
