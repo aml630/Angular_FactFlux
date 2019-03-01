@@ -23,6 +23,7 @@ import { ShellComponent } from './shell/shell.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { CustomHeaderComponent } from './custom-header/custom-header.component';
 import { TwitterUsersComponent } from './rss-feeds/twitter-users/twitter-users.component';
+import { OAuthModule } from 'angular-oauth2-oidc';
 
 @NgModule({
   declarations: [
@@ -49,6 +50,7 @@ import { TwitterUsersComponent } from './rss-feeds/twitter-users/twitter-users.c
     ButtonModule,
     BrowserAnimationsModule, AccordionModule, TabMenuModule,
     CardModule, MenuModule,
+    OAuthModule.forRoot(),
     RouterModule.forRoot([
       {
         path: '',
