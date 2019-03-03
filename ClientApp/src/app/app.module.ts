@@ -24,6 +24,7 @@ import { SidebarComponent } from './sidebar/sidebar.component';
 import { CustomHeaderComponent } from './custom-header/custom-header.component';
 import { TwitterUsersComponent } from './rss-feeds/twitter-users/twitter-users.component';
 import { OAuthModule } from 'angular-oauth2-oidc';
+import { AuthGuard } from './AuthGuard';
 
 @NgModule({
   declarations: [
@@ -57,19 +58,16 @@ import { OAuthModule } from 'angular-oauth2-oidc';
         component: ShellComponent,
         children: [
           { path: '', component: WordsComponent, pathMatch: 'full' },
-          { path: 'rss-feeds', component: RssFeedsComponent },
+          { path: 'rss-feeds', component: RssFeedsComponent,canActivate: [AuthGuard] },
           { path: 'words', component: WordsComponent },
           { path: 'word-parents', component: WordParentsComponent },
-          // { path: 'time/:word', component: WordTimelineComponent },
-          { path: 'stories1', component: StoriesComponent }
         ]
       },
-      { path: 'front-page', component: FrontPageComponent },
       { path: 'stories', component: StoriesComponent },
       { path: 'time/:word', component: WordTimelineComponent },
     ])
   ],
-  providers: [],
+  providers: [AuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
