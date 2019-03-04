@@ -15,6 +15,10 @@ namespace FactFluxV3.Areas.Identity.Data
         {
         }
 
+        public FactFluxIdentity()
+        {
+        }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

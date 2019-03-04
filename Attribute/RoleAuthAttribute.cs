@@ -1,7 +1,9 @@
 ﻿using FactFluxV3.Areas.Identity.Data;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,17 +15,46 @@ namespace FactFluxV3.Attribute
     {
         public void OnAuthorization(AuthorizationFilterContext context)
         {
-            var user = context.HttpContext.User.Identities;
 
-            var userName = user.FirstOrDefault().Name;
+            //IConfiguration Configuration = new IConfiguration();
 
-            if(userName == "alex")
+            var optionsBuilder = new DbContextOptionsBuilder<FactFluxIdentity>();
+            optionsBuilder.UseSqlServer("asdfasdfasd");
+            var newdbContext = new FactFluxIdentity(optionsBuilder.Options);
+
+
+
+            var userClaims = context.HttpContext.User.Identities.FirstOrDefault().Claims;
+
+            var userId = userClaims.FirstOrDefault().Value.ToString();
+
+            using (newdbContext)
             {
-                return;
-            }
-            else
-            {
-                throw new Exception("NO");
+                try
+                {
+                    var test = newdbContext.Users.ToList();
+                }
+                catch (Exception ex)
+                {
+                    var testr = ex.Message;
+                }
+
+                var foundUser = newdbContext.Users.Where(x => x.Id == userId).FirstOrDefault();
+
+                if (foundUser == null)
+                {
+                    context.Result = new ForbidResult();
+                }
+
+                var isAdmin = (from ur in newdbContext.UserRoles
+                               join r in newdbContext.Roles on ur.RoleId equals r.Id
+                               where r.Name == "Admin" && ur.UserId == userId
+                               select ur).FirstOrDefault();
+
+                if(isAdmin==null)
+                {
+                    context.Result = new ForbidResult();
+                }
             }
         }
     }
