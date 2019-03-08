@@ -1,9 +1,11 @@
-﻿using FactFluxV3.Areas.Identity.Data;
+﻿using FactFlux;
+using FactFluxV3.Areas.Identity.Data;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,30 +17,15 @@ namespace FactFluxV3.Attribute
     {
         public void OnAuthorization(AuthorizationFilterContext context)
         {
-
-            //IConfiguration Configuration = new IConfiguration();
-
             var optionsBuilder = new DbContextOptionsBuilder<FactFluxIdentity>();
-            optionsBuilder.UseSqlServer("asdfasdfasd");
+            optionsBuilder.UseSqlServer(Startup.staticConfig["StartupSettings:Startup:ConnectionString"]);
             var newdbContext = new FactFluxIdentity(optionsBuilder.Options);
-
-
-
             var userClaims = context.HttpContext.User.Identities.FirstOrDefault().Claims;
 
             var userId = userClaims.FirstOrDefault().Value.ToString();
 
             using (newdbContext)
             {
-                try
-                {
-                    var test = newdbContext.Users.ToList();
-                }
-                catch (Exception ex)
-                {
-                    var testr = ex.Message;
-                }
-
                 var foundUser = newdbContext.Users.Where(x => x.Id == userId).FirstOrDefault();
 
                 if (foundUser == null)

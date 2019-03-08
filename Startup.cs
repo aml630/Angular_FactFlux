@@ -17,26 +17,27 @@ namespace FactFlux
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            staticConfig = configuration;
         }
 
         public IConfiguration Configuration { get; }
+
+        public static IConfiguration staticConfig { get; set; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             var connection = Configuration["StartupSettings:Startup:ConnectionString"];
 
+            services.Configure<FactFluxV3.StartupSettings>(Configuration.GetSection("AppSettings"));
+
+
             services.AddHangfire(config =>
             {
                 config.UseSqlServerStorage(connection);
             });
 
-            services.AddMvc()
-//    .AddRazorPagesOptions(options =>
-//{
-//    options.RootDirectory = "/Identity/Account/Login";
-//})
-.SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             services.AddSpaStaticFiles(configuration =>
             {
@@ -72,13 +73,11 @@ namespace FactFlux
 
             app.UseMvc(routes =>
             {
-
                 routes.MapRoute(
                     name: "default",
                     template: "{controller}/{action=Index}/{id?}");
 
                 routes.MapSpaFallbackRoute("spa-fallback", new { controller = "Identity", action = "Login" });
-
             });
 
             app.UseSpa(spa =>
