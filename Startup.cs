@@ -77,7 +77,7 @@ namespace FactFlux
                     name: "default",
                     template: "{controller}/{action=Index}/{id?}");
 
-                routes.MapSpaFallbackRoute("spa-fallback", new { controller = "Identity", action = "Login" });
+                //routes.MapSpaFallbackRoute("spa-fallback", new { controller = "Identity", action = "Login" });
             });
 
             app.UseSpa(spa =>
