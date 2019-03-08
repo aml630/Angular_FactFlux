@@ -22,6 +22,8 @@ export class RssFeedsComponent implements OnInit {
 
     this.GetFeeds()
 
+    this.CheckUser();
+
     this.form = this.formBuilder.group({
       feedTitle: ['', Validators.required],
       feedLink: ['', Validators.required],
@@ -43,6 +45,12 @@ export class RssFeedsComponent implements OnInit {
   GetFeeds() {
     this.http.get<RssFeed[]>(this.base + 'api/RssFeeds').subscribe(result => {
       this.foundFeeds = result;
+    }, error => console.error(error));
+  }
+
+  CheckUser() {
+    this.http.get(this.base + 'api/Identity/IsAdmin').subscribe(result => {
+      console.log(result);
     }, error => console.error(error));
   }
 

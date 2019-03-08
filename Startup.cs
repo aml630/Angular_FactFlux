@@ -17,14 +17,20 @@ namespace FactFlux
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            staticConfig = configuration;
         }
 
         public IConfiguration Configuration { get; }
+
+        public static IConfiguration staticConfig { get; set; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             var connection = Configuration["StartupSettings:Startup:ConnectionString"];
+
+            services.Configure<FactFluxV3.StartupSettings>(Configuration.GetSection("AppSettings"));
+
 
             services.AddHangfire(config =>
             {
@@ -33,12 +39,11 @@ namespace FactFlux
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
-            // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {
                 configuration.RootPath = "ClientApp/dist";
             });
-          
+
             services.AddDbContext<FactFluxV3Context>(options => options.UseSqlServer(connection));
 
             services.AddSingleton<IConfiguration>(Configuration);
@@ -64,12 +69,15 @@ namespace FactFlux
             //app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
+            app.UseAuthentication();
 
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
                     name: "default",
                     template: "{controller}/{action=Index}/{id?}");
+
+                routes.MapSpaFallbackRoute("spa-fallback", new { controller = "Identity", action = "Login" });
             });
 
             app.UseSpa(spa =>

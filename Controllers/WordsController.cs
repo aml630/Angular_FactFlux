@@ -9,6 +9,12 @@ using FactFluxV3.Models;
 using System.Net.Http.Headers;
 using System.IO;
 using FactFluxV3.Logic;
+using FactFluxV3.Attribute;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
+using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Identity;
+using FactFluxV3.Areas.Identity.Data;
 
 namespace FactFluxV3.Controllers
 {
@@ -24,6 +30,7 @@ namespace FactFluxV3.Controllers
         }
 
         // GET: api/Words
+        [RoleAuth]
         [HttpGet]
         public IEnumerable<Words> GetWords()
         {
