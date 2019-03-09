@@ -10,7 +10,7 @@
 
     <div *ngIf="word.show">
       
-      <button [routerLink]="'/time/' + word.word" class="btn btn-light">Link</button>
+      <button [routerLink]="'/timeline/' + word.word" class="btn btn-light">Link</button>
       <select [(ngModel)]="word.type" name="Word Type">
         <option value=0>None</option>
         <option value=1>Person</option>

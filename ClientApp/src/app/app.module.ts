@@ -18,13 +18,13 @@ import { AccordionModule } from 'primeng/accordion';     //accordion and accordi
 import { TabMenuModule } from 'primeng/tabmenu';
 import { MenuModule } from 'primeng/menu';
 import { HeaderComponent } from './header/header.component';
-import { FrontPageComponent } from './front-page/front-page.component';
 import { ShellComponent } from './shell/shell.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { CustomHeaderComponent } from './custom-header/custom-header.component';
 import { TwitterUsersComponent } from './rss-feeds/twitter-users/twitter-users.component';
 import { OAuthModule } from 'angular-oauth2-oidc';
 import { AuthGuard } from './AuthGuard';
+import { StoriesTitleComponent } from './stories-title/stories-title.component';
 
 @NgModule({
   declarations: [
@@ -37,11 +37,11 @@ import { AuthGuard } from './AuthGuard';
     StoriesComponent,
     WordParentsComponent,
     HeaderComponent,
-    FrontPageComponent,
     ShellComponent,
     SidebarComponent,
     CustomHeaderComponent,
-    TwitterUsersComponent
+    TwitterUsersComponent,
+    StoriesTitleComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -53,18 +53,19 @@ import { AuthGuard } from './AuthGuard';
     CardModule, MenuModule,
     OAuthModule.forRoot(),
     RouterModule.forRoot([
+      { path: '', component: StoriesComponent},
+      { path: 'stories', component: StoriesComponent},
+      { path: 'timeline/:word', component: WordTimelineComponent },
       {
         path: '',
         component: ShellComponent,
+        canActivate: [AuthGuard],
         children: [
-          { path: '', component: WordsComponent, pathMatch: 'full' },
-          { path: 'rss-feeds', component: RssFeedsComponent,canActivate: [AuthGuard] },
-          { path: 'words', component: WordsComponent },
-          { path: 'word-parents', component: WordParentsComponent },
+          { path: 'rss-feeds', component: RssFeedsComponent},
+          { path: 'words', component: WordsComponent},
+          { path: 'word-parents', component: WordParentsComponent},
         ]
-      },
-      { path: 'stories', component: StoriesComponent },
-      { path: 'time/:word', component: WordTimelineComponent },
+      }
     ])
   ],
   providers: [AuthGuard],
