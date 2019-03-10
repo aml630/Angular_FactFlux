@@ -1,5 +1,6 @@
 .sidebar-content {
-  height: 1000px;
+  height: auto;
+  min-height: 600px;
   background: #FFF;
   padding: 5px;
 }

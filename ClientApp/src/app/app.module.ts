@@ -25,6 +25,7 @@ import { TwitterUsersComponent } from './rss-feeds/twitter-users/twitter-users.c
 import { OAuthModule } from 'angular-oauth2-oidc';
 import { AuthGuard } from './AuthGuard';
 import { StoriesTitleComponent } from './stories-title/stories-title.component';
+import { FooterComponent } from './footer/footer.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,8 @@ import { StoriesTitleComponent } from './stories-title/stories-title.component';
     SidebarComponent,
     CustomHeaderComponent,
     TwitterUsersComponent,
-    StoriesTitleComponent
+    StoriesTitleComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
