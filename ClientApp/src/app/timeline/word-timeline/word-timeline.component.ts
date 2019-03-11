@@ -5,6 +5,7 @@ import { Article } from '../../article';
 import { RssFeed } from '../../rssFeed';
 import { FormControl } from '@angular/forms';
 
+
 @Component({
   selector: 'app-word-timeline',
   templateUrl: './word-timeline.component.html',

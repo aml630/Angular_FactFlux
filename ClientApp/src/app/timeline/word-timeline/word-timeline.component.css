@@ -1,11 +1,26 @@
+@import url(https://fonts.googleapis.com/css?family=Fjalla+One); 
+
+
 .searchBox input{
   border-radius: 15px;
 }
 
 
-.filterSection {
+.filterSection{
   text-align: center;
 }
+.titleSection{
+  text-align: center;
+}
+
+.titleSection h1 {
+  padding-top: 15px;
+  font-family: 'Fjalla One', sans-serif;
+  text-shadow: #533d4a 1px 1px, #533d4a 2px 2px, #533d4a 3px 3px, #533d4a 4px 4px, #533d4a 5px 5px, #533d4a 6px 6px;
+  display: block;
+  position: relative;
+}
+
 
 .btn-3 {
   font-weight: 900;

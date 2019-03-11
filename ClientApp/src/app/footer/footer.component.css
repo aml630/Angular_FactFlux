@@ -102,7 +102,7 @@
   .footer-social-connect {
     display: flex;
     align-items: center;
-    font: 2.5em "Oswald", sans-serif;
+    font: 1.5em "Oswald", sans-serif;
     color: #fff;
   }
   
@@ -112,7 +112,7 @@
   }
   
   .footer-social-overlap > a {
-    font-size: 3em;
+    font-size: 2em;
   }
   
   .footer-social-overlap > a:not(:first-child) {
@@ -131,7 +131,7 @@
   }
   
   .footer-bottom-wrapper {
-    font-size: 1.5em;
+    font-size: .9em;
     color: #fff;
   }
   
@@ -150,7 +150,7 @@
     }
   
     .footer-social-connect {
-      font-size: 2.5em;
+      font-size: 1.5em;
     }
   
     .footer-social-overlap > a {
