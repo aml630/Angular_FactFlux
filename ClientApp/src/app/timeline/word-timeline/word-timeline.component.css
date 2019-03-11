@@ -8,6 +8,12 @@
 
 .filterSection{
   text-align: center;
+  border: .5px solid#D3D3D3;
+  margin:15px;
+}
+
+.filterSection h3{
+  margin-top: 3px;
 }
 .titleSection{
   text-align: center;
@@ -37,7 +43,7 @@
 
 .btn-3-video {
   color: white;
-  font-size: 22px;
+  font-size: 15px;
   background: #e3403a;
   border: 1px solid #da251f;
   box-shadow: 0px 2px 0 #d6251f, 2px 4px 6px #e02a24;
@@ -51,7 +57,7 @@
 
 .btn-3-twitter{
   color: white;
-  font-size: 22px;
+  font-size: 15px;
   background: #38A1F3;
   border: 1px solid #38A1F3;
   box-shadow: 0px 2px 0 #38A1F3, 2px 4px 6px #38A1F3;
@@ -65,21 +71,21 @@
 
 .btn-3-news{
   color: white;
-  font-size: 22px;
-  background: rgb(243, 56, 159);
-  border: 1px solid rgb(243, 56, 159);
-  box-shadow: 0px 2px 0 rgb(243, 56, 159), 2px 4px 6px rgb(243, 56, 159);
+  font-size: 15px;
+  background:#66CC99;
+  border: 1px solid #66CC99;
+  box-shadow: 0px 2px 0 #66CC99, 2px 4px 6px #66CC99;
 }
 
 .btn-3-news:hover {
-  background: rgb(243, 56, 159);
-  color: rgb(241, 151, 201);
-  text-shadow: -1px -1px 0 rgb(243, 56, 159);
+  background: #66CC99;
+  color: rgb(189, 253, 221);
+  text-shadow: -1px -1px 0 #66CC99;
 }
 
 .deactivated {
   color: black;
-  font-size: 22px;
+  font-size: 15px;
   background: grey;
   border: 1px solid grey;
   box-shadow: 0px 2px 0 grey, 2px 4px 6px grey;
@@ -87,7 +93,6 @@
 
 .deactivated:hover {
   color: black;
-  font-size: 22px;
   background: grey;
   border: 1px solid grey;
   box-shadow: 0px 2px 0 grey, 2px 4px 6px grey;
