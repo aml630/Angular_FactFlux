@@ -22,6 +22,7 @@ namespace FactFluxV3.Models
         public int Yearly { get; set; }
         public bool Main { get; set; }
         public int Type { get; set; }
+        public string Description { get; set; }
 
         public ICollection<ParentWords> ParentWordsChildWord { get; set; }
         public ICollection<ParentWords> ParentWordsParentWord { get; set; }
