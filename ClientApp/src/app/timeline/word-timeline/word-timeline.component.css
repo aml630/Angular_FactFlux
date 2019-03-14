@@ -10,6 +10,8 @@
   text-align: center;
   border: .5px solid#D3D3D3;
   margin:15px;
+  margin-left: 15%;
+  margin-right: 15%;
 }
 
 .filterSection h3{

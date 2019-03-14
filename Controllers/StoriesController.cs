@@ -34,6 +34,7 @@ namespace FactFluxV3.Controllers
                 WordId = x.WordId,
                 Word = x.Word,
                 Type = x.Type,
+                Description = x.Description,
                 Images = _context.Images.Where(z => z.ContentType == "Word" && z.ContentId == x.WordId).ToList()
             });
 
