@@ -18,6 +18,8 @@
 }
 
 .about {
+  margin-top: 25px;
+  margin-right:20%;
   color: #BE9EC9;
   z-index: 1000;
 }
@@ -71,7 +73,7 @@
 }
 
 .header .headerSection {
-  width: 40%;
+  /* width: 40%; */
   position: relative;
   text-align: center;
 }

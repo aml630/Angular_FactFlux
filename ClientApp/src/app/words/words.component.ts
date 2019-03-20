@@ -54,7 +54,9 @@ export class WordsComponent implements OnInit {
             daily: value.daily,
             weekly: value.weekly,
             yearly: value.yearly,
-            type: value.type
+            type: value.type,
+            dateCreated: value.dateCreated,
+            dateIncremented: value.dateIncremented
           }
           listWithShow.push(newww)
         })
@@ -82,6 +84,10 @@ export class WordsComponent implements OnInit {
 
   UpdateWord(word: Word) {
     word.main = true;
+    debugger;
+    if (!word.description) {
+      word.description = '';
+    }
     this.http.put<Word[]>(this.base + 'api/Words/' + word.wordId, word).subscribe(result => {
     }, error => console.error(error));
     this.GetWords();

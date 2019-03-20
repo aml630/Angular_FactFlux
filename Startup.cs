@@ -66,6 +66,8 @@ namespace FactFlux
                 app.UseHsts();
             }
 
+            app.UseDeveloperExceptionPage();
+
             //app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
@@ -76,8 +78,6 @@ namespace FactFlux
                 routes.MapRoute(
                     name: "default",
                     template: "{controller}/{action=Index}/{id?}");
-
-                //routes.MapSpaFallbackRoute("spa-fallback", new { controller = "Identity", action = "Login" });
             });
 
             app.UseSpa(spa =>

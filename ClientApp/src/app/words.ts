@@ -6,5 +6,7 @@ export interface Word {
   weekly?: number,
   yearly?: number,
   main?: boolean,
-  type?: number
+  type?: number,
+  dateCreated?: Date,
+  dateIncremented?: Date
 }
