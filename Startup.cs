@@ -1,14 +1,20 @@
 
+using FactFluxV3.Attribute;
 using FactFluxV3.Models;
 using Hangfire;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace FactFlux
 {
@@ -29,15 +35,11 @@ namespace FactFlux
         {
             var connection = Configuration["StartupSettings:Startup:ConnectionString"];
 
-            services.Configure<FactFluxV3.StartupSettings>(Configuration.GetSection("AppSettings"));
-
-
-            services.AddHangfire(config =>
-            {
-                config.UseSqlServerStorage(connection);
-            });
-
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            services.AddSession();
+
+            services.AddHttpContextAccessor();
 
             services.AddSpaStaticFiles(configuration =>
             {
@@ -47,15 +49,20 @@ namespace FactFlux
             services.AddDbContext<FactFluxV3Context>(options => options.UseSqlServer(connection));
 
             services.AddSingleton<IConfiguration>(Configuration);
+
+            services.TryAddSingleton<IActionContextAccessor, ActionContextAccessor>();
+
+            services.Configure<FactFluxV3.StartupSettings>(Configuration.GetSection("AppSettings"));
+
+            services.AddHangfire(config =>
+            {
+                config.UseSqlServerStorage(connection);
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IHttpContextAccessor context)
         {
-
-            app.UseHangfireDashboard();
-            app.UseHangfireServer();
-
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -73,12 +80,23 @@ namespace FactFlux
             app.UseSpaStaticFiles();
             app.UseAuthentication();
 
+            app.UseSession();
+
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
                     name: "default",
                     template: "{controller}/{action=Index}/{id?}");
             });
+
+            app.UseHangfireServer();
+
+            var options = new DashboardOptions()
+            {
+                Authorization = new[] { new AllowAllDashboardAuthorizationFilter(context) }
+            };
+
+            app.UseHangfireDashboard("/hangfire", options);
 
             app.UseSpa(spa =>
             {
@@ -92,7 +110,6 @@ namespace FactFlux
                     spa.UseAngularCliServer(npmScript: "start");
                 }
             });
-
         }
     }
 }
