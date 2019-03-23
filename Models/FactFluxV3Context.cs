@@ -47,7 +47,7 @@ namespace FactFluxV3.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer(Startup.staticConfig["StartupSettings:Startup:ConnectionString"]);
+                optionsBuilder.UseSqlServer(Startup.staticConfig["ConnectionStrings:FactFluxConnection"]);
             }
         }
 

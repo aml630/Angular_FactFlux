@@ -18,7 +18,7 @@ namespace FactFluxV3.Attribute
         public void OnAuthorization(AuthorizationFilterContext context)
         {
             var optionsBuilder = new DbContextOptionsBuilder<FactFluxIdentity>();
-            optionsBuilder.UseSqlServer(Startup.staticConfig["StartupSettings:Startup:ConnectionString"]);
+            optionsBuilder.UseSqlServer(Startup.staticConfig["ConnectionStrings:FactFluxConnection"]);
             var newdbContext = new FactFluxIdentity(optionsBuilder.Options);
             var userClaims = context.HttpContext.User.Identities.FirstOrDefault().Claims;
 

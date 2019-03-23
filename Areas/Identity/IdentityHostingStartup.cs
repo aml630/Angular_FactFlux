@@ -17,7 +17,7 @@ namespace FactFluxV3.Areas.Identity
             builder.ConfigureServices((context, services) => {
                 services.AddDbContext<FactFluxIdentity>(options =>
                     options.UseSqlServer(
-                        context.Configuration.GetConnectionString("FactFluxIdentityConnection")));
+                        context.Configuration.GetConnectionString("FactFluxConnection")));
 
                 services.AddDefaultIdentity<IdentityUser>()
                     .AddEntityFrameworkStores<FactFluxIdentity>();

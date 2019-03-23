@@ -33,7 +33,7 @@ namespace FactFlux
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            var connection = Configuration["StartupSettings:Startup:ConnectionString"];
+            var connection = Configuration["ConnectionStrings:FactFluxConnection"];
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
