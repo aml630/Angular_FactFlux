@@ -1,3 +1,4 @@
+
 .sidebar-content {
   height: auto;
   min-height: 400px;
@@ -16,11 +17,13 @@
 
 .fa-twitter {
   color: #38A1F3;
+  width:80%;
 }
 
 .fa-facebook {
   color: #4267b2;
   margin-left: -11px;
+  width:80%;
 }
 
 .shareSection {

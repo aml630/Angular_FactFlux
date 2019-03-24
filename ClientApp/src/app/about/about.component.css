@@ -37,6 +37,7 @@ a, a:hover {
   /* background-image: linear-gradient(-20deg, #ff2846 0%, #6944ff 100%); */
   display: flex;
   /* background-image: linear-gradient(-20deg, #ff2846 0%, #6944ff 100%);1 */
+  margin-top: 20px;
 }
 @media screen and (max-width: 768px) {
   .wrapper {
