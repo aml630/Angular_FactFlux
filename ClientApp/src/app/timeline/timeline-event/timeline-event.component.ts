@@ -32,10 +32,6 @@ export class TimelineEventComponent implements OnInit {
     }
   }
 
-  ngOnChange(article) {
-    // this.loadTwitter();
-  }
-
   private loadTwitter() {
     !function (d, s, id) {
       var js: any, fjs = d.getElementsByTagName(s)[0], p = 'https';

@@ -34,6 +34,15 @@ export class WordTimelineComponent implements OnInit {
 
       this.GetArticlesVidsTweets(null);
       this.GetFeeds();
+
+      
+    var twtStuff =  document.getElementById("twitter-wjs");
+    console.log("delete twitter");
+        if(twtStuff)
+        {
+          twtStuff.outerHTML = "";
+        }
+    
     });
   }
 
@@ -63,7 +72,7 @@ export class WordTimelineComponent implements OnInit {
   toggleType(articleType: number) {
 
     var twtStuff =  document.getElementById("twitter-wjs");
-
+console.log("delete twitter");
     if(twtStuff)
     {
       twtStuff.outerHTML = "";
