@@ -48,16 +48,24 @@ namespace FactFluxV3.Controllers
         }
 
         [HttpGet("timeline/{word}")]
-        public List<TimelineArticle> GetTimelineArticle([FromRoute] string word, 
-                                                        [FromQuery] int[] articleTypes,
+        public List<TimelineArticle> GetTimelineArticle([FromRoute] string word,
+                                                        [FromQuery] string articleTypes,
                                                         [FromQuery] int page = 1,
                                                         [FromQuery] int pageSize = 10,
                                                         [FromQuery] string letterFilter = null)
         {
 
+            var intList = new List<int>();
+
+            if (articleTypes != null)
+            {
+
+                intList = articleTypes.Split("|").Select(Int32.Parse).ToList();
+            }
+
             var articleLogic = new ArticleLogic();
 
-            List<TimelineArticle> orderedList = articleLogic.GetArticlesFromSearchString(word, articleTypes, letterFilter);
+            List<TimelineArticle> orderedList = articleLogic.GetArticlesFromSearchString(word, intList, letterFilter);
 
             return orderedList;
         }

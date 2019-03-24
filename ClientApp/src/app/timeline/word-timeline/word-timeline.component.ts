@@ -41,8 +41,12 @@ export class WordTimelineComponent implements OnInit {
 
     let path = `api/Articles/timeline/${this.word}?`;
 
+    if (this.articleTypes.length > 0) {
+      path += `articleTypes=`
+    }
+
     for (let type in this.articleTypes) {
-      path += `articleTypes=${this.articleTypes[type]}&`
+      path += `${this.articleTypes[type]}|`
     }
     path = path.substring(0, path.length - 1);
 

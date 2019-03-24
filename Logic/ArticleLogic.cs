@@ -113,7 +113,7 @@ namespace FactFluxV3.Logic
             return articleList;
         }
 
-        public List<TimelineArticle> GetArticlesFromSearchString(string word, int[] articleTypes = null, string letterFilter = null)
+        public List<TimelineArticle> GetArticlesFromSearchString(string word, List<int> articleTypes = null, string letterFilter = null)
         {
             List<TimelineArticle> orderedArticleList;
 
@@ -149,7 +149,7 @@ namespace FactFluxV3.Logic
             return orderedArticleList;
         }
 
-        private List<TimelineArticle> GetArticlesFromWord(string word, FactFluxV3Context db, List<TimelineArticle> fullArticleList, int[] articleTypes = null)
+        private List<TimelineArticle> GetArticlesFromWord(string word, FactFluxV3Context db, List<TimelineArticle> fullArticleList, List<int> articleTypes = null)
         {
             string beginning = word + " ";
             string end = " " + word;
