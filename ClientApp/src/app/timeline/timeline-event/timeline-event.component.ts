@@ -33,7 +33,7 @@ export class TimelineEventComponent implements OnInit {
   }
 
   ngOnChange(article) {
-    this.loadTwitter();
+    // this.loadTwitter();
   }
 
   private loadTwitter() {

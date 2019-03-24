@@ -61,6 +61,14 @@ export class WordTimelineComponent implements OnInit {
 
 
   toggleType(articleType: number) {
+
+    var twtStuff =  document.getElementById("twitter-wjs");
+
+    if(twtStuff)
+    {
+      twtStuff.outerHTML = "";
+    }
+
     let doesContain = this.articleTypes.indexOf(articleType);
 
     if (doesContain == -1) {
