@@ -163,16 +163,21 @@ namespace FactFluxV3.Controllers
                 return BadRequest(ModelState);
             }
 
-            var twitterUsers = await _context.TwitterUsers.FindAsync(id);
-            if (twitterUsers == null)
+            var twitterUser = await _context.TwitterUsers.FindAsync(id);
+
+            var allTweets =  _context.Tweets.Where(x => x.TwitterUserId == twitterUser.TwitterUserId).ToList();
+
+            _context.Tweets.RemoveRange(allTweets);
+
+            if (twitterUser == null)
             {
                 return NotFound();
             }
 
-            _context.TwitterUsers.Remove(twitterUsers);
+            _context.TwitterUsers.Remove(twitterUser);
             await _context.SaveChangesAsync();
 
-            return Ok(twitterUsers);
+            return Ok(twitterUser);
         }
 
         private bool TwitterUsersExists(int id)

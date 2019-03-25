@@ -67,11 +67,19 @@ namespace FactFluxV3.Logic
                     }
                     else
                     {
-                        newTweet.EmbedHtml = Tweet.GetOEmbedTweet(tweet.Id).HTML;
+                        if (tweet != null && tweet.Id != null)
+                        {
+                            var getEmbed = Tweet.GetOEmbedTweet(tweet.Id);
 
-                        db.Tweets.Add(newTweet);
+                            if (getEmbed != null)
+                            {
+                                newTweet.EmbedHtml = getEmbed.HTML;
 
-                        db.SaveChanges();
+                                db.Tweets.Add(newTweet);
+
+                                db.SaveChanges();
+                            }
+                        }
                     }
 
                     foundTweets.Add(newTweet);
