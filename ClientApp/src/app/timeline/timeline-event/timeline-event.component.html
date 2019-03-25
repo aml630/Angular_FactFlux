@@ -4,7 +4,7 @@
   <div class="cd-timeline-content">
     <h2>{{article.articleTitle}}</h2>
     <a target="_blank" href="{{article.articleUrl}}" class="cd-read-more">Read more</a>
-    <span class="cd-date">{{article.datePublished | date: 'MM/dd/yyyy'}}</span>
+    <span class="cd-date">{{formatDate(article.datePublished)}}</span>
   </div>
 </div>
 
@@ -14,7 +14,7 @@
   <div class="cd-timeline-content">
     <h2>{{article.articleTitle}}</h2>
       <li class="youtube" #vid id="{{article.articleUrl}}"></li>
-    <span class="cd-date">{{article.datePublished | date: 'MM/dd/yyyy'}}</span>
+    <span class="cd-date">{{formatDate(article.datePublished)}}</span>
   </div>
 </div>
 
@@ -23,7 +23,7 @@
   </div>
   <div class="cd-timeline-content">
     <div [innerHTML]="article.articleUrl" #tweet></div>
-    <span class="cd-date">{{article.datePublished | date: 'MM/dd/yyyy'}}</span>
+    <span class="cd-date">{{formatDate(article.datePublished)}}</span>
   </div>
 </div>
 

@@ -161,6 +161,7 @@ namespace FactFluxV3.Controllers
         public List<Article> GetAllResourcesFromFeed(Rssfeeds foundFeed)
         {
             List<Article> articleList;
+
             var articleLogic = new ArticleLogic();
 
             articleList = articleLogic.CheckNewsEntityForArticles(foundFeed);

@@ -22,11 +22,11 @@ export class TimelineEventComponent implements OnInit {
   }
 
   ngAfterViewInit(): void {
-    
+
     if (this.vid) {
       this.getVideos(this.vid.nativeElement)
     }
-    
+
     if (this.tweet) {
       this.loadTwitter()
     }
@@ -41,7 +41,7 @@ export class TimelineEventComponent implements OnInit {
         js.src = p + "://platform.twitter.com/widgets.js";
         fjs.parentNode.insertBefore(js, fjs);
       }
-    } (document, "script", "twitter-wjs");
+    }(document, "script", "twitter-wjs");
   }
 
   getVideos(el) {
@@ -68,9 +68,16 @@ export class TimelineEventComponent implements OnInit {
       iframe.setAttribute('height', '250px');
 
       iframe.setAttribute('src', 'https://www.youtube.com/embed/' +
-        this.id + '?autoplay=1&autohide=1&border=0&wmode=opaque&enablejsapi=1');
+        this.id + '?autoplay=1&mute=1&enablejsapi=1');
       // Remplace img for video
       this.parentNode.replaceChild(iframe, this);
     }, false);
+  }
+
+  formatDate(date) {
+    var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+     var newDate = new Date(date);
+    var longDate = newDate.toLocaleDateString("en-US", options);
+    return longDate;
   }
 }

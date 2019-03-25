@@ -52,8 +52,6 @@ namespace FactFlux
 
             services.TryAddSingleton<IActionContextAccessor, ActionContextAccessor>();
 
-            services.Configure<FactFluxV3.StartupSettings>(Configuration.GetSection("AppSettings"));
-
             services.AddHangfire(config =>
             {
                 config.UseSqlServerStorage(connection);
