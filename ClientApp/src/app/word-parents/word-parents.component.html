@@ -22,3 +22,8 @@
   <button class="btn-danger" (click)="DeleteChild(word.wordJoinId)">Delete</button>
   <br>
 </div>
+
+<div class="p-2" *ngFor="let word of mainWords">
+  <button class="btn btn-success">{{word.word}}</button>
+  <button (click)="UpdateWord(word, false)">Turn Off</button>
+</div>

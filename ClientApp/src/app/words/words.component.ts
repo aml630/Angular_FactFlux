@@ -84,7 +84,6 @@ export class WordsComponent implements OnInit {
 
   UpdateWord(word: Word) {
     word.main = true;
-    debugger;
     if (!word.description) {
       word.description = '';
     }

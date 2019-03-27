@@ -27,7 +27,7 @@ namespace FactFluxV3.Controllers
         {
             int Page = pageNumber;
 
-            int RecordsPerPage = 3;
+            int RecordsPerPage = 30;
 
             var storyList = _context.Words.Where(x => x.Main).Select(x => new Stories()
             {
@@ -39,7 +39,6 @@ namespace FactFluxV3.Controllers
             });
 
             var pagedList = storyList.Skip((Page - 1) * RecordsPerPage).Take(RecordsPerPage).ToList();
-
 
             return pagedList;
         }

@@ -22,6 +22,8 @@ export class WordParentsComponent implements OnInit {
   parentTyping: FormControl;
   childTyping: FormControl;
 
+  mainWords: Word[];
+
   parentWord: string;
   childWord: string;
 
@@ -43,6 +45,8 @@ export class WordParentsComponent implements OnInit {
     })
 
     this.GetParents()
+
+    this.GetMainWords();
   }
 
   GetWords(typedStuff: string, type: number) {
@@ -75,19 +79,34 @@ export class WordParentsComponent implements OnInit {
     }, error => console.error(error));
   }
 
+  GetMainWords() {
+    this.http.get<Word[]>(this.base + `api/Words/GetMain`)
+      .subscribe(result => {
+        this.mainWords = result;
+      }, error => console.error(error));
+  }
+
+  UpdateWord(word: Word, main: boolean) {
+    word.main = main;
+    if (!word.description) {
+      word.description = '';
+    }
+    this.http.put<Word[]>(this.base + 'api/Words/' + word.wordId, word).subscribe(result => {
+    }, error => console.error(error));
+  }
+
   GetParents() {
     this.http.get<WordParent[]>(this.base + `api/ParentWords`).subscribe(result => {
       this.wordParents = result;
-      for(let wordParent of this.wordParents)
-      {
+      for (let wordParent of this.wordParents) {
         this.http.get<Word>(this.base + `api/Words/${wordParent.parentWordId}`).subscribe(result => {
           let thisWord: Word = result;
-          wordParent.parentWord= thisWord;
+          wordParent.parentWord = thisWord;
         }, error => console.error(error));
 
         this.http.get<Word>(this.base + `api/Words/${wordParent.childWordId}`).subscribe(result => {
           let thisWord: Word = result;
-          wordParent.childWord= thisWord;
+          wordParent.childWord = thisWord;
         }, error => console.error(error));
       }
     }, error => console.error(error));
@@ -95,7 +114,7 @@ export class WordParentsComponent implements OnInit {
 }
 
 interface WordParent {
-  wordJoinId? : number,
+  wordJoinId?: number,
   parentWordId: number,
   childWordId: number
   childWord: Word,

@@ -70,39 +70,33 @@ namespace FactFluxV3.Logic
                         IncrementWordCount(phrase);
 
                         db.SaveChanges();
-
-                        var newWordLogLogic = new WordLogLogic();
-
-                        newWordLogLogic.CreateWordLog(phrase.WordId, newArticle.ArticleId);
-
-                        break;
                     }
                 }
             }
         }
 
-        private void IncrementWordCount(Words isDupe)
+        private void IncrementWordCount(Words wordToInc)
         {
-            if (isDupe.DateIncremented == null)
+            if (wordToInc.DateIncremented == null)
             {
-                isDupe.DateIncremented = DateTime.UtcNow;
+                wordToInc.DateIncremented = DateTime.UtcNow;
             }
 
-            if (isDupe.DateIncremented.Value < DateTime.UtcNow.Date)
+            if (wordToInc.DateIncremented.Value < DateTime.UtcNow.AddDays(1).Date)
             {
-                isDupe.Daily = 0;
+                wordToInc.Daily = 0;
             }
 
-            if (isDupe.DateIncremented.Value.Month != DateTime.UtcNow.Month)
+            if (wordToInc.DateIncremented.Value.Month != DateTime.UtcNow.Month)
             {
-                isDupe.Monthly = 0;
+                wordToInc.Monthly = 0;
             }
 
-            isDupe.Daily++;
+            wordToInc.Daily++;
 
-            isDupe.Monthly++;
+            wordToInc.Monthly++;
 
-            isDupe.Yearly++;
+            wordToInc.Yearly++;
         }
     }
 }
