@@ -1,5 +1,6 @@
 ﻿using FactFluxV3.Models;
 using Google.Apis.YouTube.v3.Data;
+using Microsoft.Extensions.Caching.Memory;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,13 @@ namespace FactFluxV3.Logic
 {
     public class ArticleLogic
     {
+        private readonly IMemoryCache _cache;
+
+        public ArticleLogic(IMemoryCache memoryCache)
+        {
+            _cache = memoryCache;
+        }
+
         public Article CreateArticleFromRSSItem(Rssfeeds foundFeed, SyndicationItem articleItem, bool isDuplicate = false)
         {
             var newArticleLinke = new Article();
@@ -92,11 +100,9 @@ namespace FactFluxV3.Logic
                 throw new Exception(ex.Message);
             }
 
-            var newArticleLogic = new ArticleLogic();
-
             foreach (var articleItem in syndyFeed.Items)
             {
-                Article newArticle = newArticleLogic.CreateArticleFromRSSItem(feed, articleItem);
+                Article newArticle = CreateArticleFromRSSItem(feed, articleItem);
 
                 articleList.Add(newArticle);
 
@@ -116,6 +122,11 @@ namespace FactFluxV3.Logic
         public List<TimelineArticle> GetArticlesFromSearchString(string word, List<int> articleTypes = null, string letterFilter = null)
         {
             List<TimelineArticle> orderedArticleList;
+
+            if (articleTypes.Count == 3 && letterFilter == null && _cache.TryGetValue("timelineArticles_" + word, out orderedArticleList))
+            {
+                return orderedArticleList;
+            }
 
             using (var db = new FactFluxV3Context())
             {
@@ -144,6 +155,12 @@ namespace FactFluxV3.Logic
                 }
 
                 orderedArticleList = fullArticleList.OrderByDescending(x => x.DatePublished).ToList();
+            }
+
+            if (articleTypes.Count == 3 && letterFilter == null)
+            {
+                var cacheEntryOptions = new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromHours(1));
+                _cache.Set("timelineArticles_" + word, orderedArticleList, cacheEntryOptions);
             }
 
             return orderedArticleList;

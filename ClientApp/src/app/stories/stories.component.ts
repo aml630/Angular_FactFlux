@@ -41,7 +41,6 @@ export class StoriesComponent implements OnInit {
       var newBigArray = this.mainStories.concat(result);
       this.mainStories = newBigArray;
       this.pagedList = this.mainStories;
-      console.log(this.mainStories);
     }, error => console.error(error));
   }
 
@@ -62,7 +61,6 @@ export class StoriesComponent implements OnInit {
     } else {
       this.wordTypes.splice(this.wordTypes.indexOf(type), 1)
     }
-    console.log(this.wordTypes);
   }
 
   photoURL(url: string) {

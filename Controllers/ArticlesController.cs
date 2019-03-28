@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using FactFluxV3.Models;
 using FactFluxV3.Logic;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace FactFluxV3.Controllers
 {
@@ -14,18 +15,20 @@ namespace FactFluxV3.Controllers
     [ApiController]
     public class ArticlesController : ControllerBase
     {
-        private readonly FactFluxV3Context _context;
+        private readonly FactFluxV3Context Context;
+        private readonly IMemoryCache Cache;
 
-        public ArticlesController(FactFluxV3Context context)
+        public ArticlesController(FactFluxV3Context context, IMemoryCache cache)
         {
-            _context = context;
+            Context = context;
+            Cache = cache;
         }
 
         // GET: api/Articles
         [HttpGet]
         public IEnumerable<Article> GetArticle()
         {
-            return _context.Article;
+            return Context.Article;
         }
 
         // GET: api/Articles/5
@@ -37,7 +40,7 @@ namespace FactFluxV3.Controllers
                 return BadRequest(ModelState);
             }
 
-            var article = await _context.Article.FindAsync(id);
+            var article = await Context.Article.FindAsync(id);
 
             if (article == null)
             {
@@ -59,11 +62,10 @@ namespace FactFluxV3.Controllers
 
             if (articleTypes != null)
             {
-
                 intList = articleTypes.Split("|").Select(Int32.Parse).ToList();
             }
 
-            var articleLogic = new ArticleLogic();
+            var articleLogic = new ArticleLogic(Cache);
 
             List<TimelineArticle> orderedList = articleLogic.GetArticlesFromSearchString(word, intList, letterFilter);
 
@@ -85,11 +87,11 @@ namespace FactFluxV3.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(article).State = EntityState.Modified;
+            Context.Entry(article).State = EntityState.Modified;
 
             try
             {
-                await _context.SaveChangesAsync();
+                await Context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -115,8 +117,8 @@ namespace FactFluxV3.Controllers
                 return BadRequest(ModelState);
             }
 
-            _context.Article.Add(article);
-            await _context.SaveChangesAsync();
+            Context.Article.Add(article);
+            await Context.SaveChangesAsync();
 
             return CreatedAtAction("GetArticle", new { id = article.ArticleId }, article);
         }
@@ -130,21 +132,21 @@ namespace FactFluxV3.Controllers
                 return BadRequest(ModelState);
             }
 
-            var article = await _context.Article.FindAsync(id);
+            var article = await Context.Article.FindAsync(id);
             if (article == null)
             {
                 return NotFound();
             }
 
-            _context.Article.Remove(article);
-            await _context.SaveChangesAsync();
+            Context.Article.Remove(article);
+            await Context.SaveChangesAsync();
 
             return Ok(article);
         }
 
         private bool ArticleExists(int id)
         {
-            return _context.Article.Any(e => e.ArticleId == id);
+            return Context.Article.Any(e => e.ArticleId == id);
         }
     }
 }

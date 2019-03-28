@@ -2,6 +2,7 @@
 using Google.Apis.Services;
 using Google.Apis.YouTube.v3;
 using Google.Apis.YouTube.v3.Data;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,10 +13,13 @@ namespace FactFluxV3.Logic
     public class YouTubeLogic
     {
         private readonly IConfiguration Configuration;
+        private readonly IMemoryCache Cache;
 
-        public YouTubeLogic(IConfiguration configuration)
+
+        public YouTubeLogic(IConfiguration configuration, IMemoryCache cache)
         {
             Configuration = configuration;
+            Cache = cache;
         }
 
         public List<Article> CheckNewsEntityForVideos(Rssfeeds feed)
@@ -31,7 +35,7 @@ namespace FactFluxV3.Logic
 
             var vidListResult = videoList.Where(x => x.Id.VideoId != null).ToList();
 
-            var newArticleLogic = new ArticleLogic();
+            var newArticleLogic = new ArticleLogic(Cache);
 
             foreach (var video in vidListResult)
             {

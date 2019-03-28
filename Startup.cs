@@ -35,6 +35,8 @@ namespace FactFlux
         {
             var connection = Configuration["ConnectionStrings:FactFluxConnection"];
 
+            services.AddMemoryCache();
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             services.AddSession();

@@ -11,6 +11,7 @@ using FactFluxV3.Models;
 using FactFluxV3.Logic;
 using Microsoft.Extensions.Configuration;
 using Hangfire;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace FactFluxV3.Controllers
 {
@@ -23,10 +24,13 @@ namespace FactFluxV3.Controllers
 
         private readonly FactFluxV3Context Context;
 
-        public RssfeedsController(FactFluxV3Context context, IConfiguration configuration)
+        private readonly IMemoryCache Cache;
+
+        public RssfeedsController(FactFluxV3Context context, IConfiguration configuration, IMemoryCache cache)
         {
             Context = context;
             Configuration = configuration;
+            Cache = cache;
         }
 
         // GET: api/Rssfeeds
@@ -162,11 +166,11 @@ namespace FactFluxV3.Controllers
         {
             List<Article> articleList;
 
-            var articleLogic = new ArticleLogic();
+            var articleLogic = new ArticleLogic(Cache);
 
             articleList = articleLogic.CheckNewsEntityForArticles(foundFeed);
 
-            var newYouTubeLogic = new YouTubeLogic(Configuration);
+            var newYouTubeLogic = new YouTubeLogic(Configuration, Cache);
 
             var vidList = newYouTubeLogic.CheckNewsEntityForVideos(foundFeed);
 
