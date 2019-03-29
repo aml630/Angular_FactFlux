@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Word } from '../words';
 import { Subscription } from 'rxjs/Subscription';
 import { FormControl } from '@angular/forms';
@@ -21,7 +21,7 @@ export class WordParentsComponent implements OnInit {
   searches: string[] = [];
   parentTyping: FormControl;
   childTyping: FormControl;
-
+  selectedFile: File;
   mainWords: Word[];
 
   parentWord: string;
@@ -84,6 +84,26 @@ export class WordParentsComponent implements OnInit {
       .subscribe(result => {
         this.mainWords = result;
       }, error => console.error(error));
+  }
+
+  onFileChanged(event) {
+    this.selectedFile = event.target.files[0]
+  }
+
+  onUpload(theWord: string, theWordId: number) {
+    const uploadData = new FormData();
+    uploadData.append('myFile', this.selectedFile, this.selectedFile.name);
+
+    let myHeaders = new HttpHeaders();
+    myHeaders = myHeaders.set('enctype', 'multipart/form-data');
+
+    this.http.post(this.base + `api/Words/AddImage/${theWord}/${theWordId}`, uploadData, {
+      headers: myHeaders
+    })
+      .subscribe(res => {
+        debugger;
+        console.log(res);
+      });
   }
 
   UpdateWord(word: Word, main: boolean) {

@@ -25,7 +25,7 @@ namespace FactFluxV3.Controllers
         [HttpGet]
         public List<ParentWords> GetParentWords()
         {
-            var parentWords = _context.ParentWords.OrderBy(x=>x.ParentWordId).ToList();
+            var parentWords = _context.ParentWords.OrderBy(x => x.ParentWordId).ToList();
 
             return parentWords;
         }
@@ -117,12 +117,17 @@ namespace FactFluxV3.Controllers
                 foundParentWord = wordLogic.CreateWord(parentWord);
             }
 
+            var mainWordLookup = _context.Words.Where(x => x.WordId == foundParentWord.WordId).FirstOrDefault();
+
+            mainWordLookup.Main = true;
+
             var foundChildWord = wordLogic.GetWordByString(childWord);
 
-            if(foundChildWord==null)
+            if (foundChildWord == null)
             {
                 foundChildWord = wordLogic.CreateWord(childWord);
             }
+
 
             var newParentWord = new ParentWords()
             {

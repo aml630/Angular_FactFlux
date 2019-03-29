@@ -24,6 +24,9 @@
 </div>
 
 <div class="p-2" *ngFor="let word of mainWords">
-  <button class="btn btn-success">{{word.word}}</button>
+  <span>{{word.word}}</span>
+  <input style="display: none" type="file" (change)="onFileChanged($event)" #fileInput>
+  <button (click)="fileInput.click()">Select Image</button>
+  <button (click)="onUpload('Word', word.wordId)">Upload!</button>
   <button (click)="UpdateWord(word, false)">Turn Off</button>
 </div>
