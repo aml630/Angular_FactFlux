@@ -119,14 +119,14 @@ namespace FactFluxV3.Logic
             return articleList;
         }
 
-        public List<TimelineArticle> GetArticlesFromSearchString(string word, List<int> articleTypes = null, string letterFilter = null)
+        public List<TimelineArticle> GetArticlesFromSearchString(string word, int page, int pageSize, List<int> articleTypes = null, string letterFilter = null)
         {
             List<TimelineArticle> orderedArticleList;
 
-            if (articleTypes.Count == 3 && letterFilter == null && _cache.TryGetValue("timelineArticles_" + word, out orderedArticleList))
-            {
-                return orderedArticleList;
-            }
+            //if (articleTypes.Count == 3 && letterFilter == null && _cache.TryGetValue("timelineArticles_" + word, out orderedArticleList))
+            //{
+            //    return orderedArticleList;
+            //}
 
             using (var db = new FactFluxV3Context())
             {
@@ -157,11 +157,13 @@ namespace FactFluxV3.Logic
                 orderedArticleList = fullArticleList.OrderByDescending(x => x.DatePublished).ToList();
             }
 
-            if (articleTypes.Count == 3 && letterFilter == null)
-            {
-                var cacheEntryOptions = new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromHours(1));
-                _cache.Set("timelineArticles_" + word, orderedArticleList, cacheEntryOptions);
-            }
+            orderedArticleList = orderedArticleList.Skip((page-1) * pageSize).Take(pageSize).ToList();
+
+            //if (articleTypes.Count == 3 && letterFilter == null)
+            //{
+            //    var cacheEntryOptions = new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromHours(1));
+            //    _cache.Set("timelineArticles_" + word, orderedArticleList, cacheEntryOptions);
+            //}
 
             return orderedArticleList;
         }

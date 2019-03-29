@@ -54,20 +54,20 @@ namespace FactFluxV3.Controllers
         public List<TimelineArticle> GetTimelineArticle([FromRoute] string word,
                                                         [FromQuery] string articleTypes,
                                                         [FromQuery] int page = 1,
-                                                        [FromQuery] int pageSize = 10,
+                                                        [FromQuery] int pageSize = 20,
                                                         [FromQuery] string letterFilter = null)
         {
 
-            var intList = new List<int>();
+            var articleTypeList = new List<int>();
 
             if (articleTypes != null)
             {
-                intList = articleTypes.Split("|").Select(Int32.Parse).ToList();
+                articleTypeList = articleTypes.Split("|").Select(Int32.Parse).ToList();
             }
 
             var articleLogic = new ArticleLogic(Cache);
 
-            List<TimelineArticle> orderedList = articleLogic.GetArticlesFromSearchString(word, intList, letterFilter);
+            List<TimelineArticle> orderedList = articleLogic.GetArticlesFromSearchString(word, page, pageSize, articleTypeList, letterFilter);
 
             return orderedList;
         }

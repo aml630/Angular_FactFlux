@@ -5,7 +5,6 @@ import { Article } from '../../article';
 import { RssFeed } from '../../rssFeed';
 import { FormControl } from '@angular/forms';
 
-
 @Component({
   selector: 'app-word-timeline',
   templateUrl: './word-timeline.component.html',
@@ -19,6 +18,7 @@ export class WordTimelineComponent implements OnInit {
   rssFeeds: RssFeed[];
   articleTypes = [1, 2, 3];
   filterLetters: FormControl;
+  currentLetters: string;
 
 
   constructor(private activatedRoute: ActivatedRoute, private http: HttpClient) { }
@@ -29,6 +29,7 @@ export class WordTimelineComponent implements OnInit {
       this.word = params['word'];
 
       this.filterLetters.valueChanges.debounceTime(400).subscribe(x => {
+        this.currentLetters = x;
         this.GetArticlesVidsTweets(x);
       })
 
@@ -59,17 +60,13 @@ export class WordTimelineComponent implements OnInit {
     }
     path = path.substring(0, path.length - 1);
 
-    if (typedStuff !== null) {
+    if (typedStuff) {
       path += `&letterFilter=${typedStuff}`
     }
 
     this.http.get<Article[]>(this.base + path).subscribe(result => {
       this.articles = result;
     }, error => console.error(error));
-  }
-
-
-  toggleType(articleType: number) {
 
     var twtStuff =  document.getElementById("twitter-wjs");
 
@@ -77,7 +74,10 @@ export class WordTimelineComponent implements OnInit {
     {
       twtStuff.outerHTML = "";
     }
+  }
 
+
+  toggleType(articleType: number) {
     let doesContain = this.articleTypes.indexOf(articleType);
 
     if (doesContain == -1) {
@@ -86,7 +86,7 @@ export class WordTimelineComponent implements OnInit {
       this.articleTypes.splice(doesContain, 1);
     }
 
-    this.GetArticlesVidsTweets(null);
+    this.GetArticlesVidsTweets(this.currentLetters);
   }
 
   getImageForArticle(article: Article) {
