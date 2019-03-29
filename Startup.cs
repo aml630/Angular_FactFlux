@@ -75,7 +75,7 @@ namespace FactFlux
 
             app.UseDeveloperExceptionPage();
 
-            //app.UseHttpsRedirection();
+            app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
             app.UseAuthentication();
