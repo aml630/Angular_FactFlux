@@ -19,7 +19,7 @@ export class WordTimelineComponent implements OnInit {
   articleTypes = [1, 2, 3];
   filterLetters: FormControl;
   currentLetters: string;
-
+  pageSize = 20;
 
   constructor(private activatedRoute: ActivatedRoute, private http: HttpClient) { }
 
@@ -30,24 +30,18 @@ export class WordTimelineComponent implements OnInit {
 
       this.filterLetters.valueChanges.debounceTime(400).subscribe(x => {
         this.currentLetters = x;
-        this.GetArticlesVidsTweets(x);
+        this.GetContent();
       })
 
-      this.GetArticlesVidsTweets(null);
+      this.GetContent();
+
       this.GetFeeds();
 
-      
-    var twtStuff =  document.getElementById("twitter-wjs");
-    console.log("delete twitter");
-        if(twtStuff)
-        {
-          twtStuff.outerHTML = "";
-        }
-    
+      this.ClearTwitter();
     });
   }
 
-  GetArticlesVidsTweets(typedStuff: string) {
+  GetContent() {
 
     let path = `api/Articles/timeline/${this.word}?`;
 
@@ -60,22 +54,24 @@ export class WordTimelineComponent implements OnInit {
     }
     path = path.substring(0, path.length - 1);
 
-    if (typedStuff) {
-      path += `&letterFilter=${typedStuff}`
+    if (this.currentLetters) {
+      path += `&letterFilter=${this.currentLetters}`
     }
+
+    path += `&pageSize=${this.pageSize}`
 
     this.http.get<Article[]>(this.base + path).subscribe(result => {
       this.articles = result;
     }, error => console.error(error));
 
-    var twtStuff =  document.getElementById("twitter-wjs");
-
-    if(twtStuff)
-    {
-      twtStuff.outerHTML = "";
-    }
+    this.ClearTwitter();
   }
 
+  private ClearTwitter() {
+    if (document.getElementById("twitter-wjs")) {
+      document.getElementById("twitter-wjs").outerHTML = "";
+    }
+  }
 
   toggleType(articleType: number) {
     let doesContain = this.articleTypes.indexOf(articleType);
@@ -86,7 +82,7 @@ export class WordTimelineComponent implements OnInit {
       this.articleTypes.splice(doesContain, 1);
     }
 
-    this.GetArticlesVidsTweets(this.currentLetters);
+    this.GetContent();
   }
 
   getImageForArticle(article: Article) {
@@ -98,11 +94,15 @@ export class WordTimelineComponent implements OnInit {
     }
   }
 
+  getNextPage() {
+    this.pageSize += 20;
+    this.GetContent()
+  }
+
   GetFeeds() {
     this.http.get<RssFeed[]>(this.base + 'api/RssFeeds').subscribe(result => {
       this.rssFeeds = result;
     }, error => console.error(error));
   }
-
 }
 
