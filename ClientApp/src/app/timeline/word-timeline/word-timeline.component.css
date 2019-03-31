@@ -5,6 +5,12 @@
   border-radius: 15px;
 }
 
+.showMoreButton {
+  width: 100%;
+  background-color: rebeccapurple;
+  color: white;
+  font-weight: bold;
+}
 
 .filterSection{
   text-align: center;
@@ -28,7 +34,6 @@
   display: block;
   position: relative;
 }
-
 
 .btn-3 {
   font-weight: 900;

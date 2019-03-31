@@ -1,7 +1,10 @@
 .flexBox {
   display: inline-flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: space-around;
+}
+
+.storyBox {
   margin: 15px;
 }
 
@@ -15,10 +18,6 @@
   width: 100%;
 }
 
-.storyBox {
-  height: 200px;
-  width: 100%;
-}
 
 .youTube {
   height: auto;
