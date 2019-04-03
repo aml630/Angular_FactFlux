@@ -130,7 +130,9 @@ namespace FactFluxV3.Logic
 
             using (var db = new FactFluxV3Context())
             {
-                var findWord = db.Words.Where(x => x.Word == word).FirstOrDefault();
+                string spacedWord = word.Replace("-", " ");
+
+                var findWord = db.Words.Where(x => x.Word.ToLower() == spacedWord.ToLower()).FirstOrDefault();
 
                 var childWords = db.ParentWords.Where(x => x.ParentWordId == findWord.WordId).Select(x => x.ChildWordId).ToList();
 
@@ -145,13 +147,13 @@ namespace FactFluxV3.Logic
                     fullArticleList.AddRange(childArticleList);
                 }
 
-                List<TimelineArticle> articleList = GetArticlesFromWord(word, db, fullArticleList, articleTypes);
+                List<TimelineArticle> articlesFromMainWord = GetArticlesFromWord(spacedWord, db, fullArticleList, articleTypes);
 
-                fullArticleList.AddRange(articleList);
+                fullArticleList.AddRange(articlesFromMainWord);
 
                 if (!string.IsNullOrEmpty(letterFilter))
                 {
-                    fullArticleList = articleList.Where(x => x.ArticleTitle.ToLower().Contains(letterFilter.ToLower())).ToList();
+                    fullArticleList = fullArticleList.Where(x => x.ArticleTitle.ToLower().Contains(letterFilter.ToLower())).ToList();
                 }
 
                 orderedArticleList = fullArticleList.OrderByDescending(x => x.DatePublished).ToList();

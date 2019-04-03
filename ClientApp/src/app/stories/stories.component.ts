@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Stories } from '../stories';
 import { DomSanitizer } from '@angular/platform-browser';
 import { FormControl } from '@angular/forms';
+import { strictEqual } from 'assert';
 
 
 @Component({
@@ -61,6 +62,11 @@ export class StoriesComponent implements OnInit {
     } else {
       this.wordTypes.splice(this.wordTypes.indexOf(type), 1)
     }
+  }
+
+  getRouteString(word: string) {
+    let routeWord = word;
+    return routeWord.replace(/\s+/g, '-').toLowerCase();
   }
 
   photoURL(url: string) {

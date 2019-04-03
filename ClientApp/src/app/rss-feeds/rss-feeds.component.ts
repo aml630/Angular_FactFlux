@@ -83,11 +83,18 @@ export class RssFeedsComponent implements OnInit {
 
   GetAllArticles() {
     this.http.post<Article[]>(this.base + 'api/RssFeeds/GetAllArticles', null).subscribe(result => {
-      this.foundArticles = result;
-      console.log(this.foundArticles)
+      console.log(result)
+    }, error => console.error(error));
+  }
+
+  CreateDailyCheck() {
+    this.http.post(this.base + 'api/RssFeeds/CreateDailyCheck', null).subscribe(result => {
+      console.log(result)
     }, error => console.error(error));
   }
 }
+
+
 
 interface Article {
   ArticleTitle: string;

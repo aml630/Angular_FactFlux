@@ -13,6 +13,7 @@ import { FormControl } from '@angular/forms';
 export class WordTimelineComponent implements OnInit {
 
   word: string;
+  titleWord: string;
   base: string = document.getElementsByTagName('base')[0].href;
   articles: Article[];
   rssFeeds: RssFeed[];
@@ -28,6 +29,9 @@ export class WordTimelineComponent implements OnInit {
     this.activatedRoute.params.subscribe(params => {
       this.word = params['word'];
 
+      this.titleWord = this.word.replace(/-/g, ' ');
+      this.titleWord =  this.toTitleCase(this.titleWord)
+
       this.filterLetters.valueChanges.debounceTime(400).subscribe(x => {
         this.currentLetters = x;
         this.GetContent();
@@ -40,6 +44,12 @@ export class WordTimelineComponent implements OnInit {
       this.ClearTwitter();
     });
   }
+
+  toTitleCase(str) {
+    return str.replace(/\w\S*/g, function(txt){
+        return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+    });
+}
 
   GetContent() {
 

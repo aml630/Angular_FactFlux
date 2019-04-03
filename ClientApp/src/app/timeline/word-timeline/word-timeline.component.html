@@ -1,13 +1,13 @@
 <body>
   <div class="titleSection">
-    <h1>{{word}}</h1>
+    <h1>{{titleWord}}</h1>
   </div>
   <hr/>
   
   <div class="filterSection">
     <h3>Filters</h3>
     <button [ngClass]="{'deactivated': articleTypes.indexOf(1) ===-1}" class="btn btn-3 btn-3-news"
-      (click)="toggleType(1)"> <i class="fa fa-bookmark"></i>News</button>
+      (click)="toggleType(1)"> <i class="fa fa-bookmark"></i>Articles</button>
     <button [ngClass]="{'deactivated': articleTypes.indexOf(2) ===-1}" class="btn btn-3 btn-3-video"
       (click)="toggleType(2)"> <i class="fa fa-youtube"></i>Videos</button>
     <button [ngClass]="{'deactivated': articleTypes.indexOf(3) ===-1}" class="btn btn-3 btn-3-twitter"

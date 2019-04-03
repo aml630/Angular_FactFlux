@@ -1,8 +1,11 @@
 .body-content {
   background-color: #e9f0f5;
   min-height: 600px;
-  min-width: 418px;
+  /* min-width: 418px; */
 }
+
+html, body {width: auto!important; overflow-x: hidden!important} 
+
 
 .blackShadow {
   position: relative;

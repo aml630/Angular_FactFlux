@@ -178,6 +178,32 @@ namespace FactFluxV3.Controllers
             return articleList;
         }
 
+        [HttpPost("CreateDailyCheck")]
+        public string CreateDailyCheck()
+        {
+            List<Rssfeeds> allFeeds;
+
+            using (FactFluxV3Context db = new FactFluxV3Context())
+            {
+                allFeeds = db.Rssfeeds.ToList();
+
+                foreach (var feed in allFeeds)
+                {
+                    RecurringJob.AddOrUpdate("RSS:-" + feed.FeedTitle, () => GetAllResourcesFromFeed(feed), Cron.Daily);
+                }
+
+                var allTwitterAccounts = db.TwitterUsers.ToList();
+
+                var twitterLogic = new TwitterLogic(Configuration);
+
+                foreach (var twtUser in allTwitterAccounts)
+                {
+                    RecurringJob.AddOrUpdate("Twtr:-" + twtUser.TwitterUsername, () => twitterLogic.GetAllResourcesFromTwitterUser(twtUser), Cron.Daily);
+                }
+            }
+
+            return "Success";
+        }
 
         [HttpPost("GetAllArticles")]
         public string GetArticlessForAll()

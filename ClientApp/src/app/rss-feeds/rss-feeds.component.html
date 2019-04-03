@@ -1,5 +1,7 @@
 <div class='col-sm-7 body-content'>
-<button class="btn-primary" (click)="GetAllArticles()">Get ALL Articles</button>
+  <button class="btn-primary" (click)="GetAllArticles()">Get ALL Articles</button>
+  <button class="btn-primary" (click)="CreateDailyCheck()">Create Daily Check</button>
+
   <ul>
     <li *ngFor="let feed of foundFeeds">
       <h3>{{feed.feedTitle}}</h3>
