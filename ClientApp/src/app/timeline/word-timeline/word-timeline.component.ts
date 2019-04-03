@@ -53,10 +53,10 @@ export class WordTimelineComponent implements OnInit {
 
   GetContent() {
 
-    let path = `api/Articles/timeline/${this.word}?`;
+    let path = `api/Articles/timeline/${this.word}?pageSize=${this.pageSize}`;
 
     if (this.articleTypes.length > 0) {
-      path += `articleTypes=`
+      path += `&articleTypes=`
     }
 
     for (let type in this.articleTypes) {
@@ -67,8 +67,6 @@ export class WordTimelineComponent implements OnInit {
     if (this.currentLetters) {
       path += `&letterFilter=${this.currentLetters}`
     }
-
-    path += `&pageSize=${this.pageSize}`
 
     this.http.get<Article[]>(this.base + path).subscribe(result => {
       this.articles = result;
