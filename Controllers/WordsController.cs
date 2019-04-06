@@ -128,15 +128,31 @@ namespace FactFluxV3.Controllers
         }
 
         [HttpPost("AddImage/{contentType}/{contentId}")]
-        public async Task<IActionResult> PostImageToWord([FromRoute] string contentType, int contentId)
+        public async Task<IActionResult> PostImageToWord([FromRoute] string contentType, int contentId, string hotLink = null)
         {
-            var filesUploaded = HttpContext.Request.Form.Files;
-
-            if (filesUploaded != null)
+            if (!string.IsNullOrEmpty(hotLink))
             {
-                var imageLogic = new ImageLogic();
+                var newImage = new Images()
+                {
+                    ContentType = contentType,
+                    ContentId = contentId,
+                    ImageLocation = hotLink
+                };
 
-                imageLogic.CreateImage(contentType, contentId, filesUploaded);
+                _context.Images.Add(newImage);
+
+                _context.SaveChanges();
+            }
+            else
+            {
+                var filesUploaded = HttpContext.Request.Form.Files;
+
+                if (filesUploaded != null)
+                {
+                    var imageLogic = new ImageLogic();
+
+                    imageLogic.CreateImage(contentType, contentId, filesUploaded);
+                }
             }
             return Ok();
         }

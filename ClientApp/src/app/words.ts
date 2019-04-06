@@ -7,6 +7,7 @@ export interface Word {
   yearly?: number,
   main?: boolean,
   type?: number,
+  image?: string,
   dateCreated?: Date,
   dateIncremented?: Date
 }

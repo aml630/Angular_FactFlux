@@ -128,6 +128,20 @@ namespace FactFluxV3.Controllers
                 foundChildWord = wordLogic.CreateWord(childWord);
             }
 
+            if (mainWordLookup.Daily < foundChildWord.Daily)
+            {
+                mainWordLookup.Daily = foundChildWord.Daily;
+            }
+
+            if (mainWordLookup.Monthly < foundChildWord.Monthly)
+            {
+                mainWordLookup.Monthly = foundChildWord.Monthly;
+            }
+
+            if (mainWordLookup.Yearly < foundChildWord.Yearly)
+            {
+                mainWordLookup.Yearly = foundChildWord.Yearly;
+            }
 
             var newParentWord = new ParentWords()
             {

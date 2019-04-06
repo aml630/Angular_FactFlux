@@ -90,15 +90,25 @@ export class WordParentsComponent implements OnInit {
     this.selectedFile = event.target.files[0]
   }
 
-  onUpload(theWord: string, theWordId: number) {
+  onUpload(theWordId: number) {
     const uploadData = new FormData();
     uploadData.append('myFile', this.selectedFile, this.selectedFile.name);
 
     let myHeaders = new HttpHeaders();
     myHeaders = myHeaders.set('enctype', 'multipart/form-data');
 
-    this.http.post(this.base + `api/Words/AddImage/${theWord}/${theWordId}`, uploadData, {
+    this.http.post(this.base + `api/Words/AddImage/Word/${theWordId}`, uploadData, {
       headers: myHeaders
+    })
+      .subscribe(res => {
+        debugger;
+        console.log(res);
+      });
+  }
+
+  UploadHotLink(word: Word) {
+    debugger;
+    this.http.post(this.base + `api/Words/AddImage/Word/${word.wordId}?hotLink=${word.image}`, {
     })
       .subscribe(res => {
         debugger;

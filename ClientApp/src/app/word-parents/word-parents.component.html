@@ -7,18 +7,18 @@
 <h3>Parent Word</h3>
 <input [formControl]="parentTyping">
 <div class="p-2" *ngFor="let word of parentWordList">
-  <button (click)="SetParent(word)" class="btn btn-success">{{word.word}}</button>
+  <span (click)="SetParent(word)" class="btn btn-success">{{word.word}}</span>
 </div>
 
 <h3>Child Word</h3>
 <input [formControl]="childTyping">
 <div class="p-2" *ngFor="let word of childWordList">
-  <button (click)="SetChild(word)" class="btn btn-success">{{word.word}}</button>
+  <span (click)="SetChild(word)" class="btn btn-success">{{word.word}}</span>
 </div>
 
 <div class="p-2" *ngFor="let word of wordParents">
-  <button *ngIf="word.parentWord.word" class="btn btn-primary">{{word.parentWord.word}}</button>
-  <button class="btn-small btn-warning">{{word.childWord.word}}</button>
+  <span *ngIf="word.parentWord.word">{{word.parentWord.word}}</span>
+  <span class="btn-small btn-warning">{{word.childWord.word}}</span>
   <button class="btn-danger" (click)="DeleteChild(word.wordJoinId)">Delete</button>
   <br>
 </div>
@@ -27,6 +27,10 @@
   <span>{{word.word}}</span>
   <input style="display: none" type="file" (change)="onFileChanged($event)" #fileInput>
   <button (click)="fileInput.click()">Select Image</button>
-  <button (click)="onUpload('Word', word.wordId)">Upload!</button>
+  <button (click)="onUpload(word.wordId)">Upload!</button>
+  <textarea rows="2" cols="20" [(ngModel)] = "word.image"></textarea>
+  <button (click)="UploadHotLink(word)">Upload Hot Link</button>
   <button (click)="UpdateWord(word, false)">Turn Off</button>
+  <button (click)="UpdateWord(word, true)">Update Description</button>
+  <textarea rows="4" cols="50" [(ngModel)] = "word.description"></textarea>
 </div>

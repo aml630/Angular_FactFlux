@@ -94,8 +94,6 @@ export class RssFeedsComponent implements OnInit {
   }
 }
 
-
-
 interface Article {
   ArticleTitle: string;
 }

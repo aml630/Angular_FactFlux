@@ -63,11 +63,11 @@ namespace FactFluxV3.Logic
             }
             else
             {
-                foreach (var phrase in wordList)
+                foreach (var wordOrPhrase in wordList)
                 {
-                    if (newArticle.ArticleTitle.Contains(phrase.Word))
+                    if (newArticle.ArticleTitle.Contains(wordOrPhrase.Word))
                     {
-                        IncrementWordCount(phrase);
+                        IncrementWordCount(wordOrPhrase);
 
                         db.SaveChanges();
                     }
@@ -91,6 +91,8 @@ namespace FactFluxV3.Logic
             {
                 wordToInc.Monthly = 0;
             }
+
+            wordToInc.DateIncremented = DateTime.UtcNow;
 
             wordToInc.Daily++;
 
