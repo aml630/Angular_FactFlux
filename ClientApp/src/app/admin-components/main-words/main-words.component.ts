@@ -22,4 +22,22 @@ export class MainWordsComponent implements OnInit {
         this.mainWords = result;
       }, error => console.error(error));
   }
+
+  UpdateWord(word: Word, main: boolean) {
+    word.main = main;
+    if (!word.description) {
+      word.description = '';
+    }
+    this.http.put<Word[]>(this.base + 'api/Words/' + word.wordId, word).subscribe(result => {
+    }, error => console.error(error));
+
+    this.GetMainWords();
+  }
+
+  UploadHotLink(word: Word) {
+    this.http.post(this.base + `api/Words/AddImage/Word/${word.wordId}?hotLink=${word.image}`, {
+    }).subscribe(res => {
+        console.log(res);
+      });
+  }
 }

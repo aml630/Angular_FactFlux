@@ -1,11 +1,16 @@
 <div class="p-2" *ngFor="let word of mainWords">
+  <div class="mainWordBorder">
     <span>{{word.word}}</span>
     <input style="display: none" type="file" (change)="onFileChanged($event)" #fileInput>
     <button (click)="fileInput.click()">Select Image</button>
     <button (click)="onUpload(word.wordId)">Upload!</button>
-    <textarea rows="2" cols="20" [(ngModel)] = "word.image"></textarea>
+    <hr>
+    <textarea rows="2" cols="20" [(ngModel)]="word.image"></textarea>
     <button (click)="UploadHotLink(word)">Upload Hot Link</button>
+    <hr>
     <button (click)="UpdateWord(word, false)">Turn Off</button>
+    <hr>
     <button (click)="UpdateWord(word, true)">Update Description</button>
-    <textarea rows="4" cols="50" [(ngModel)] = "word.description"></textarea>
+    <textarea rows="4" cols="50" [(ngModel)]="word.description"></textarea>
   </div>
+</div>

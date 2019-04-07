@@ -130,7 +130,29 @@ namespace FactFluxV3.Controllers
         [HttpPost("AddImage/{contentType}/{contentId}")]
         public async Task<IActionResult> PostImageToWord([FromRoute] string contentType, int contentId, string hotLink = null)
         {
+            var findImage = _context.Images.Where(x => x.ContentId == contentId && x.ContentType == contentType).FirstOrDefault();
+
             if (!string.IsNullOrEmpty(hotLink))
+            {
+                CreateImageFromHotlink(contentType, contentId, hotLink, findImage);
+            }
+            else
+            {
+                var filesUploaded = HttpContext.Request.Form.Files;
+
+                if (filesUploaded != null)
+                {
+                    var imageLogic = new ImageLogic();
+
+                    imageLogic.CreateImage(contentType, contentId, filesUploaded, findImage);
+                }
+            }
+            return Ok();
+        }
+
+        private void CreateImageFromHotlink(string contentType, int contentId, string hotLink, Images findImage)
+        {
+            if (findImage==null)
             {
                 var newImage = new Images()
                 {
@@ -145,16 +167,9 @@ namespace FactFluxV3.Controllers
             }
             else
             {
-                var filesUploaded = HttpContext.Request.Form.Files;
-
-                if (filesUploaded != null)
-                {
-                    var imageLogic = new ImageLogic();
-
-                    imageLogic.CreateImage(contentType, contentId, filesUploaded);
-                }
+                findImage.ImageLocation = hotLink;
+                _context.SaveChanges();
             }
-            return Ok();
         }
 
         // DELETE: api/Words/5

@@ -68,13 +68,13 @@ export class WordParentsComponent implements OnInit {
 
   CreateParent() {
     this.http.post<WordParent>(this.base + `api/ParentWords/${this.parentWord}/${this.childWord}`, null).subscribe(result => {
-      this.GetParents()
+      this.GetParents();
     }, error => console.error(error));
   }
 
   DeleteChild(id: number) {
     this.http.delete(this.base + `api/ParentWords/${id}`).subscribe(result => {
-      this.GetParents()
+      this.GetParents();
     }, error => console.error(error));
   }
 
@@ -82,53 +82,16 @@ export class WordParentsComponent implements OnInit {
     this.selectedFile = event.target.files[0]
   }
 
-  onUpload(theWordId: number) {
-    const uploadData = new FormData();
-    uploadData.append('myFile', this.selectedFile, this.selectedFile.name);
-
-    let myHeaders = new HttpHeaders();
-    myHeaders = myHeaders.set('enctype', 'multipart/form-data');
-
-    this.http.post(this.base + `api/Words/AddImage/Word/${theWordId}`, uploadData, {
-      headers: myHeaders
-    })
-      .subscribe(res => {
-        debugger;
-        console.log(res);
-      });
-  }
-
-  UploadHotLink(word: Word) {
-    debugger;
-    this.http.post(this.base + `api/Words/AddImage/Word/${word.wordId}?hotLink=${word.image}`, {
-    })
-      .subscribe(res => {
-        debugger;
-        console.log(res);
-      });
-  }
-
-  UpdateWord(word: Word, main: boolean) {
-    word.main = main;
-    if (!word.description) {
-      word.description = '';
-    }
-    this.http.put<Word[]>(this.base + 'api/Words/' + word.wordId, word).subscribe(result => {
-    }, error => console.error(error));
-  }
-
   GetParents() {
     this.http.get<WordParent[]>(this.base + `api/ParentWords`).subscribe(result => {
       this.wordParents = result;
-      for (let wordParent of this.wordParents) {
+      for (const wordParent of this.wordParents) {
         this.http.get<Word>(this.base + `api/Words/${wordParent.parentWordId}`).subscribe(result => {
-          let thisWord: Word = result;
-          wordParent.parentWord = thisWord;
+          wordParent.parentWord = result;
         }, error => console.error(error));
 
         this.http.get<Word>(this.base + `api/Words/${wordParent.childWordId}`).subscribe(result => {
-          let thisWord: Word = result;
-          wordParent.childWord = thisWord;
+          wordParent.childWord = result;
         }, error => console.error(error));
       }
     }, error => console.error(error));
@@ -136,9 +99,9 @@ export class WordParentsComponent implements OnInit {
 }
 
 interface WordParent {
-  wordJoinId?: number,
-  parentWordId: number,
-  childWordId: number
-  childWord: Word,
-  parentWord: Word
+  wordJoinId?: number;
+  parentWordId: number;
+  childWordId: number;
+  childWord: Word;
+  parentWord: Word;
 }

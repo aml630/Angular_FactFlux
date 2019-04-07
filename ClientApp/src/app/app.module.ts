@@ -4,7 +4,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
-import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { WordTimelineComponent } from './timeline/word-timeline/word-timeline.component';
 import { TimelineEventComponent } from './timeline/timeline-event/timeline-event.component';
 import { StoriesComponent } from './stories/stories.component';
@@ -33,7 +32,6 @@ import { WordsComponent } from './admin-components/words/words.component';
 @NgModule({
   declarations: [
     AppComponent,
-    NavMenuComponent,
     RssFeedsComponent,
     WordsComponent,
     WordTimelineComponent,
