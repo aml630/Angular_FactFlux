@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { FormControl } from '@angular/forms';
-import { Word } from '../words';
+import { Word } from '../../models/words';
 import "rxjs/add/operator/debounceTime";
 
 @Component({

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Word } from '../words';
+import { Word } from '../../models/words';
 import { Subscription } from 'rxjs/Subscription';
 import { FormControl } from '@angular/forms';
 import "rxjs/add/operator/debounceTime";

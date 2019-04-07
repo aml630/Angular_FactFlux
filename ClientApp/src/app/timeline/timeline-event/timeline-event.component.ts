@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
-import { Article } from '../../article';
+import { Article } from '../../models/article';
 import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({

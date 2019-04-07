@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Word } from '../words';
 import { HttpClient } from '@angular/common/http';
+import { Word } from '../../models/words';
 
 @Component({
   selector: 'app-main-words',

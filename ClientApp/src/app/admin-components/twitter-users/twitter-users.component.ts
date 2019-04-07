@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Tweet } from '../tweet';
-import { TwitterUser } from '../twitterUser';
+import { Tweet } from '../../models/tweet';
+import { TwitterUser } from '../../models/twitterUser';
 
 
 @Component({

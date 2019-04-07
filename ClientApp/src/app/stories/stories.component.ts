@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Stories } from '../stories';
+import { Stories } from '../models/stories';
 import { DomSanitizer } from '@angular/platform-browser';
 import { FormControl } from '@angular/forms';
 import { strictEqual } from 'assert';
+import "rxjs/add/operator/debounceTime";
 
 
 @Component({

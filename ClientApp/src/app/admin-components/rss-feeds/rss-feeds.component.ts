@@ -1,8 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { RssFeed } from '../rssFeed';
-import { Word } from '../words';
+import { RssFeed } from '../../models/rssFeed';
 
 @Component({
   selector: 'app-rss-feeds',

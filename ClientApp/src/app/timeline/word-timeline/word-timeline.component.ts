@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { Article } from '../../article';
-import { RssFeed } from '../../rssFeed';
+import { Article } from '../../models/article';
+import { RssFeed } from '../../models/rssFeed';
 import { FormControl } from '@angular/forms';
+import "rxjs/add/operator/debounceTime";
+
 
 @Component({
   selector: 'app-word-timeline',
@@ -30,7 +32,7 @@ export class WordTimelineComponent implements OnInit {
       this.word = params['word'];
 
       this.titleWord = this.word.replace(/-/g, ' ');
-      this.titleWord =  this.toTitleCase(this.titleWord)
+      this.titleWord =  this.toTitleCase(this.titleWord);
 
       this.filterLetters.valueChanges.debounceTime(400).subscribe(x => {
         this.currentLetters = x;
