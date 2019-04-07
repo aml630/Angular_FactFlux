@@ -14,7 +14,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { WordParentsComponent } from './word-parents/word-parents.component';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
-import { AccordionModule } from 'primeng/accordion';     //accordion and accordion tab
+import { AccordionModule } from 'primeng/accordion';   
 import { TabMenuModule } from 'primeng/tabmenu';
 import { MenuModule } from 'primeng/menu';
 import { HeaderComponent } from './header/header.component';

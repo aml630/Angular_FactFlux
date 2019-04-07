@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { TwitterUser } from '../../twitterUser';
-import { Tweet } from '../../tweet';
+import { Tweet } from '../tweet';
+import { TwitterUser } from '../twitterUser';
+
 
 @Component({
   selector: 'app-twitter-users',
