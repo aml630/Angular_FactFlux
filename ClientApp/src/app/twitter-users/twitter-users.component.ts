@@ -39,14 +39,14 @@ export class TwitterUsersComponent implements OnInit {
     }, error => console.error(error));
   }
 
-  UpdateTwitterUser(TwitterUser: TwitterUser) {
-    this.http.put<TwitterUser>(this.base + `api/Twitter/${TwitterUser.twitterUserId}`, TwitterUser).subscribe(result => {
+  UpdateTwitterUser(twitterUser: TwitterUser) {
+    this.http.put<TwitterUser>(this.base + `api/Twitter/${twitterUser.twitterUserId}`, twitterUser).subscribe(result => {
       this.GetTwitterUsers();
     }, error => console.error(error));
   }
 
-  GetTweetsForUser(TwitterUser: TwitterUser){
-    this.http.post<Tweet[]>(this.base + `api/Twitter/AddTweetsForUser/${TwitterUser.twitterUsername}`, 
+  GetTweetsForUser(twitterUser: TwitterUser){
+    this.http.post<Tweet[]>(this.base + `api/Twitter/AddTweetsForUser/${twitterUser.twitterUsername}`, 
     null).subscribe(result => {
       this.foundTweets = result;
     }, error => console.error(error));

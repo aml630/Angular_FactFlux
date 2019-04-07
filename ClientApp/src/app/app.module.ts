@@ -18,9 +18,7 @@ import { AccordionModule } from 'primeng/accordion';
 import { TabMenuModule } from 'primeng/tabmenu';
 import { MenuModule } from 'primeng/menu';
 import { HeaderComponent } from './header/header.component';
-import { ShellComponent } from './shell/shell.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
-import { CustomHeaderComponent } from './custom-header/custom-header.component';
 import { TwitterUsersComponent } from './twitter-users/twitter-users.component';
 import { OAuthModule } from 'angular-oauth2-oidc';
 import { AuthGuard } from './AuthGuard';
@@ -29,6 +27,8 @@ import { FooterComponent } from './footer/footer.component';
 import { AboutComponent } from './about/about.component';
 import { PrivacyComponent } from './privacy/privacy.component';
 import { MainWordsComponent } from './main-words/main-words.component';
+import { UserHeaderComponent } from './user-header/user-header.component';
+import { AdminLayoutComponent } from './admin-layout/admin-layout.component';
 
 @NgModule({
   declarations: [
@@ -41,9 +41,9 @@ import { MainWordsComponent } from './main-words/main-words.component';
     StoriesComponent,
     WordParentsComponent,
     HeaderComponent,
-    ShellComponent,
+    AdminLayoutComponent,
     SidebarComponent,
-    CustomHeaderComponent,
+    UserHeaderComponent,
     TwitterUsersComponent,
     StoriesTitleComponent,
     FooterComponent,
@@ -68,7 +68,7 @@ import { MainWordsComponent } from './main-words/main-words.component';
       { path: 'privacy', component: PrivacyComponent },
       {
         path: '',
-        component: ShellComponent,
+        component: AdminLayoutComponent,
         canActivate: [AuthGuard],
         children: [
           { path: 'rss-feeds', component: RssFeedsComponent},
