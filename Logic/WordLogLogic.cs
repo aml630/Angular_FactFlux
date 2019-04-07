@@ -58,7 +58,7 @@ namespace FactFluxV3.Logic
             if (wordList.Count == 0)
             {
                 var newWordLogic = new WordLogic();
-
+              
                 newWordLogic.CreateWord(word);
             }
             else

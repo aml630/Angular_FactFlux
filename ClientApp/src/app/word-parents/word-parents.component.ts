@@ -46,7 +46,6 @@ export class WordParentsComponent implements OnInit {
 
     this.GetParents()
 
-    this.GetMainWords();
   }
 
   GetWords(typedStuff: string, type: number) {
@@ -77,13 +76,6 @@ export class WordParentsComponent implements OnInit {
     this.http.delete(this.base + `api/ParentWords/${id}`).subscribe(result => {
       this.GetParents()
     }, error => console.error(error));
-  }
-
-  GetMainWords() {
-    this.http.get<Word[]>(this.base + `api/Words/GetMain`)
-      .subscribe(result => {
-        this.mainWords = result;
-      }, error => console.error(error));
   }
 
   onFileChanged(event) {

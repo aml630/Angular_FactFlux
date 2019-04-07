@@ -42,8 +42,6 @@ export class TwitterUsersComponent implements OnInit {
     this.http.put<TwitterUser>(this.base + `api/Twitter/${TwitterUser.twitterUserId}`, TwitterUser).subscribe(result => {
       this.GetTwitterUsers();
     }, error => console.error(error));
-
-    this.GetTwitterUsers();
   }
 
   GetTweetsForUser(TwitterUser: TwitterUser){

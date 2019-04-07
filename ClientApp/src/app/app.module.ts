@@ -21,13 +21,14 @@ import { HeaderComponent } from './header/header.component';
 import { ShellComponent } from './shell/shell.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { CustomHeaderComponent } from './custom-header/custom-header.component';
-import { TwitterUsersComponent } from './rss-feeds/twitter-users/twitter-users.component';
+import { TwitterUsersComponent } from './twitter-users/twitter-users.component';
 import { OAuthModule } from 'angular-oauth2-oidc';
 import { AuthGuard } from './AuthGuard';
 import { StoriesTitleComponent } from './stories-title/stories-title.component';
 import { FooterComponent } from './footer/footer.component';
 import { AboutComponent } from './about/about.component';
 import { PrivacyComponent } from './privacy/privacy.component';
+import { MainWordsComponent } from './main-words/main-words.component';
 
 @NgModule({
   declarations: [
@@ -47,7 +48,8 @@ import { PrivacyComponent } from './privacy/privacy.component';
     StoriesTitleComponent,
     FooterComponent,
     AboutComponent,
-    PrivacyComponent
+    PrivacyComponent,
+    MainWordsComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -69,9 +71,11 @@ import { PrivacyComponent } from './privacy/privacy.component';
         component: ShellComponent,
         canActivate: [AuthGuard],
         children: [
-          { path: 'rss-feeds', component: RssFeedsComponent },
-          { path: 'words', component: WordsComponent },
-          { path: 'word-parents', component: WordParentsComponent },
+          { path: 'rss-feeds', component: RssFeedsComponent},
+          { path: 'words', component: WordsComponent},
+          { path: 'word-parents', component: WordParentsComponent},
+          { path: 'twitter-users', component: TwitterUsersComponent},
+          { path: 'main-words', component: MainWordsComponent}
         ]
       }
     ])

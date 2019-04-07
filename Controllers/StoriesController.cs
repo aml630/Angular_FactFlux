@@ -36,7 +36,8 @@ namespace FactFluxV3.Controllers
                 Type = x.Type,
                 Description = x.Description,
                 Images = _context.Images.Where(z => z.ContentType == "Word" && z.ContentId == x.WordId).ToList(),
-                Monthly = x.Monthly
+                Monthly = x.Monthly,
+                DateIncremented = x.DateIncremented
             });
 
             var pagedList = storyList.Skip((Page - 1) * RecordsPerPage).Take(RecordsPerPage).ToList();

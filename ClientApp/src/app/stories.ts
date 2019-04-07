@@ -8,5 +8,6 @@ export interface Stories {
   yearly?: number,
   main?: boolean,
   type?: number,
-  images: Images[]
+  images: Images[],
+  dateIncremented: Date
 }
