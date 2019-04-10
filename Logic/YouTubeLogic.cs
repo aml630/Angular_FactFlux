@@ -4,6 +4,7 @@ using Google.Apis.YouTube.v3;
 using Google.Apis.YouTube.v3.Data;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -58,7 +59,7 @@ namespace FactFluxV3.Logic
 
         public List<SearchResult> GetVidsForNewsEntity(string channelId)
         {
-            List<SearchResult> newVids;
+            List<SearchResult> newVids = new List<SearchResult>();
 
             var youtTubeApiKey = Configuration["IntegrationSettings:YouTube:ApiKey"];
 
@@ -69,6 +70,7 @@ namespace FactFluxV3.Logic
             });
 
             var searchListRequest = youtubeService.Search.List("snippet");
+
 
             searchListRequest.MaxResults = 20;
             searchListRequest.ChannelId = channelId;

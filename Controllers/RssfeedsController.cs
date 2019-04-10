@@ -73,6 +73,8 @@ namespace FactFluxV3.Controllers
                 return BadRequest();
             }
 
+            rssfeeds.LastUpdated = DateTime.UtcNow;
+
             Context.Entry(rssfeeds).State = EntityState.Modified;
 
             try
@@ -134,6 +136,10 @@ namespace FactFluxV3.Controllers
                 return NotFound();
             }
 
+            var articlesTORemove = Context.Article.Where(x => x.FeedId == id);
+
+            Context.Article.RemoveRange(articlesTORemove);
+
             Context.Rssfeeds.Remove(rssfeeds);
             await Context.SaveChangesAsync();
 
@@ -164,17 +170,26 @@ namespace FactFluxV3.Controllers
 
         public List<Article> GetAllResourcesFromFeed(Rssfeeds foundFeed)
         {
-            List<Article> articleList;
+            List<Article> articleList = new List<Article>();
 
-            var articleLogic = new ArticleLogic(Cache);
+            if (!string.IsNullOrEmpty(foundFeed.FeedLink))
+            {
+                var articleLogic = new ArticleLogic(Cache);
 
-            articleList = articleLogic.CheckNewsEntityForArticles(foundFeed);
+                var feedArticles = articleLogic.CheckNewsEntityForArticles(foundFeed);
 
-            var newYouTubeLogic = new YouTubeLogic(Configuration, Cache);
+                articleList.AddRange(feedArticles);
+            }
 
-            var vidList = newYouTubeLogic.CheckNewsEntityForVideos(foundFeed);
+            if (!string.IsNullOrEmpty(foundFeed.VideoLink))
+            {
+                var newYouTubeLogic = new YouTubeLogic(Configuration, Cache);
 
-            articleList.AddRange(vidList);
+                var vidList = newYouTubeLogic.CheckNewsEntityForVideos(foundFeed);
+
+                articleList.AddRange(vidList);
+            }
+
             return articleList;
         }
 

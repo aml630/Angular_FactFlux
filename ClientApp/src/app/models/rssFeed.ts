@@ -4,4 +4,5 @@ export interface RssFeed {
     feedLink: string;
     lastUpdated: Date;
     feedImage: string;
+    videoLink: string;
   }
