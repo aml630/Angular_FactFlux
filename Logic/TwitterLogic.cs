@@ -48,7 +48,7 @@ namespace FactFluxV3.Logic
 
                 lookupUser.Image = realTwitterUser.ProfileImageUrl;
 
-                foreach (var tweet in recentUserTweets)
+                foreach (var tweet in recentUserTweets.Where(x=>!x.IsRetweet))
                 {
                     var newTweet = new Tweets()
                     {
