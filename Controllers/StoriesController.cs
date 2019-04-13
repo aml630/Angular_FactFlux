@@ -29,7 +29,7 @@ namespace FactFluxV3.Controllers
 
             int RecordsPerPage = 30;
 
-            var storyList = _context.Words.Where(x => x.Main).Select(x => new Stories()
+            var storyList = _context.Words.Where(x => x.Main && x.DateIncremented > DateTime.UtcNow.AddDays(-2)).Select(x => new Stories()
             {
                 WordId = x.WordId,
                 Word = x.Word,
@@ -42,7 +42,7 @@ namespace FactFluxV3.Controllers
 
             var pagedList = storyList.Skip((Page - 1) * RecordsPerPage).Take(RecordsPerPage).ToList();
 
-            return pagedList;
+            return pagedList.OrderByDescending(x=>x.DateIncremented);
         }
 
         [HttpGet("GetMatching/{letters}")]

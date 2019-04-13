@@ -27,7 +27,7 @@ export class StoriesComponent implements OnInit {
   ngOnInit() {
     this.wordTyping = new FormControl();
     this.wordTyping.valueChanges.debounceTime(400).subscribe(x => {
-      if (x == "") {
+      if (x === '') {
         this.RestoreStories();
       } else {
         this.GetMatchingStories(x);
@@ -38,9 +38,9 @@ export class StoriesComponent implements OnInit {
 
   GetStories() {
     this.storyPageNumber++;
-    let path = `api/Stories?pageNumber=${this.storyPageNumber}`;
+    const path = `api/Stories?pageNumber=${this.storyPageNumber}`;
     this.http.get<Stories[]>(this.base + path).subscribe(result => {
-      var newBigArray = this.mainStories.concat(result);
+      const newBigArray = this.mainStories.concat(result);
       this.mainStories = newBigArray;
       this.pagedList = this.mainStories;
     }, error => console.error(error));

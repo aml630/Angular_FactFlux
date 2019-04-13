@@ -34,7 +34,9 @@ namespace FactFluxV3.Controllers
         [HttpGet]
         public IEnumerable<Words> GetWords()
         {
-            return _context.Words.Take(500).OrderByDescending(x => x.Yearly);
+            return _context.Words.Where
+                (x=>x.DateIncremented > DateTime.UtcNow.AddDays(-2) && (x.Word.Length > 4|| !x.Word.Any(z => char.IsUpper(z)))) 
+                .Take(500).OrderByDescending(x => x.Yearly);
         }
 
         [HttpGet("GetMatching/{letters}")]

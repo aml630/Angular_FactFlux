@@ -28,6 +28,8 @@ import { AdminLayoutComponent } from './admin-components/admin-layout/admin-layo
 import { MainWordsComponent } from './admin-components/main-words/main-words.component';
 import { RssFeedsComponent } from './admin-components/rss-feeds/rss-feeds.component';
 import { WordsComponent } from './admin-components/words/words.component';
+import { FactoidsComponent } from './factoids/factoids.component';
+import { Graph1Component } from './factoids/graph1/graph1.component';
 
 @NgModule({
   declarations: [
@@ -47,7 +49,9 @@ import { WordsComponent } from './admin-components/words/words.component';
     FooterComponent,
     AboutComponent,
     PrivacyComponent,
-    MainWordsComponent
+    MainWordsComponent,
+    FactoidsComponent,
+    Graph1Component
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -64,6 +68,7 @@ import { WordsComponent } from './admin-components/words/words.component';
       { path: 'about', component: AboutComponent },
       { path: 'timeline/:word', component: WordTimelineComponent },
       { path: 'privacy', component: PrivacyComponent },
+      { path: 'factoids', component: FactoidsComponent},
       {
         path: '',
         component: AdminLayoutComponent,
