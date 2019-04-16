@@ -1,4 +1,20 @@
 @import url("https://fonts.googleapis.com/css?family=Quicksand:400,500,700&subset=latin-ext");
+
+.feedPics {
+  display: inline-flex;
+  flex: wrap;
+}
+
+.feedPics img{
+  border-radius: 35px;
+  margin: 10px;
+}
+
+.marginTop {
+  margin-top: 50px;
+}
+
+
 html {
   position: relative;
   overflow-x: hidden !important;

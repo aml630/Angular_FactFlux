@@ -20,7 +20,7 @@ export class RssFeedsComponent implements OnInit {
 
   ngOnInit() {
 
-    this.GetFeeds()
+    this.GetFeeds();
 
     this.CheckUser();
 
