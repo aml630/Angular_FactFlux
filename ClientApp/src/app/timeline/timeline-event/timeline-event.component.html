@@ -12,8 +12,8 @@
   <div class="cd-timeline-img cd-picture" [ngStyle]="{'background-image': 'url(' + article.timelineImage + ')'}">
   </div>
   <div class="cd-timeline-content">
-    <h2>{{article.articleTitle}}</h2>
-      <li class="youtube" #vid id="{{article.articleUrl}}"></li>
+    <h2>{{article.articleTitle}} <i style="color:red;" class="fa fa-play-circle"></i></h2>
+      <div class="youtube" #vid id="{{article.articleUrl}}"></div>
     <span class="cd-date">{{formatDate(article.datePublished)}}</span>
   </div>
 </div>

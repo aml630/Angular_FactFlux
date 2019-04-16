@@ -51,7 +51,7 @@ export class TimelineEventComponent implements OnInit {
     // Add class to img
     img.setAttribute('class', 'thumb');
     img.setAttribute('width', '100%');
-    img.setAttribute('height', '250px');
+    img.setAttribute('style', 'max-height:230px;');
 
     // Make div to embed videos
     var video = document.createElement("div");

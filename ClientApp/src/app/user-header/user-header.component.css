@@ -1,5 +1,4 @@
 @import url(https://fonts.googleapis.com/css?family=Cabin|Lobster);
-
 .font--lobster {
   font-family: 'Lobster', cursive;
   font-weight: 400;
@@ -21,16 +20,17 @@
   font-weight: 300;
   cursor: pointer;
   z-index: 1;
+  float: right;
+  margin-top: -20px;
 }
 
 /* ---------------- */
 
 .header {
-  width: 100%;
+  width: 80%;
   height: 40px;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
+  /* display: flex;
+  flex-wrap: wrap; */
 }
 
 .header .headerSection {
@@ -47,4 +47,3 @@
   /* 3 */
   transform: translate(0, -50%)/* 4 */
 }
-
