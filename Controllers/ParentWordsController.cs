@@ -25,6 +25,15 @@ namespace FactFluxV3.Controllers
         [HttpGet]
         public List<ParentWords> GetParentWords()
         {
+
+            //var parentWords = _context.ParentWords.OrderBy(x => x.ParentWordId).Select(x => new ParentWithWords
+            //{
+            //    ParentWordId = x.ParentWordId,
+            //    ParentWord = x.ParentWord,
+            //    ChildWords = _context.Words.Where(z => _context.ParentWords.Where(y => y.ParentWordId == x.ParentWordId))
+
+            //}).ToList();
+
             var parentWords = _context.ParentWords.OrderBy(x => x.ParentWordId).ToList();
 
             return parentWords;
