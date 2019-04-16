@@ -1,75 +1,36 @@
-@import url(https://fonts.googleapis.com/css?family=Fjalla+One);
-.brandName {
-  transition: .5s;
-  color: #7FFFD4;
+@import url(https://fonts.googleapis.com/css?family=Cabin|Lobster);
+
+.font--lobster {
+  font-family: 'Lobster', cursive;
+  font-weight: 400;
   cursor: pointer;
-}
-
-.bigShadow{
-  font-family: 'Fjalla One', sans-serif;
-  text-shadow: #533d4a 1px 1px, #533d4a 2px 2px, #533d4a 3px 3px, #533d4a 4px 4px, #533d4a 5px 5px, #533d4a 6px 6px;
-  display: block;
-  /* position: relative; */
-}
-
-.brandName:hover {
-  color: #26c4e0;
   transition: .5s;
+  width: 50px;
+  height: 15px;
+  z-index: 1;
 }
 
-.about {
-  margin-top: 25px;
-  margin-right:20%;
-  color: #BE9EC9;
-  z-index: 1000;
+.font--lobster:hover {
+  transition: .5s;
+  color: #77c8cb;
+  text-shadow: 2px 2px grey;
 }
 
-.btn-3 {
-  font-weight: 900;
-  letter-spacing: 1px;
-  transition: all 150ms linear;
-}
-
-.btn-3-red {
-  background: #e3403a;
-  border: 1px solid #da251f;
-  box-shadow: 0px 2px 0 #d6251f, 2px 4px 6px #e02a24;
-}
-
-.btn-3-red:hover {
-  background: #e02c26;
-  color: #ec817d;
-  text-shadow: -1px -1px 0 #c2211c;
-}
-
-.btn-3:hover {
-  border: 1px solid rgba(0, 0, 0, 0.05);
-  box-shadow: 1px 1px 2px rgba(255, 255, 255, 0.2);
-  text-decoration: none;
-  transition: all 250ms linear;
-}
-
-.btn-3-green {
-  background: #3ae348;
-  border: 1px solid #1fda1f;
-  box-shadow: 0px 2px 0 #2ed61f, 2px 4px 6px #24e063;
-}
-
-.btn-3-greeb:hover {
-  background: #26e055;
-  color: #7dec83;
-  text-shadow: -1px -1px 0 #21c21c;
+.font--cabin {
+  font-family: 'Eczar', Georgia, serif;
+  font-weight: 300;
+  cursor: pointer;
+  z-index: 1;
 }
 
 /* ---------------- */
 
 .header {
   width: 100%;
-  height: 50px;
+  height: 40px;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
-  margin: 15px;
 }
 
 .header .headerSection {
@@ -87,16 +48,3 @@
   transform: translate(0, -50%)/* 4 */
 }
 
-.purpleShadow {
-  position: relative;
-  -webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(15, 230, 61, 0.1) inset;
-  -moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(15, 230, 61, 0.1) inset;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgb(200, 34, 34) inset;
-}
-
-.greenShadow {
-  position: relative;
-  -webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgb(142, 255, 142) inset;
-  -moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgb(142, 255, 142) inset;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgb(142, 255, 142) inset;
-}
