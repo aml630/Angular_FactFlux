@@ -23,6 +23,7 @@ export class StoriesComponent implements OnInit {
   wordTypes: number[];
   wordTyping: FormControl;
   storyPageNumber = 0;
+  showSpinner = true;
 
   ngOnInit() {
     this.wordTyping = new FormControl();
@@ -37,12 +38,14 @@ export class StoriesComponent implements OnInit {
   }
 
   GetStories() {
+    this.showSpinner = true;
     this.storyPageNumber++;
     const path = `api/Stories?pageNumber=${this.storyPageNumber}`;
     this.http.get<Stories[]>(this.base + path).subscribe(result => {
       const newBigArray = this.mainStories.concat(result);
       this.mainStories = newBigArray;
       this.pagedList = this.mainStories;
+      this.showSpinner = false;
     }, error => console.error(error));
   }
 
@@ -51,9 +54,11 @@ export class StoriesComponent implements OnInit {
   }
 
   GetMatchingStories(typedStuff: string) {
+    this.showSpinner = true;
     this.http.get<Stories[]>(this.base + `api/Stories/GetMatching/${typedStuff}`)
       .subscribe(result => {
         this.mainStories = result;
+        this.showSpinner = false;
       }, error => console.error(error));
   }
 

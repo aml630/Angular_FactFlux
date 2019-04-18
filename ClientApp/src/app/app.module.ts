@@ -30,6 +30,7 @@ import { RssFeedsComponent } from './admin-components/rss-feeds/rss-feeds.compon
 import { WordsComponent } from './admin-components/words/words.component';
 import { FactoidsComponent } from './factoids/factoids.component';
 import { Graph1Component } from './factoids/graph1/graph1.component';
+import { SpinnerComponent } from './spinner/spinner.component';
 
 @NgModule({
   declarations: [
@@ -51,7 +52,8 @@ import { Graph1Component } from './factoids/graph1/graph1.component';
     PrivacyComponent,
     MainWordsComponent,
     FactoidsComponent,
-    Graph1Component
+    Graph1Component,
+    SpinnerComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

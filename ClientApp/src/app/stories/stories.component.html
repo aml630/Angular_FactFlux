@@ -9,11 +9,10 @@
     <i class="fa fa-search"></i>
     <input class="searchForm" [formControl]="wordTyping">
 </div>
-
+<app-spinner *ngIf="showSpinner"></app-spinner>
 <div class="flexBox">
     <div class="storyBox" *ngFor="let word of mainStories">
         <div [routerLink]="['/timeline/', getRouteString(word.word)]" class="blog-card spring-fever"
-
             [ngStyle]="{'background': !word.images[0] ?'url(https://www.dictionary.com/e/wp-content/uploads/2016/01/mint.gif)': 'url('+ word.images[0].imageLocation+') no-repeat center'}">
             <div class="darken">
                 <div class="title-content">

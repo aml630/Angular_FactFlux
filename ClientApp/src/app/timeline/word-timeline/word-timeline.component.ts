@@ -23,6 +23,7 @@ export class WordTimelineComponent implements OnInit {
   filterLetters: FormControl;
   currentLetters: string;
   pageSize = 20;
+  showSpinner = true;
 
   constructor(private activatedRoute: ActivatedRoute, private http: HttpClient) { }
 
@@ -32,7 +33,7 @@ export class WordTimelineComponent implements OnInit {
       this.word = params['word'];
 
       this.titleWord = this.word.replace(/-/g, ' ');
-      this.titleWord =  this.toTitleCase(this.titleWord);
+      this.titleWord = this.toTitleCase(this.titleWord);
 
       this.filterLetters.valueChanges.debounceTime(400).subscribe(x => {
         this.currentLetters = x;
@@ -48,13 +49,13 @@ export class WordTimelineComponent implements OnInit {
   }
 
   toTitleCase(str) {
-    return str.replace(/\w\S*/g, function(txt){
-        return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+    return str.replace(/\w\S*/g, function (txt) {
+      return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
     });
-}
+  }
 
   GetContent() {
-
+    this.showSpinner = true;
     let path = `api/Articles/timeline/${this.word}?pageSize=${this.pageSize}`;
 
     if (this.articleTypes.length > 0) {
@@ -72,6 +73,7 @@ export class WordTimelineComponent implements OnInit {
 
     this.http.get<Article[]>(this.base + path).subscribe(result => {
       this.articles = result;
+      this.showSpinner = false;
     }, error => console.error(error));
 
     this.ClearTwitter();
