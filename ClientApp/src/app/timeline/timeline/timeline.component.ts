@@ -20,6 +20,7 @@ export class TimelineComponent implements OnInit {
   articles: Article[];
   rssFeeds: RssFeed[];
   articleTypes = [1, 2, 3];
+  politicalSpectrum = [3, 4, 5, 6, 7];
   filterLetters: FormControl;
   currentLetters: string;
   pageSize = 20;
@@ -37,10 +38,10 @@ export class TimelineComponent implements OnInit {
 
       this.filterLetters.valueChanges.debounceTime(400).subscribe(x => {
         this.currentLetters = x;
-        this.GetContent();
+        this.GetTimelineContent();
       });
 
-      this.GetContent();
+      this.GetTimelineContent();
 
       this.ClearTwitter();
     });
@@ -52,18 +53,25 @@ export class TimelineComponent implements OnInit {
     });
   }
 
-  GetContent() {
+  GetTimelineContent() {
     this.showSpinner = true;
     let path = `api/Articles/timeline/${this.word}?pageSize=${this.pageSize}`;
 
     if (this.articleTypes.length > 0) {
       path += `&articleTypes=`;
+      for (const type in this.articleTypes) {
+        path += `${this.articleTypes[type]}|`
+      }
+      path = path.substring(0, path.length - 1);
     }
 
-    for (let type in this.articleTypes) {
-      path += `${this.articleTypes[type]}|`
+    if (this.politicalSpectrum.length > 0) {
+      path += `&politicalSpectrum=`;
+      for (const spectrumRank in this.politicalSpectrum) {
+        path += `${this.politicalSpectrum[spectrumRank]}|`
+      }
+      path = path.substring(0, path.length - 1);
     }
-    path = path.substring(0, path.length - 1);
 
     if (this.currentLetters) {
       path += `&letterFilter=${this.currentLetters}`;
@@ -92,12 +100,12 @@ export class TimelineComponent implements OnInit {
       this.articleTypes.splice(doesContain, 1);
     }
 
-    this.GetContent();
+    this.GetTimelineContent();
   }
 
   getNextPage() {
     this.pageSize += 20;
-    this.GetContent();
+    this.GetTimelineContent();
   }
 }
 

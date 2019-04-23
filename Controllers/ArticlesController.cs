@@ -53,6 +53,7 @@ namespace FactFluxV3.Controllers
         [HttpGet("timeline/{word}")]
         public List<TimelineArticle> GetTimelineArticle([FromRoute] string word,
                                                         [FromQuery] string articleTypes,
+                                                        [FromQuery] string politicalSpectrum,
                                                         [FromQuery] int page = 1,
                                                         [FromQuery] int pageSize = 20,
                                                         [FromQuery] string letterFilter = null)
@@ -60,14 +61,15 @@ namespace FactFluxV3.Controllers
 
             var articleTypeList = new List<int>();
 
-            if (articleTypes != null)
-            {
-                articleTypeList = articleTypes.Split("|").Select(Int32.Parse).ToList();
-            }
+            articleTypeList = articleTypes.Split("|").Select(Int32.Parse).ToList();
+
+            var politicalSpectrumList = new List<int>();
+
+            politicalSpectrumList = politicalSpectrum.Split("|").Select(Int32.Parse).ToList();
 
             var articleLogic = new ArticleLogic(Cache);
 
-            List<TimelineArticle> orderedList = articleLogic.GetArticlesFromSearchString(word, page, pageSize, articleTypeList, letterFilter);
+            List<TimelineArticle> orderedList = articleLogic.GetArticlesFromSearchString(word, page, pageSize, articleTypeList, politicalSpectrumList, letterFilter);
 
             return orderedList;
         }

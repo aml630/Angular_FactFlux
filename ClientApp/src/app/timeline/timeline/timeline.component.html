@@ -2,8 +2,8 @@
   <div class="titleSection">
     <h1>{{titleWord}}</h1>
   </div>
-  <hr/>
-  
+  <hr />
+
   <div class="filterSection">
     <h3>Filters</h3>
     <button [ngClass]="{'deactivated': articleTypes.indexOf(1) ===-1}" class="btn btn-3 btn-3-news"
@@ -15,8 +15,23 @@
     <div class="btn btn-3 searchBox">
       <i class="fa fa-search"></i><input [formControl]="filterLetters">
     </div>
+
+
+    <div class="spectrumFilter">
+      <h3>Political Spectrum</h3>
+      <input type="checkbox" class="spectrumButton spectrumFilter1">
+      <input type="checkbox" class="spectrumFilter2">
+      <input type="checkbox" class="spectrumFilter3">
+      <input type="checkbox" class="spectrumFilter4">
+      <input type="checkbox" class="spectrumFilter5">
+      <input type="checkbox" class="spectrumFilter6">
+      <input type="checkbox" class="spectrumFilter7">
+      <input type="checkbox" class="spectrumFilter8">
+      <input type="checkbox" class="spectrumFilter9">
+    </div>
   </div>
-  
+
+
   <app-spinner *ngIf="showSpinner"></app-spinner>
 
   <section id="cd-timeline" class="cd-container" *ngFor="let art of articles; let i=index">
@@ -25,4 +40,3 @@
 
   <button (click)="getNextPage()" class="showMoreButton">Show More</button>
 </body>
-

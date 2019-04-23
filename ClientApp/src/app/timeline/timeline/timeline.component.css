@@ -1,5 +1,13 @@
 @import url(https://fonts.googleapis.com/css?family=Fjalla+One); 
 
+.spectrumButton {
+
+  backgrond: red;
+}
+
+.spectrumFilter {
+  margin-top: 20px;
+}
 
 .searchBox input{
   border-radius: 15px;

@@ -1,5 +1,17 @@
 <div *ngIf="article.articleType===1" class="cd-timeline-block" [ngClass]="{'even': index % 2 != 0}">
-  <div class="cd-timeline-img" [ngClass]="{'spectrumColor1':article.politicalSpectrum===5}" [ngStyle]="{'background-image': 'url(' + article.timelineImage + ')'}">
+  <div class="cd-timeline-img" 
+  [ngClass]="{
+    'spectrumColor1': article.politicalSpectrum===1, 
+    'spectrumColor2': article.politicalSpectrum===2,
+    'spectrumColor3': article.politicalSpectrum===3,
+    'spectrumColor4': article.politicalSpectrum===4,
+    'spectrumColor5': article.politicalSpectrum===5,
+    'spectrumColor6': article.politicalSpectrum===6,
+    'spectrumColor7': article.politicalSpectrum===7,
+    'spectrumColor8': article.politicalSpectrum===8,
+    'spectrumColor9': article.politicalSpectrum===9
+    }"     
+  [ngStyle]="{'background-image': 'url(' + article.timelineImage + ')'}">
   </div>
   <div class="cd-timeline-content">
     <h2>{{article.articleTitle}}</h2>

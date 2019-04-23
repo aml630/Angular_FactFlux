@@ -119,14 +119,9 @@ namespace FactFluxV3.Logic
             return articleList;
         }
 
-        public List<TimelineArticle> GetArticlesFromSearchString(string word, int page, int pageSize, List<int> articleTypes = null, string letterFilter = null)
+        public List<TimelineArticle> GetArticlesFromSearchString(string word, int page, int pageSize, List<int> articleTypes, List<int> politicalSpectrum, string letterFilter = null)
         {
             List<TimelineArticle> orderedArticleList;
-
-            //if (articleTypes.Count == 3 && letterFilter == null && _cache.TryGetValue("timelineArticles_" + word, out orderedArticleList))
-            //{
-            //    return orderedArticleList;
-            //}
 
             using (var db = new DB_A41BC9_aml630Context())
             {
@@ -142,12 +137,12 @@ namespace FactFluxV3.Logic
 
                 foreach (var childWord in childWordStrings)
                 {
-                    List<TimelineArticle> childArticleList = GetArticlesFromWord(childWord.Word, db, fullArticleList, articleTypes);
+                    List<TimelineArticle> childArticleList = GetArticlesFromWord(childWord.Word, db, fullArticleList, articleTypes, politicalSpectrum);
 
                     fullArticleList.AddRange(childArticleList);
                 }
 
-                List<TimelineArticle> articlesFromMainWord = GetArticlesFromWord(spacedWord, db, fullArticleList, articleTypes);
+                List<TimelineArticle> articlesFromMainWord = GetArticlesFromWord(spacedWord, db, fullArticleList, articleTypes, politicalSpectrum);
 
                 fullArticleList.AddRange(articlesFromMainWord);
 
@@ -159,18 +154,12 @@ namespace FactFluxV3.Logic
                 orderedArticleList = fullArticleList.OrderByDescending(x => x.DatePublished).ToList();
             }
 
-            orderedArticleList = orderedArticleList.Skip((page-1) * pageSize).Take(pageSize).ToList();
-
-            //if (articleTypes.Count == 3 && letterFilter == null)
-            //{
-            //    var cacheEntryOptions = new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromHours(1));
-            //    _cache.Set("timelineArticles_" + word, orderedArticleList, cacheEntryOptions);
-            //}
+            orderedArticleList = orderedArticleList.Skip((page - 1) * pageSize).Take(pageSize).ToList();
 
             return orderedArticleList;
         }
 
-        private List<TimelineArticle> GetArticlesFromWord(string word, DB_A41BC9_aml630Context db, List<TimelineArticle> fullArticleList, List<int> articleTypes = null)
+        private List<TimelineArticle> GetArticlesFromWord(string word, DB_A41BC9_aml630Context db, List<TimelineArticle> fullArticleList, List<int> articleTypes, List<int> politicalSpectrum)
         {
             string beginning = word + " ";
             string end = " " + word;
@@ -182,10 +171,9 @@ namespace FactFluxV3.Logic
             x.ArticleTitle.ToLower().Contains(middle)) &&
             !fullArticleList.Select(z => z.ArticleTitle).Contains(x.ArticleTitle));
 
-            if (articleTypes != null)
-            {
-                articleListQuery = articleListQuery.Where(x => articleTypes.Contains(x.ArticleType));
-            }
+            articleListQuery = articleListQuery.Where(x => articleTypes.Contains(x.ArticleType));
+
+            articleListQuery = articleListQuery.Where(x => politicalSpectrum.Contains(x.Feed.PoliticalSpectrum));
 
             List<TimelineArticle> timeLineList = articleListQuery.Select(x => new TimelineArticle()
             {
