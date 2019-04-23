@@ -16,6 +16,7 @@ namespace FactFluxV3.Models
         public DateTime? LastUpdated { get; set; }
         public string FeedImage { get; set; }
         public string VideoLink { get; set; }
+        public int PoliticalSpectrum { get; set; }
 
         public ICollection<Article> Article { get; set; }
     }

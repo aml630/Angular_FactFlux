@@ -345,6 +345,8 @@ namespace FactFluxV3.Models
 
                 entity.Property(e => e.LastUpdated).HasColumnType("datetime");
 
+                entity.Property(e => e.PoliticalSpectrum).HasDefaultValueSql("((5))");
+
                 entity.Property(e => e.VideoLink)
                     .HasMaxLength(100)
                     .IsUnicode(false);
@@ -442,6 +444,8 @@ namespace FactFluxV3.Models
                 entity.Property(e => e.DateCreated).HasColumnType("datetime");
 
                 entity.Property(e => e.Image).HasMaxLength(90);
+
+                entity.Property(e => e.PoliticalSpectrum).HasDefaultValueSql("((5))");
 
                 entity.Property(e => e.TwitterUsername)
                     .IsRequired()

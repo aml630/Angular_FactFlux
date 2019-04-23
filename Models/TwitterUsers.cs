@@ -14,6 +14,7 @@ namespace FactFluxV3.Models
         public string TwitterUsername { get; set; }
         public DateTime DateCreated { get; set; }
         public string Image { get; set; }
+        public int PoliticalSpectrum { get; set; }
 
         public ICollection<Tweets> Tweets { get; set; }
     }
