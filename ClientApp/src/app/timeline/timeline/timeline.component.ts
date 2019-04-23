@@ -8,11 +8,11 @@ import "rxjs/add/operator/debounceTime";
 
 
 @Component({
-  selector: 'app-word-timeline',
-  templateUrl: './word-timeline.component.html',
-  styleUrls: ['./word-timeline.component.css']
+  selector: 'app-timeline',
+  templateUrl: './timeline.component.html',
+  styleUrls: ['./timeline.component.css']
 })
-export class WordTimelineComponent implements OnInit {
+export class TimelineComponent implements OnInit {
 
   word: string;
   titleWord: string;
@@ -38,11 +38,9 @@ export class WordTimelineComponent implements OnInit {
       this.filterLetters.valueChanges.debounceTime(400).subscribe(x => {
         this.currentLetters = x;
         this.GetContent();
-      })
+      });
 
       this.GetContent();
-
-      this.GetFeeds();
 
       this.ClearTwitter();
     });
@@ -59,7 +57,7 @@ export class WordTimelineComponent implements OnInit {
     let path = `api/Articles/timeline/${this.word}?pageSize=${this.pageSize}`;
 
     if (this.articleTypes.length > 0) {
-      path += `&articleTypes=`
+      path += `&articleTypes=`;
     }
 
     for (let type in this.articleTypes) {
@@ -68,7 +66,7 @@ export class WordTimelineComponent implements OnInit {
     path = path.substring(0, path.length - 1);
 
     if (this.currentLetters) {
-      path += `&letterFilter=${this.currentLetters}`
+      path += `&letterFilter=${this.currentLetters}`;
     }
 
     this.http.get<Article[]>(this.base + path).subscribe(result => {
@@ -97,24 +95,9 @@ export class WordTimelineComponent implements OnInit {
     this.GetContent();
   }
 
-  getImageForArticle(article: Article) {
-    if (article.articleType === 1 || article.articleType === 2) {
-      let feed = this.rssFeeds.filter(x => x.feedId == article.feedId)[0];
-      return feed.feedImage
-    } else {
-      return "https://aquaprosprinklers.com/wp-content/uploads/2018/02/TWITTER.png";
-    }
-  }
-
   getNextPage() {
     this.pageSize += 20;
-    this.GetContent()
-  }
-
-  GetFeeds() {
-    this.http.get<RssFeed[]>(this.base + 'api/RssFeeds').subscribe(result => {
-      this.rssFeeds = result;
-    }, error => console.error(error));
+    this.GetContent();
   }
 }
 

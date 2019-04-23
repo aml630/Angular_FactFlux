@@ -5,4 +5,5 @@ export interface RssFeed {
     lastUpdated: Date;
     feedImage: string;
     videoLink: string;
+    politicalSpectrum: number;
   }

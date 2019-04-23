@@ -6,5 +6,6 @@ namespace FactFluxV3.Models
     public class TimelineArticle : Article
     {
         public string TimelineImage { get; set; }
+        public int PoliticalSpectrum { get; set; }
     }
 }

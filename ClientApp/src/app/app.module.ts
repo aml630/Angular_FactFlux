@@ -4,7 +4,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
-import { WordTimelineComponent } from './timeline/word-timeline/word-timeline.component';
 import { TimelineEventComponent } from './timeline/timeline-event/timeline-event.component';
 import { StoriesComponent } from './stories/stories.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -31,13 +30,14 @@ import { WordsComponent } from './admin-components/words/words.component';
 import { FactoidsComponent } from './factoids/factoids.component';
 import { Graph1Component } from './factoids/graph1/graph1.component';
 import { SpinnerComponent } from './spinner/spinner.component';
+import { TimelineComponent } from './timeline/timeline/timeline.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     RssFeedsComponent,
     WordsComponent,
-    WordTimelineComponent,
+    TimelineComponent,
     TimelineEventComponent,
     StoriesComponent,
     WordParentsComponent,
@@ -68,7 +68,7 @@ import { SpinnerComponent } from './spinner/spinner.component';
       { path: '', component: StoriesComponent },
       { path: 'stories', component: StoriesComponent },
       { path: 'about', component: AboutComponent },
-      { path: 'timeline/:word', component: WordTimelineComponent },
+      { path: 'timeline/:word', component: TimelineComponent },
       { path: 'privacy', component: PrivacyComponent },
       { path: 'factoids', component: FactoidsComponent},
       {

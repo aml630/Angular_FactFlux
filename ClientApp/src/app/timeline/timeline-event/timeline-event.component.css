@@ -1,3 +1,38 @@
+.spectrumColor1 {
+  box-shadow: 0 0 0 4px #0000ff;
+}
+
+.spectrumColor2 {
+  box-shadow: 0 0 0 4px #3333ff;
+}
+
+.spectrumColor3 {
+  box-shadow: 0 0 0 4px #6666ff;
+}
+
+.spectrumColor4 {
+  box-shadow: 0 0 0 4px #9999ff;
+}
+
+.spectrumColor5 {
+  box-shadow: 0 0 0 4px #ffffff;
+}
+
+.spectrumColor6 {
+  box-shadow: 0 0 0 4px #ff9999;
+}
+
+.spectrumColor7 {
+  box-shadow: 0 0 0 4px #ff6666;
+}
+
+.spectrumColor8 {
+  box-shadow: 0 0 0 4px #ff3333;
+}
+.spectrumColor9 {
+  box-shadow: 0 0 0 4px #ff0000;
+}
+
 .fa-newspaper {
   color: grey;
 }
@@ -223,7 +258,6 @@ header h1 {
   .cd-timeline-block:last-child {
     margin-bottom: 0;
   }
-
 }
 
 .cd-timeline-img {
@@ -235,7 +269,7 @@ header h1 {
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  box-shadow: 0 0 0 4px #ffffff, inset 0 2px 0 rgba(0, 0, 0, 0.08), 0 3px 0 4px rgba(0, 0, 0, 0.05);
+  /* box-shadow: 0 0 0 4px #ffffff; */
 }
 
 .cd-timeline-img img {
@@ -418,7 +452,6 @@ header h1 {
   .cd-timeline-content .cd-read-more {
     float: left;
   }
-
   .cd-timeline-content .cd-date {
     position: absolute;
     width: 100%;

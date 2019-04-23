@@ -9,16 +9,13 @@ import { DomSanitizer } from '@angular/platform-browser';
 })
 export class TimelineEventComponent implements OnInit {
 
-  @Input() article: Article
-  @Input() index: number
-  @Input() feedImage: string
-  @ViewChild("vid", { read: ElementRef }) vid: ElementRef;
-  @ViewChild("tweet", { read: ElementRef }) tweet: ElementRef;
-
-  constructor(private sanitizer: DomSanitizer) {
-  }
+  @Input() article: Article;
+  @Input() index: number;
+  @ViewChild('vid', { read: ElementRef }) vid: ElementRef;
+  @ViewChild('tweet', { read: ElementRef }) tweet: ElementRef;
 
   ngOnInit() {
+    console.log(this.article)
   }
 
   ngAfterViewInit(): void {

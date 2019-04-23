@@ -196,7 +196,8 @@ namespace FactFluxV3.Logic
                 Active = true,
                 DatePublished = x.DatePublished,
                 FeedId = x.FeedId,
-                TimelineImage = db.Rssfeeds.Where(y => y.FeedId == x.FeedId).Select(y => y.FeedImage).FirstOrDefault()
+                TimelineImage = db.Rssfeeds.Where(y => y.FeedId == x.FeedId).Select(y => y.FeedImage).FirstOrDefault(),
+                PoliticalSpectrum = db.Rssfeeds.Where(y => y.FeedId == x.FeedId).Select(y => y.PoliticalSpectrum).FirstOrDefault()
             }).ToList();
 
             if (articleTypes == null || articleTypes.Contains(3))

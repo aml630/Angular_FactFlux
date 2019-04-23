@@ -72,7 +72,6 @@ namespace FactFluxV3.Controllers
             return orderedList;
         }
 
-
         // PUT: api/Articles/5
         [HttpPut("{id}")]
         public async Task<IActionResult> PutArticle([FromRoute] int id, [FromBody] Article article)

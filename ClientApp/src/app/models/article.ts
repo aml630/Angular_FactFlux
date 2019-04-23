@@ -2,7 +2,8 @@ export interface Article {
     articleTitle: string;
     articleUrl: string;
     articleType: number;
-    aatePublished: Date; 
+    datePublished: Date;
     feedId: number;
     timelineImage: string;
+    politicalSpectrum: number;
 }

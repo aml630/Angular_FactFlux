@@ -27,6 +27,8 @@
     <input class="form-control" formControlName="feedImage">
     <label>Video Link</label>
     <input class="form-control" formControlName="videoLink">
+    <label>Political Spectrum</label>
+    <input class="form-control" formControlName="politicalSpectrum">
     <Button class="btn-primary" (click)='UpdateFeed(form.value)'>Update</Button>
     <Button class="btn-warning" (click)='HideEdit()'>Hide</Button>
   </form>
@@ -47,6 +49,10 @@
     <div class="form-group">
       <label>Video Link</label>
       <input class="form-control" name="videoLink" ngModel>
+    </div>
+    <div class="form-group">
+      <label>Political Spectrum</label>
+      <input class="form-control" name="politicalSpectrum" ngModel>
     </div>
     <Button class="btn-primary" (click)='CreateFeed(feedForm.value)'> Create New Feed</Button>
   </form>
