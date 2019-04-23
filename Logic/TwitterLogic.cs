@@ -42,7 +42,7 @@ namespace FactFluxV3.Logic
 
             List<Tweets> foundTweets = new List<Tweets>();
 
-            using (var db = new FactFluxV3Context())
+            using (var db = new DB_A41BC9_aml630Context())
             {
                 var lookupUser = db.TwitterUsers.Where(x => x.TwitterUserId == twitterUser.TwitterUserId).FirstOrDefault();
 
@@ -93,7 +93,7 @@ namespace FactFluxV3.Logic
         {
             List<TwitterUsers> listOfAccounts;
 
-            using (var db = new FactFluxV3Context())
+            using (var db = new DB_A41BC9_aml630Context())
             {
                 listOfAccounts = db.TwitterUsers.ToList();
             }
@@ -117,7 +117,7 @@ namespace FactFluxV3.Logic
 
         public List<Tweets> GetAllTweetsForUserName(string twitterUserName)
         {
-            using (var db = new FactFluxV3Context())
+            using (var db = new DB_A41BC9_aml630Context())
             {
                 var twitterUser = db.TwitterUsers.Where(x => x.TwitterUsername.ToLower() == twitterUserName.ToLower()).FirstOrDefault();
 

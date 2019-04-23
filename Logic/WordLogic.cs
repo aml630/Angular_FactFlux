@@ -10,14 +10,14 @@ namespace FactFluxV3.Logic
     {
         public Words CreateWord(string word)
         {
-            using (var db = new FactFluxV3Context())
+            using (var db = new DB_A41BC9_aml630Context())
             {
                 Words newWord = new Words()
                 {
                     Word = word,
                     Banned = false,
                     DateCreated = DateTime.UtcNow,
-                    Daily = 1,
+                    Weekly = 1,
                     Monthly = 1,
                     Yearly = 1,
                     Main = false,
@@ -34,7 +34,7 @@ namespace FactFluxV3.Logic
 
         public Words GetWordByString(string word)
         {
-            using (var db = new FactFluxV3Context())
+            using (var db = new DB_A41BC9_aml630Context())
             {
                 var wordRetrieved = db.Words.Where(x => x.Word == word).FirstOrDefault();
 

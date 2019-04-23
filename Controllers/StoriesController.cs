@@ -15,9 +15,9 @@ namespace FactFluxV3.Controllers
     [ApiController]
     public class StoriesController : ControllerBase
     {
-        private readonly FactFluxV3Context _context;
+        private readonly DB_A41BC9_aml630Context _context;
 
-        public StoriesController(FactFluxV3Context context)
+        public StoriesController(DB_A41BC9_aml630Context context)
         {
             _context = context;
         }

@@ -13,9 +13,9 @@ namespace FactFluxV3.Controllers
     [ApiController]
     public class ImagesController : ControllerBase
     {
-        private readonly FactFluxV3Context _context;
+        private readonly DB_A41BC9_aml630Context _context;
 
-        public ImagesController(FactFluxV3Context context)
+        public ImagesController(DB_A41BC9_aml630Context context)
         {
             _context = context;
         }

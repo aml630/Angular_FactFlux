@@ -14,10 +14,10 @@ namespace FactFluxV3.Controllers
     [ApiController]
     public class TwitterController : ControllerBase
     {
-        private readonly FactFluxV3Context _context;
+        private readonly DB_A41BC9_aml630Context _context;
         private readonly IConfiguration Configuration;
 
-        public TwitterController(FactFluxV3Context context, IConfiguration configuration)
+        public TwitterController(DB_A41BC9_aml630Context context, IConfiguration configuration)
         {
             _context = context;
             Configuration = configuration;
@@ -29,7 +29,7 @@ namespace FactFluxV3.Controllers
         {
             TwitterUsers newTwitterUser;
 
-            using (var db = new FactFluxV3Context())
+            using (var db = new DB_A41BC9_aml630Context())
             {
                 newTwitterUser = new TwitterUsers()
                 {

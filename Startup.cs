@@ -48,7 +48,7 @@ namespace FactFlux
                 configuration.RootPath = "ClientApp/dist";
             });
 
-            services.AddDbContext<FactFluxV3Context>(options => options.UseSqlServer(connection));
+            services.AddDbContext<DB_A41BC9_aml630Context>(options => options.UseSqlServer(connection));
 
             services.AddSingleton<IConfiguration>(Configuration);
 

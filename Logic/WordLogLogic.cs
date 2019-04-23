@@ -10,7 +10,7 @@ namespace FactFluxV3.Logic
     {
         public WordLogs CreateWordLog(int wordId, int articleId)
         {
-            using (var db = new FactFluxV3Context())
+            using (var db = new DB_A41BC9_aml630Context())
             {
                 WordLogs newWord = new WordLogs()
                 {
@@ -38,7 +38,7 @@ namespace FactFluxV3.Logic
 
             var words = newArticle.ArticleTitle.Split().Select(x => x.Trim(punctuation));
 
-            using (FactFluxV3Context db = new FactFluxV3Context())
+            using (DB_A41BC9_aml630Context db = new DB_A41BC9_aml630Context())
             {
                 foreach (var word in words)
                 {
@@ -47,32 +47,34 @@ namespace FactFluxV3.Logic
             }
         }
 
-        private void CreateWordOrWordLog(Article newArticle, FactFluxV3Context db, string word)
+        private void CreateWordOrWordLog(Article newArticle, DB_A41BC9_aml630Context db, string word)
         {
             string beginning = word + " ";
             string end = " " + word;
             string middle = " " + word + " ";
+    
+                var wordList = db.Words.Where(x => x.Word == word || x.Word.StartsWith(beginning) || x.Word.EndsWith(end) || x.Word.Contains(middle)).OrderByDescending(x => x.Word.Length).ToList();
 
-            var wordList = db.Words.Where(x => x.Word == word || x.Word.StartsWith(beginning) || x.Word.EndsWith(end) || x.Word.Contains(middle)).OrderByDescending(x => x.Word.Length).ToList();
 
-            if (wordList.Count == 0)
-            {
-                var newWordLogic = new WordLogic();
-              
-                newWordLogic.CreateWord(word);
-            }
-            else
-            {
-                foreach (var wordOrPhrase in wordList)
+                if (wordList.Count == 0)
                 {
-                    if (newArticle.ArticleTitle.Contains(wordOrPhrase.Word))
-                    {
-                        IncrementWordCount(wordOrPhrase);
+                    var newWordLogic = new WordLogic();
 
-                        db.SaveChanges();
+                    newWordLogic.CreateWord(word);
+                }
+                else
+                {
+                    foreach (var wordOrPhrase in wordList)
+                    {
+                        if (newArticle.ArticleTitle.Contains(wordOrPhrase.Word))
+                        {
+                            IncrementWordCount(wordOrPhrase);
+
+                            db.SaveChanges();
+                        }
                     }
                 }
-            }
+
         }
 
         private void IncrementWordCount(Words wordToInc)
@@ -82,9 +84,13 @@ namespace FactFluxV3.Logic
                 wordToInc.DateIncremented = DateTime.UtcNow;
             }
 
-            if (wordToInc.DateIncremented.Value < DateTime.UtcNow.AddDays(1).Date)
+            var incrementedMonday = (StartOfWeek(wordToInc.DateIncremented.Value, DayOfWeek.Monday));
+
+            var nowMonday = StartOfWeek(DateTime.UtcNow, DayOfWeek.Monday);
+
+            if (incrementedMonday != nowMonday)
             {
-                wordToInc.Daily = 0;
+                wordToInc.Weekly = 0;
             }
 
             if (wordToInc.DateIncremented.Value.Month != DateTime.UtcNow.Month)
@@ -94,11 +100,19 @@ namespace FactFluxV3.Logic
 
             wordToInc.DateIncremented = DateTime.UtcNow;
 
-            wordToInc.Daily++;
+            wordToInc.Weekly++;
 
             wordToInc.Monthly++;
 
             wordToInc.Yearly++;
         }
+
+
+        public DateTime StartOfWeek(DateTime dt, DayOfWeek startOfWeek)
+        {
+            int diff = (7 + (dt.DayOfWeek - startOfWeek)) % 7;
+            return dt.AddDays(-1 * diff).Date;
+        }
+
     }
 }

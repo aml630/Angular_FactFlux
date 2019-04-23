@@ -45,7 +45,7 @@ namespace FactFluxV3.Logic
                         fs.Flush();
                     }
 
-                    using (var db = new FactFluxV3Context())
+                    using (var db = new DB_A41BC9_aml630Context())
                     {
                         if (foundImage == null)
                         {

@@ -15,10 +15,10 @@ namespace FactFluxV3.Controllers
     [ApiController]
     public class ArticlesController : ControllerBase
     {
-        private readonly FactFluxV3Context Context;
+        private readonly DB_A41BC9_aml630Context Context;
         private readonly IMemoryCache Cache;
 
-        public ArticlesController(FactFluxV3Context context, IMemoryCache cache)
+        public ArticlesController(DB_A41BC9_aml630Context context, IMemoryCache cache)
         {
             Context = context;
             Cache = cache;

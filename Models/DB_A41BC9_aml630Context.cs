@@ -5,13 +5,13 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace FactFluxV3.Models
 {
-    public partial class FactFluxV3Context : DbContext
+    public partial class DB_A41BC9_aml630Context : DbContext
     {
-        public FactFluxV3Context()
+        public DB_A41BC9_aml630Context()
         {
         }
 
-        public FactFluxV3Context(DbContextOptions<FactFluxV3Context> options)
+        public DB_A41BC9_aml630Context(DbContextOptions<DB_A41BC9_aml630Context> options)
             : base(options)
         {
         }
@@ -47,6 +47,7 @@ namespace FactFluxV3.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
                 optionsBuilder.UseSqlServer(Startup.staticConfig["ConnectionStrings:FactFluxConnection"]);
             }
         }

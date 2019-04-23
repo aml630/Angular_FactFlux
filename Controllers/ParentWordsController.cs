@@ -14,9 +14,9 @@ namespace FactFluxV3.Controllers
     [ApiController]
     public class ParentWordsController : ControllerBase
     {
-        private readonly FactFluxV3Context _context;
+        private readonly DB_A41BC9_aml630Context _context;
 
-        public ParentWordsController(FactFluxV3Context context)
+        public ParentWordsController(DB_A41BC9_aml630Context context)
         {
             _context = context;
         }
@@ -137,9 +137,9 @@ namespace FactFluxV3.Controllers
                 foundChildWord = wordLogic.CreateWord(childWord);
             }
 
-            if (mainWordLookup.Daily < foundChildWord.Daily)
+            if (mainWordLookup.Weekly < foundChildWord.Weekly)
             {
-                mainWordLookup.Daily = foundChildWord.Daily;
+                mainWordLookup.Weekly = foundChildWord.Weekly;
             }
 
             if (mainWordLookup.Monthly < foundChildWord.Monthly)

@@ -22,9 +22,9 @@ namespace FactFluxV3.Controllers
     [ApiController]
     public class WordsController : ControllerBase
     {
-        private readonly FactFluxV3Context _context;
+        private readonly DB_A41BC9_aml630Context _context;
 
-        public WordsController(FactFluxV3Context context)
+        public WordsController(DB_A41BC9_aml630Context context)
         {
             _context = context;
         }

@@ -35,7 +35,7 @@ namespace FactFluxV3.Logic
             newArticleLinke.Active = true;
             newArticleLinke.ArticleType = 1;
 
-            using (FactFluxV3Context db = new FactFluxV3Context())
+            using (DB_A41BC9_aml630Context db = new DB_A41BC9_aml630Context())
             {
                 var isDupe = db.Article.Where(x => x.ArticleTitle == newArticleLinke.ArticleTitle).FirstOrDefault();
 
@@ -66,7 +66,7 @@ namespace FactFluxV3.Logic
             newArticleLinke.Active = true;
             newArticleLinke.ArticleType = 2;
 
-            using (FactFluxV3Context db = new FactFluxV3Context())
+            using (DB_A41BC9_aml630Context db = new DB_A41BC9_aml630Context())
             {
                 var isDupe = db.Article.Where(x => x.ArticleTitle == newArticleLinke.ArticleTitle || x.ArticleUrl == x.ArticleUrl).FirstOrDefault();
 
@@ -128,7 +128,7 @@ namespace FactFluxV3.Logic
             //    return orderedArticleList;
             //}
 
-            using (var db = new FactFluxV3Context())
+            using (var db = new DB_A41BC9_aml630Context())
             {
                 string spacedWord = word.Replace("-", " ");
 
@@ -170,7 +170,7 @@ namespace FactFluxV3.Logic
             return orderedArticleList;
         }
 
-        private List<TimelineArticle> GetArticlesFromWord(string word, FactFluxV3Context db, List<TimelineArticle> fullArticleList, List<int> articleTypes = null)
+        private List<TimelineArticle> GetArticlesFromWord(string word, DB_A41BC9_aml630Context db, List<TimelineArticle> fullArticleList, List<int> articleTypes = null)
         {
             string beginning = word + " ";
             string end = " " + word;
@@ -209,7 +209,7 @@ namespace FactFluxV3.Logic
             return timeLineList;
         }
 
-        private static List<TimelineArticle> GetTweetListAsArticles(FactFluxV3Context db, List<TimelineArticle> fullArticleList, string beginning, string end, string middle)
+        private static List<TimelineArticle> GetTweetListAsArticles(DB_A41BC9_aml630Context db, List<TimelineArticle> fullArticleList, string beginning, string end, string middle)
         {
             return db.Tweets.Where(x => (x.TweetText.ToLower().StartsWith(beginning) || x.TweetText.ToLower().EndsWith(end) || x.TweetText.ToLower().Contains(middle)) && !fullArticleList.Select(y => y.ArticleId).Contains(x.TweetId)).Select(g =>
             new TimelineArticle

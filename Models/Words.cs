@@ -17,7 +17,7 @@ namespace FactFluxV3.Models
         public DateTime DateCreated { get; set; }
         public bool Banned { get; set; }
         public DateTime? DateIncremented { get; set; }
-        public int Daily { get; set; }
+        public int Weekly { get; set; }
         public int Monthly { get; set; }
         public int Yearly { get; set; }
         public bool Main { get; set; }

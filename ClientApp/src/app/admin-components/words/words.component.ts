@@ -51,7 +51,7 @@ export class WordsComponent implements OnInit {
             show: false,
             wordId: value.wordId,
             word: value.word,
-            daily: value.daily,
+            daily: value.weekly,
             weekly: value.weekly,
             yearly: value.yearly,
             type: value.type,

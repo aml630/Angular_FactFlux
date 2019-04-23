@@ -22,11 +22,11 @@ namespace FactFluxV3.Controllers
     {
         private readonly IConfiguration Configuration;
 
-        private readonly FactFluxV3Context Context;
+        private readonly DB_A41BC9_aml630Context Context;
 
         private readonly IMemoryCache Cache;
 
-        public RssfeedsController(FactFluxV3Context context, IConfiguration configuration, IMemoryCache cache)
+        public RssfeedsController(DB_A41BC9_aml630Context context, IConfiguration configuration, IMemoryCache cache)
         {
             Context = context;
             Configuration = configuration;
@@ -158,7 +158,7 @@ namespace FactFluxV3.Controllers
 
             List<Article> articleList;
 
-            using (FactFluxV3Context db = new FactFluxV3Context())
+            using (DB_A41BC9_aml630Context db = new DB_A41BC9_aml630Context())
             {
                 foundFeed = db.Rssfeeds.Where(x => x.FeedId == id).FirstOrDefault();
             }
@@ -198,7 +198,7 @@ namespace FactFluxV3.Controllers
         {
             List<Rssfeeds> allFeeds;
 
-            using (FactFluxV3Context db = new FactFluxV3Context())
+            using (DB_A41BC9_aml630Context db = new DB_A41BC9_aml630Context())
             {
                 allFeeds = db.Rssfeeds.ToList();
 
@@ -225,7 +225,7 @@ namespace FactFluxV3.Controllers
         {
             List<Rssfeeds> allFeeds;
 
-            using (FactFluxV3Context db = new FactFluxV3Context())
+            using (DB_A41BC9_aml630Context db = new DB_A41BC9_aml630Context())
             {
                 allFeeds = db.Rssfeeds.ToList();
 
