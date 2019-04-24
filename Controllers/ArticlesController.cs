@@ -61,11 +61,17 @@ namespace FactFluxV3.Controllers
 
             var articleTypeList = new List<int>();
 
-            articleTypeList = articleTypes.Split("|").Select(Int32.Parse).ToList();
+            if (articleTypes != null)
+            {
+                articleTypeList = articleTypes.Split("|").Select(Int32.Parse).ToList();
+            }
 
             var politicalSpectrumList = new List<int>();
 
-            politicalSpectrumList = politicalSpectrum.Split("|").Select(Int32.Parse).ToList();
+            if (politicalSpectrum != null)
+            {
+                politicalSpectrumList = politicalSpectrum.Split("|").Select(Int32.Parse).ToList();
+            }
 
             var articleLogic = new ArticleLogic(Cache);
 

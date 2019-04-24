@@ -103,6 +103,18 @@ export class TimelineComponent implements OnInit {
     this.GetTimelineContent();
   }
 
+  toggleSpectrum(politicalSpectrumRank: number) {
+    let doesContain = this.politicalSpectrum.indexOf(politicalSpectrumRank);
+
+    if (doesContain == -1) {
+      this.politicalSpectrum.push(politicalSpectrumRank);
+    } else {
+      this.politicalSpectrum.splice(doesContain, 1);
+    }
+
+    this.GetTimelineContent();
+  }
+
   getNextPage() {
     this.pageSize += 20;
     this.GetTimelineContent();

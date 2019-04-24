@@ -19,15 +19,24 @@
 
     <div class="spectrumFilter">
       <h3>Political Spectrum</h3>
-      <input type="checkbox" class="spectrumButton spectrumFilter1">
-      <input type="checkbox" class="spectrumFilter2">
-      <input type="checkbox" class="spectrumFilter3">
-      <input type="checkbox" class="spectrumFilter4">
-      <input type="checkbox" class="spectrumFilter5">
-      <input type="checkbox" class="spectrumFilter6">
-      <input type="checkbox" class="spectrumFilter7">
-      <input type="checkbox" class="spectrumFilter8">
-      <input type="checkbox" class="spectrumFilter9">
+      <input type="checkbox" class="spectrumFilter1" [checked]="politicalSpectrum.indexOf(1) !== -1"
+        (click)="toggleSpectrum(1)">
+      <input type="checkbox" class="spectrumFilter2" [checked]="politicalSpectrum.indexOf(2) !== -1"
+        (click)="toggleSpectrum(2)">
+      <input type="checkbox" class="spectrumFilter3" [checked]="politicalSpectrum.indexOf(3) !== -1"
+        (click)="toggleSpectrum(3)">
+      <input type="checkbox" class="spectrumFilter4" [checked]="politicalSpectrum.indexOf(4) !== -1"
+        (click)="toggleSpectrum(4)">
+      <input type="checkbox" class="spectrumFilter5" [checked]="politicalSpectrum.indexOf(5) !== -1"
+        (click)="toggleSpectrum(5)">
+      <input type="checkbox" class="spectrumFilter6" [checked]="politicalSpectrum.indexOf(6) !== -1"
+        (click)="toggleSpectrum(6)">
+      <input type="checkbox" class="spectrumFilter7" [checked]="politicalSpectrum.indexOf(7) !== -1"
+        (click)="toggleSpectrum(7)">
+      <input type="checkbox" class="spectrumFilter8" [checked]="politicalSpectrum.indexOf(8) !== -1"
+        (click)="toggleSpectrum(8)">
+      <input type="checkbox" class="spectrumFilter9" [checked]="politicalSpectrum.indexOf(9) !== -1"
+        (click)="toggleSpectrum(9)">
     </div>
   </div>
 
