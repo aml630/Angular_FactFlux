@@ -37,12 +37,13 @@ namespace FactFluxV3.Controllers
                 Description = x.Description,
                 Images = _context.Images.Where(z => z.ContentType == "Word" && z.ContentId == x.WordId).ToList(),
                 Monthly = x.Monthly,
+                Weekly = x.Weekly,
                 DateIncremented = x.DateIncremented
             });
 
             var pagedList = storyList.Skip((Page - 1) * RecordsPerPage).Take(RecordsPerPage).ToList();
 
-            return pagedList.OrderByDescending(x=>x.DateIncremented);
+            return pagedList.OrderByDescending(x=>x.Weekly);
         }
 
         [HttpGet("GetMatching/{letters}")]
