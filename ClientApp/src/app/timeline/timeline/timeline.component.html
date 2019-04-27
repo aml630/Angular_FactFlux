@@ -4,7 +4,10 @@
   </div>
   <hr />
 
-  <div class="filterSection">
+  <div class="filterSection" [ngClass]="{
+    'spectrumBorderColor1': politicalSpectrum.indexOf(9) !== -1, 
+    'spectrumBorderColor2': politicalSpectrum.indexOf(1) !== -1
+    }">
     <h3>Filters</h3>
     <button [ngClass]="{'deactivated': articleTypes.indexOf(1) ===-1}" class="btn btn-3 btn-3-news"
       (click)="toggleType(1)"> <i class="fa fa-bookmark"></i>Articles</button>
@@ -26,39 +29,9 @@
           <label class="spec1" for="roundedOne1"></label>
         </div>
         <div class="roundedOne">
-          <input type="checkbox" value="None" id="roundedOne2" name="check"
-            [checked]="politicalSpectrum.indexOf(2) !== -1" (click)="toggleSpectrum(2)" />
-          <label class="spec2" for="roundedOne2"></label>
-        </div>
-        <div class="roundedOne">
-          <input type="checkbox" value="None" id="roundedOne3" name="check"
-            [checked]="politicalSpectrum.indexOf(3) !== -1" (click)="toggleSpectrum(3)" />
-          <label class="spec3" for="roundedOne3"></label>
-        </div>
-        <div class="roundedOne">
-          <input type="checkbox" value="None" id="roundedOne4" name="check"
-            [checked]="politicalSpectrum.indexOf(4) !== -1" (click)="toggleSpectrum(4)" />
-          <label class="spec4" for="roundedOne4"></label>
-        </div>
-        <div class="roundedOne">
           <input type="checkbox" value="None" id="roundedOne5" name="check"
             [checked]="politicalSpectrum.indexOf(5) !== -1" (click)="toggleSpectrum(5)" />
           <label class="spec5" for="roundedOne5"></label>
-        </div>
-        <div class="roundedOne">
-          <input type="checkbox" value="None" id="roundedOne6" name="check"
-            [checked]="politicalSpectrum.indexOf(6) !== -1" (click)="toggleSpectrum(6)" />
-          <label class="spec6" for="roundedOne6"></label>
-        </div>
-        <div class="roundedOne">
-          <input type="checkbox" value="None" id="roundedOne7" name="check"
-            [checked]="politicalSpectrum.indexOf(7) !== -1" (click)="toggleSpectrum(7)" />
-          <label class="spec7" for="roundedOne7"></label>
-        </div>
-        <div class="roundedOne">
-          <input type="checkbox" value="None" id="roundedOne8" name="check"
-            [checked]="politicalSpectrum.indexOf(8) !== -1" (click)="toggleSpectrum(8)" />
-          <label class="spec8" for="roundedOne8"></label>
         </div>
         <div class="roundedOne">
           <input type="checkbox" value="None" id="roundedOne9" name="check"

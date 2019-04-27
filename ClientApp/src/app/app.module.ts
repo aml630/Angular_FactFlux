@@ -31,6 +31,8 @@ import { FactoidsComponent } from './factoids/factoids.component';
 import { Graph1Component } from './factoids/graph1/graph1.component';
 import { SpinnerComponent } from './spinner/spinner.component';
 import { TimelineComponent } from './timeline/timeline/timeline.component';
+import { Post1Component } from './factoids/post1/post1.component';
+import { Fact1Component } from './factoids/fact1/fact1.component';
 
 @NgModule({
   declarations: [
@@ -53,7 +55,9 @@ import { TimelineComponent } from './timeline/timeline/timeline.component';
     MainWordsComponent,
     FactoidsComponent,
     Graph1Component,
-    SpinnerComponent
+    SpinnerComponent,
+    Post1Component,
+    Fact1Component
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -70,6 +74,7 @@ import { TimelineComponent } from './timeline/timeline/timeline.component';
       { path: 'about', component: AboutComponent },
       { path: 'timeline/:word', component: TimelineComponent },
       { path: 'privacy', component: PrivacyComponent },
+      { path: 'post1', component: Post1Component},
       { path: 'factoids', component: FactoidsComponent},
       {
         path: '',

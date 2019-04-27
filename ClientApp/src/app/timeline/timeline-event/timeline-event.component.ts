@@ -21,11 +21,11 @@ export class TimelineEventComponent implements OnInit {
   ngAfterViewInit(): void {
 
     if (this.vid) {
-      this.getVideos(this.vid.nativeElement)
+      this.getVideos(this.vid.nativeElement);
     }
 
     if (this.tweet) {
-      this.loadTwitter()
+      this.loadTwitter();
     }
   }
 

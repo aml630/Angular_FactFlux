@@ -20,7 +20,7 @@ export class TimelineComponent implements OnInit {
   articles: Article[];
   rssFeeds: RssFeed[];
   articleTypes = [1, 2, 3];
-  politicalSpectrum = [3, 4, 5, 6, 7];
+  politicalSpectrum = [5];
   filterLetters: FormControl;
   currentLetters: string;
   pageSize = 20;
@@ -94,7 +94,7 @@ export class TimelineComponent implements OnInit {
   toggleType(articleType: number) {
     let doesContain = this.articleTypes.indexOf(articleType);
 
-    if (doesContain == -1) {
+    if (doesContain === -1) {
       this.articleTypes.push(articleType);
     } else {
       this.articleTypes.splice(doesContain, 1);
@@ -104,12 +104,10 @@ export class TimelineComponent implements OnInit {
   }
 
   toggleSpectrum(politicalSpectrumRank: number) {
-    let doesContain = this.politicalSpectrum.indexOf(politicalSpectrumRank);
+    const doesContain = this.politicalSpectrum.indexOf(politicalSpectrumRank);
 
-    if (doesContain == -1) {
-      this.politicalSpectrum.push(politicalSpectrumRank);
-    } else {
-      this.politicalSpectrum.splice(doesContain, 1);
+    if (doesContain === -1) {
+      this.politicalSpectrum = [politicalSpectrumRank];
     }
 
     this.GetTimelineContent();

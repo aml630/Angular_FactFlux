@@ -1,4 +1,14 @@
 @import url(https://fonts.googleapis.com/css?family=Fjalla+One);
+
+.spectrumBorderColor1{
+  box-shadow: inset 0px 1px 1px white, 0px 1px 3px #ff392e;
+}
+
+.spectrumBorderColor2{
+  box-shadow: inset 0px 1px 1px white, 0px 1px 3px #779ecb;
+}
+
+
 .roundedOne {
   width: 28px;
   height: 28px;
@@ -171,7 +181,7 @@
 .checkBoxWrapper {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-around;
+  justify-content: center;
 }
 
 .searchBox input {
@@ -186,6 +196,7 @@
 }
 
 .filterSection {
+  padding:20px;
   text-align: center;
   border: .5px solid#D3D3D3;
   margin: 15px;

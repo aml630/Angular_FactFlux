@@ -173,7 +173,16 @@ namespace FactFluxV3.Logic
 
             articleListQuery = articleListQuery.Where(x => articleTypes.Contains(x.ArticleType));
 
-            articleListQuery = articleListQuery.Where(x => politicalSpectrum.Contains(x.Feed.PoliticalSpectrum));
+
+            if (politicalSpectrum.FirstOrDefault() == 9)
+            {
+                articleListQuery = articleListQuery.Where(x => x.Feed.PoliticalSpectrum > 6);
+            }
+
+            if (politicalSpectrum.FirstOrDefault() == 1)
+            {
+                articleListQuery = articleListQuery.Where(x => x.Feed.PoliticalSpectrum < 4);
+            }
 
             List<TimelineArticle> timeLineList = articleListQuery.Select(x => new TimelineArticle()
             {
@@ -190,7 +199,7 @@ namespace FactFluxV3.Logic
 
             if (articleTypes == null || articleTypes.Contains(3))
             {
-                List<TimelineArticle> tweetList = GetTweetListAsArticles(db, fullArticleList, beginning, end, middle);
+                List<TimelineArticle> tweetList = GetTweetListAsArticles(db, fullArticleList, beginning, end, middle, politicalSpectrum);
 
                 timeLineList.AddRange(tweetList);
             }
@@ -198,20 +207,34 @@ namespace FactFluxV3.Logic
             return timeLineList;
         }
 
-        private static List<TimelineArticle> GetTweetListAsArticles(DB_A41BC9_aml630Context db, List<TimelineArticle> fullArticleList, string beginning, string end, string middle)
+        private static List<TimelineArticle> GetTweetListAsArticles(DB_A41BC9_aml630Context db, List<TimelineArticle> fullArticleList, string beginning, string end, string middle, List<int> politicalSpectrum)
         {
-            return db.Tweets.Where(x => (x.TweetText.ToLower().StartsWith(beginning) || x.TweetText.ToLower().EndsWith(end) || x.TweetText.ToLower().Contains(middle)) && !fullArticleList.Select(y => y.ArticleId).Contains(x.TweetId)).Select(g =>
-            new TimelineArticle
+            var tweetList = db.Tweets.Where(x => (x.TweetText.ToLower().StartsWith(beginning) || x.TweetText.ToLower().EndsWith(end) || x.TweetText.ToLower().Contains(middle)) && !fullArticleList.Select(y => y.ArticleId).Contains(x.TweetId)).Select(g =>
+           new TimelineArticle
+           {
+               ArticleId = g.TweetId,
+               ArticleTitle = g.TweetText,
+               ArticleUrl = g.EmbedHtml,
+               ArticleType = 3,
+               Active = true,
+               DatePublished = g.DateTweeted,
+               FeedId = g.TwitterUserId,
+               //TimelineImage = db.TwitterUsers.Where(y => y.TwitterUserId == g.TwitterUserId).Select(x => x.Image).FirstOrDefault(),
+               TimelineImage = g.TwitterUser.Image,
+               PoliticalSpectrum = g.TwitterUser.PoliticalSpectrum
+           });
+
+            if (politicalSpectrum.FirstOrDefault() == 9)
             {
-                ArticleId = g.TweetId,
-                ArticleTitle = g.TweetText,
-                ArticleUrl = g.EmbedHtml,
-                ArticleType = 3,
-                Active = true,
-                DatePublished = g.DateTweeted,
-                FeedId = g.TwitterUserId,
-                TimelineImage = db.TwitterUsers.Where(y => y.TwitterUserId == g.TwitterUserId).Select(x => x.Image).FirstOrDefault()
-            }).ToList();
+                tweetList = tweetList.Where(x => x.PoliticalSpectrum > 6);
+            }
+
+            if (politicalSpectrum.FirstOrDefault() == 1)
+            {
+                tweetList = tweetList.Where(x => x.PoliticalSpectrum < 4);
+            }
+
+            return tweetList.ToList();
         }
     }
 }

@@ -266,7 +266,7 @@ header h1 {
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  /* box-shadow: 0 0 0 4px #ffffff; */
+  box-shadow: 0 0 0 4px #ffffff;
 }
 
 .cd-timeline-img img {
