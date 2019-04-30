@@ -7,13 +7,13 @@ body {
   background: #152B39;
 }
 
-.wrapper {
+/* .wrapper {
   position: absolute;
   top: 50%;
   left: 50%;
   -webkit-transform: translate(-50%, -50%);
           transform: translate(-50%, -50%);
-}
+} */
 
 .graph {
   width: 400px;
@@ -30,7 +30,7 @@ body {
   width: 90px;
   height: 90px;
   border-radius: 50%;
-  position: absolute;
+  /* position: absolute; */
   color: #152B39;
   top: -40px;
   left: 340px;
@@ -47,11 +47,6 @@ body {
 }
 
 .max {
-  -webkit-transform: translate(0, 0);
-          transform: translate(0, 0);
-  top: 0;
-  left: 0;
-  position: absolute;
   height: 100%;
   width: 100%;
   border-radius: 5px;
