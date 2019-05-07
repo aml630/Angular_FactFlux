@@ -7,7 +7,9 @@
 .spectrumBorderColor2{
   box-shadow: inset 0px 1px 1px white, 0px 1px 3px #779ecb;
 }
-
+.filterText {
+  font-size: 13px;
+}
 
 .roundedOne {
   width: 28px;
@@ -175,7 +177,7 @@
 }
 
 .spectrumFilter {
-  margin-top: 20px;
+  margin-top: 10px;
 }
 
 .checkBoxWrapper {
@@ -235,7 +237,7 @@
 
 .btn-3-video {
   color: white;
-  font-size: 15px;
+  font-size: 12px;
   background: #e3403a;
   border: 1px solid #da251f;
   box-shadow: 0px 2px 0 #d6251f, 2px 4px 6px #e02a24;
@@ -249,7 +251,7 @@
 
 .btn-3-twitter {
   color: white;
-  font-size: 15px;
+  font-size: 12px;
   background: #38A1F3;
   border: 1px solid #38A1F3;
   box-shadow: 0px 2px 0 #38A1F3, 2px 4px 6px #38A1F3;
@@ -263,7 +265,7 @@
 
 .btn-3-news {
   color: white;
-  font-size: 15px;
+  font-size: 12px;
   background: #66CC99;
   border: 1px solid #66CC99;
   box-shadow: 0px 2px 0 #66CC99, 2px 4px 6px #66CC99;

@@ -46,6 +46,29 @@ namespace FactFluxV3.Controllers
             return Ok(images);
         }
 
+        // GET: api/Images/5
+        [HttpGet("{word}")]
+        public async Task<IActionResult> GetImageFromWord([FromRoute] string word)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            string spacedWord = word.Replace("-", " ");
+
+            var findWord = await _context.Words.Where(x => x.Word.ToLower() == spacedWord.ToLower()).FirstOrDefaultAsync();
+
+            var images = await _context.Images.Where(x => x.ContentType == "Word" && x.ContentId == findWord.WordId).ToListAsync();
+
+            if (images == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(images);
+        }
+
         // PUT: api/Images/5
         [HttpPut("{id}")]
         public async Task<IActionResult> PutImages([FromRoute] int id, [FromBody] Images images)

@@ -1,6 +1,7 @@
 
   .factText {
       color: white;
+      padding: 10px;
   }
   input {
     display: block;
@@ -30,13 +31,13 @@
     width: 300px;
     border-radius: 4px;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-    margin: 0 auto;
+    margin: 20px;
     overflow: hidden;
   }
   .card-header {
     position: relative;
     background: #303841;
-    height: 200px;
+    height: auto;
     text-align: center;
     overflow: hidden;
   }
