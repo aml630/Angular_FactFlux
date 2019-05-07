@@ -5,6 +5,7 @@ import { Article } from '../../models/article';
 import { RssFeed } from '../../models/rssFeed';
 import { FormControl } from '@angular/forms';
 import "rxjs/add/operator/debounceTime";
+import { Images } from '../../models/images';
 
 
 @Component({
@@ -19,6 +20,7 @@ export class TimelineComponent implements OnInit {
   base: string = document.getElementsByTagName('base')[0].href;
   articles: Article[];
   rssFeeds: RssFeed[];
+  imageLocation: string;
   articleTypes = [1, 2, 3];
   politicalSpectrum = [5];
   filterLetters: FormControl;
@@ -32,19 +34,18 @@ export class TimelineComponent implements OnInit {
     this.filterLetters = new FormControl();
     this.activatedRoute.params.subscribe(params => {
       this.word = params['word'];
-
       this.titleWord = this.word.replace(/-/g, ' ');
       this.titleWord = this.toTitleCase(this.titleWord);
-
-      this.filterLetters.valueChanges.debounceTime(400).subscribe(x => {
-        this.currentLetters = x;
-        this.GetTimelineContent();
-      });
-
-      this.GetTimelineContent();
-
-      this.ClearTwitter();
     });
+
+    this.filterLetters.valueChanges.debounceTime(400).subscribe(x => {
+      this.currentLetters = x;
+      this.GetTimelineContent();
+    });
+
+    this.GetTimelineContent();
+    this.GetImage();
+    this.ClearTwitter();
   }
 
   toTitleCase(str) {
@@ -85,9 +86,19 @@ export class TimelineComponent implements OnInit {
     this.ClearTwitter();
   }
 
+  GetImage() {
+    this.showSpinner = true;
+    let path = `api/Images/${this.word}`;
+
+    this.http.get<Images[]>(this.base + path).subscribe(result => {
+      this.imageLocation = result[0].imageLocation;
+      console.log('image: ' + this.imageLocation);
+    }, error => console.error(error));
+  }
+
   private ClearTwitter() {
     if (document.getElementById("twitter-wjs")) {
-      document.getElementById("twitter-wjs").outerHTML = "";
+      document.getElementById("twitter-wjs").outerHTML = '';
     }
   }
 
