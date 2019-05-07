@@ -5,7 +5,7 @@ import { Article } from '../../models/article';
 import { RssFeed } from '../../models/rssFeed';
 import { FormControl } from '@angular/forms';
 import "rxjs/add/operator/debounceTime";
-import { Image } from '../../models/words.1';
+import { Images } from '../../models/images';
 
 
 @Component({
@@ -90,9 +90,8 @@ export class TimelineComponent implements OnInit {
     this.showSpinner = true;
     let path = `api/Images/${this.word}`;
 
-    this.http.get<Image[]>(this.base + path).subscribe(result => {
-      this.imageLocation = result[0].ImageLocation;
-      debugger;
+    this.http.get<Images[]>(this.base + path).subscribe(result => {
+      this.imageLocation = result[0].imageLocation;
       console.log('image: ' + this.imageLocation);
     }, error => console.error(error));
   }
