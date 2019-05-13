@@ -33,6 +33,10 @@ import { SpinnerComponent } from './spinner/spinner.component';
 import { TimelineComponent } from './timeline/timeline/timeline.component';
 import { Post1Component } from './factoids/post1/post1.component';
 import { Fact1Component } from './factoids/fact1/fact1.component';
+import { PostHeaderComponent } from './factoids/post-header/post-header.component';
+import { Post2Component } from './factoids/post2/post2.component';
+import { PostEventComponent } from './factoids/post2/post-event/post-event.component';
+import { NewFrontComponent } from './new-front/new-front.component';
 
 @NgModule({
   declarations: [
@@ -57,7 +61,11 @@ import { Fact1Component } from './factoids/fact1/fact1.component';
     Graph1Component,
     SpinnerComponent,
     Post1Component,
-    Fact1Component
+    Fact1Component,
+    PostHeaderComponent,
+    Post2Component,
+    PostEventComponent,
+    NewFrontComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -75,7 +83,9 @@ import { Fact1Component } from './factoids/fact1/fact1.component';
       { path: 'timeline/:word', component: TimelineComponent },
       { path: 'privacy', component: PrivacyComponent },
       { path: 'post1', component: Post1Component},
+      { path: 'post2', component: Post2Component},
       { path: 'factoids', component: FactoidsComponent},
+      { path: 'front', component: NewFrontComponent},
       {
         path: '',
         component: AdminLayoutComponent,
