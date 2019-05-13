@@ -36,7 +36,10 @@ import { Fact1Component } from './factoids/fact1/fact1.component';
 import { PostHeaderComponent } from './factoids/post-header/post-header.component';
 import { Post2Component } from './factoids/post2/post2.component';
 import { PostEventComponent } from './factoids/post2/post-event/post-event.component';
-import { NewFrontComponent } from './new-front/new-front.component';
+import { NewFrontComponent } from './template/new-front/new-front.component';
+import { NavbarComponent } from './template/navbar/navbar.component';
+import { FooterComponent2 } from './template/footer2/footer2.component';
+import { Post3Component } from './template/post3/post3.component';
 
 @NgModule({
   declarations: [
@@ -65,7 +68,10 @@ import { NewFrontComponent } from './new-front/new-front.component';
     PostHeaderComponent,
     Post2Component,
     PostEventComponent,
-    NewFrontComponent
+    NewFrontComponent,
+    NavbarComponent,
+    FooterComponent2,
+    Post3Component
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -82,20 +88,21 @@ import { NewFrontComponent } from './new-front/new-front.component';
       { path: 'about', component: AboutComponent },
       { path: 'timeline/:word', component: TimelineComponent },
       { path: 'privacy', component: PrivacyComponent },
-      { path: 'post1', component: Post1Component},
-      { path: 'post2', component: Post2Component},
-      { path: 'factoids', component: FactoidsComponent},
-      { path: 'front', component: NewFrontComponent},
+      { path: 'post1', component: Post1Component },
+      { path: 'post2', component: Post2Component },
+      { path: 'factoids', component: FactoidsComponent },
+      { path: 'front', component: NewFrontComponent },
+      { path: 'post3', component: Post3Component },
       {
         path: '',
         component: AdminLayoutComponent,
         canActivate: [AuthGuard],
         children: [
-          { path: 'rss-feeds', component: RssFeedsComponent},
-          { path: 'words', component: WordsComponent},
-          { path: 'word-parents', component: WordParentsComponent},
-          { path: 'twitter-users', component: TwitterUsersComponent},
-          { path: 'main-words', component: MainWordsComponent}
+          { path: 'rss-feeds', component: RssFeedsComponent },
+          { path: 'words', component: WordsComponent },
+          { path: 'word-parents', component: WordParentsComponent },
+          { path: 'twitter-users', component: TwitterUsersComponent },
+          { path: 'main-words', component: MainWordsComponent }
         ]
       }
     ])
