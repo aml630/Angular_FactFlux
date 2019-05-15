@@ -40,6 +40,7 @@ import { NewFrontComponent } from './template/new-front/new-front.component';
 import { NavbarComponent } from './template/navbar/navbar.component';
 import { FooterComponent2 } from './template/footer2/footer2.component';
 import { Post3Component } from './template/post3/post3.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -81,7 +82,7 @@ import { Post3Component } from './template/post3/post3.component';
     ButtonModule,
     BrowserAnimationsModule, AccordionModule, TabMenuModule,
     CardModule, MenuModule,
-    OAuthModule.forRoot(),
+    OAuthModule.forRoot(), NgbModule.forRoot(),
     RouterModule.forRoot([
       { path: '', component: StoriesComponent },
       { path: 'stories', component: StoriesComponent },
