@@ -8,3 +8,11 @@
 @import "../scss/footer.scss";
 @import "../scss/bootstrap-overrides.scss";
 @import "../scss/bootstrap.scss";
+
+.fa-stack{
+    color: #212529;
+}
+
+.fa-stack:hover {
+    color: #0085a1;
+}

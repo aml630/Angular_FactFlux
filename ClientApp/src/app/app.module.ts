@@ -41,6 +41,7 @@ import { NavbarComponent } from './template/navbar/navbar.component';
 import { FooterComponent2 } from './template/footer2/footer2.component';
 import { Post3Component } from './template/post3/post3.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { PostTimelineComponent } from './template/post-timeline/post-timeline.component';
 
 @NgModule({
   declarations: [
@@ -72,7 +73,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     NewFrontComponent,
     NavbarComponent,
     FooterComponent2,
-    Post3Component
+    Post3Component,
+    PostTimelineComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -94,6 +96,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
       { path: 'factoids', component: FactoidsComponent },
       { path: 'front', component: NewFrontComponent },
       { path: 'post3', component: Post3Component },
+      { path: 'post4', component: PostTimelineComponent },
       {
         path: '',
         component: AdminLayoutComponent,
