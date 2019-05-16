@@ -36,12 +36,11 @@ import { Fact1Component } from './factoids/fact1/fact1.component';
 import { PostHeaderComponent } from './factoids/post-header/post-header.component';
 import { Post2Component } from './factoids/post2/post2.component';
 import { PostEventComponent } from './factoids/post2/post-event/post-event.component';
-import { NewFrontComponent } from './template/new-front/new-front.component';
-import { NavbarComponent } from './template/navbar/navbar.component';
-import { FooterComponent2 } from './template/footer2/footer2.component';
-import { Post3Component } from './template/post3/post3.component';
+import { NewFrontComponent } from './blog/other/new-front/new-front.component';
+import { NavbarComponent } from './blog/other/navbar/navbar.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { PostTimelineComponent } from './template/post-timeline/post-timeline.component';
+import { PostTimelineComponent } from './blog/posts/post-timeline/post-timeline.component';
+import { BlogFooterComponent } from './blog/other/blog-footer/blog-footer';
 
 @NgModule({
   declarations: [
@@ -72,8 +71,7 @@ import { PostTimelineComponent } from './template/post-timeline/post-timeline.co
     PostEventComponent,
     NewFrontComponent,
     NavbarComponent,
-    FooterComponent2,
-    Post3Component,
+    BlogFooterComponent,
     PostTimelineComponent
   ],
   imports: [
@@ -84,7 +82,8 @@ import { PostTimelineComponent } from './template/post-timeline/post-timeline.co
     ButtonModule,
     BrowserAnimationsModule, AccordionModule, TabMenuModule,
     CardModule, MenuModule,
-    OAuthModule.forRoot(), NgbModule.forRoot(),
+    OAuthModule.forRoot(),
+    NgbModule.forRoot(),
     RouterModule.forRoot([
       { path: '', component: StoriesComponent },
       { path: 'stories', component: StoriesComponent },
@@ -95,7 +94,6 @@ import { PostTimelineComponent } from './template/post-timeline/post-timeline.co
       { path: 'post2', component: Post2Component },
       { path: 'factoids', component: FactoidsComponent },
       { path: 'front', component: NewFrontComponent },
-      { path: 'post3', component: Post3Component },
       { path: 'post4', component: PostTimelineComponent },
       {
         path: '',
