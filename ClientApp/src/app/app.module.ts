@@ -16,7 +16,6 @@ import { MenuModule } from 'primeng/menu';
 import { HeaderComponent } from './admin-components/admin-header/admin-header.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { TwitterUsersComponent } from './admin-components/twitter-users/twitter-users.component';
-import { OAuthModule } from 'angular-oauth2-oidc';
 import { AuthGuard } from './AuthGuard';
 import { StoriesTitleComponent } from './stories/stories-title/stories-title.component';
 import { FooterComponent } from './footer/footer.component';
@@ -67,7 +66,7 @@ import { Fact1Component } from './factoids/fact1/fact1.component';
     ButtonModule,
     BrowserAnimationsModule, AccordionModule, TabMenuModule,
     CardModule, MenuModule,
-    OAuthModule.forRoot(),
+    // OAuthModule.forRoot(),
     RouterModule.forRoot([
       { path: '', component: StoriesComponent },
       { path: 'stories', component: StoriesComponent },

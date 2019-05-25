@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { MenuItem } from 'primeng/components/common/menuitem';
 
 @Component({
   selector: 'app-root',
