@@ -41,6 +41,7 @@ import { NavbarComponent } from './blog/other/navbar/navbar.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { PostTimelineComponent } from './blog/posts/post-timeline/post-timeline.component';
 import { BlogFooterComponent } from './blog/other/blog-footer/blog-footer';
+import { D3Component } from './blog/posts/d3/d3.component';
 
 @NgModule({
   declarations: [
@@ -72,7 +73,8 @@ import { BlogFooterComponent } from './blog/other/blog-footer/blog-footer';
     NewFrontComponent,
     NavbarComponent,
     BlogFooterComponent,
-    PostTimelineComponent
+    PostTimelineComponent,
+    D3Component
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

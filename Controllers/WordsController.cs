@@ -29,6 +29,12 @@ namespace FactFluxV3.Controllers
             _context = context;
         }
 
+        //public ActionResult Index()
+        //{
+        //    return View(context);
+
+        //}
+
         // GET: api/Words
         [RoleAuth]
         [HttpGet]
