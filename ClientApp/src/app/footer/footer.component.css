@@ -5,6 +5,10 @@
   html, body {
     height: 100%;
   }
+
+  /* .footer{
+    width: 500px;
+  } */
   
   body {
     font: 11px "Open Sans", sans-serif;
@@ -36,6 +40,7 @@
   
   .flex-rw {
     display: flex;
+    width: 100% !important;
     flex-flow: row wrap;
   }
   
