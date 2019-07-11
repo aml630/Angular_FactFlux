@@ -88,11 +88,11 @@ export class TimelineComponent implements OnInit {
 
   GetImage() {
     this.showSpinner = true;
-    let path = `api/Images/${this.word}`;
-
+    const path = `api/Images/${this.word}`;
     this.http.get<Images[]>(this.base + path).subscribe(result => {
-      this.imageLocation = result[0].imageLocation;
-      console.log('image: ' + this.imageLocation);
+      if (result[0]) {
+        this.imageLocation = result[0].imageLocation;
+      }
     }, error => console.error(error));
   }
 
