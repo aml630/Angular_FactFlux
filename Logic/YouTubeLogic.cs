@@ -76,6 +76,19 @@ namespace FactFluxV3.Logic
             searchListRequest.ChannelId = channelId;
             searchListRequest.Order = 0;
 
+
+            try
+            {
+
+                var searchLasistResponse = searchListRequest.Execute();
+
+            }
+            catch (Exception ex)
+            {
+                var test = ex.Message;
+            }
+
+
             var searchListResponse = searchListRequest.Execute();
 
             newVids = new List<SearchResult>(searchListResponse.Items);

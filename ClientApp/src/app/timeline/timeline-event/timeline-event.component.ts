@@ -15,7 +15,7 @@ export class TimelineEventComponent implements OnInit {
   @ViewChild('tweet', { read: ElementRef }) tweet: ElementRef;
 
   ngOnInit() {
-    console.log(this.article)
+ 
   }
 
   ngAfterViewInit(): void {

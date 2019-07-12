@@ -68,7 +68,7 @@ namespace FactFluxV3.Logic
 
             using (DB_A41BC9_aml630Context db = new DB_A41BC9_aml630Context())
             {
-                var isDupe = db.Article.Where(x => x.ArticleTitle == newArticleLinke.ArticleTitle || x.ArticleUrl == x.ArticleUrl).FirstOrDefault();
+                var isDupe = db.Article.Where(x => x.ArticleTitle == newArticleLinke.ArticleTitle || x.ArticleUrl == newArticleLinke.ArticleUrl).FirstOrDefault();
 
                 if (isDupe != null)
                 {
