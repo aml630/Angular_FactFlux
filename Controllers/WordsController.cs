@@ -76,6 +76,7 @@ namespace FactFluxV3.Controllers
         }
 
         // PUT: api/Words/5
+        [RoleAuth]
         [HttpPut("{id}")]
         public async Task<IActionResult> PutWords([FromRoute] int id, [FromBody] Words words)
         {
@@ -111,6 +112,7 @@ namespace FactFluxV3.Controllers
         }
 
         // POST: api/Words
+        [RoleAuth]
         [HttpPost]
         public async Task<IActionResult> PostWords([FromBody] Words words)
         {
@@ -129,6 +131,7 @@ namespace FactFluxV3.Controllers
             return CreatedAtAction("GetWords", new { id = words.WordId }, words);
         }
 
+        [RoleAuth]
         [HttpPost("AddImage/{contentType}/{contentId}")]
         public async Task<IActionResult> PostImageToWord([FromRoute] string contentType, int contentId, string hotLink = null)
         {
@@ -152,6 +155,7 @@ namespace FactFluxV3.Controllers
             return Ok();
         }
 
+        [RoleAuth]
         private void CreateImageFromHotlink(string contentType, int contentId, string hotLink, Images findImage)
         {
             if (findImage==null)
@@ -175,6 +179,7 @@ namespace FactFluxV3.Controllers
         }
 
         // DELETE: api/Words/5
+        [RoleAuth]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteWords([FromRoute] int id)
         {

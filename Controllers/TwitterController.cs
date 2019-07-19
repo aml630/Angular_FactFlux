@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using FactFluxV3.Models;
 using Microsoft.Extensions.Configuration;
 using FactFluxV3.Logic;
+using FactFluxV3.Attribute;
 
 namespace FactFluxV3.Controllers
 {
@@ -23,7 +24,7 @@ namespace FactFluxV3.Controllers
             Configuration = configuration;
         }
 
-
+        [RoleAuth]
         [HttpPost("AddUser/{twitterUser}")]
         public TwitterUsers CreateTwitterUser([FromRoute] string twitterUser)
         {
@@ -88,6 +89,7 @@ namespace FactFluxV3.Controllers
             return Ok(twitterUsers);
         }
 
+        [RoleAuth]
         // PUT: api/Twitter/5
         [HttpPut("{id}")]
         public async Task<IActionResult> PutTwitterUsers([FromRoute] int id, [FromBody] TwitterUsers twitterUsers)
@@ -131,6 +133,7 @@ namespace FactFluxV3.Controllers
         }
 
         // POST: api/Twitter
+        [RoleAuth]
         [HttpPost]
         public async Task<IActionResult> PostTwitterUsers([FromBody] TwitterUsers twitterUsers)
         {
@@ -155,6 +158,7 @@ namespace FactFluxV3.Controllers
         }
 
         // DELETE: api/Twitter/5
+        [RoleAuth]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTwitterUsers([FromRoute] int id)
         {

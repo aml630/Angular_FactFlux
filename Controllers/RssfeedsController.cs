@@ -12,6 +12,7 @@ using FactFluxV3.Logic;
 using Microsoft.Extensions.Configuration;
 using Hangfire;
 using Microsoft.Extensions.Caching.Memory;
+using FactFluxV3.Attribute;
 
 namespace FactFluxV3.Controllers
 {
@@ -60,6 +61,7 @@ namespace FactFluxV3.Controllers
         }
 
         // PUT: api/Rssfeeds/5
+        [RoleAuth]
         [HttpPut("{id}")]
         public async Task<IActionResult> PutRssfeeds([FromRoute] int id, [FromBody] Rssfeeds rssfeeds)
         {
@@ -97,6 +99,7 @@ namespace FactFluxV3.Controllers
         }
 
         // POST: api/Rssfeeds
+        [RoleAuth]
         [HttpPost]
         public async Task<IActionResult> PostRssfeeds([FromBody] Rssfeeds rssfeeds)
         {
@@ -122,6 +125,7 @@ namespace FactFluxV3.Controllers
         }
 
         // DELETE: api/Rssfeeds/5
+        [RoleAuth]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteRssfeeds([FromRoute] int id)
         {
@@ -151,6 +155,7 @@ namespace FactFluxV3.Controllers
             return Context.Rssfeeds.Any(e => e.FeedId == id);
         }
 
+        [RoleAuth]
         [HttpPost("{id}/GetArticles")]
         public List<Article> GetFeedArticles([FromRoute] int id)
         {
@@ -193,6 +198,7 @@ namespace FactFluxV3.Controllers
             return articleList;
         }
 
+        [RoleAuth]
         [HttpPost("CreateDailyCheck")]
         public string CreateDailyCheck()
         {

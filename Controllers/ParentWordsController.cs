@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using FactFluxV3.Models;
 using FactFluxV3.Logic;
+using FactFluxV3.Attribute;
 
 namespace FactFluxV3.Controllers
 {
@@ -59,6 +60,7 @@ namespace FactFluxV3.Controllers
         }
 
         // PUT: api/ParentWords/5
+        [RoleAuth]
         [HttpPut("{id}")]
         public async Task<IActionResult> PutParentWords([FromRoute] int id, [FromBody] ParentWords parentWords)
         {
@@ -94,6 +96,7 @@ namespace FactFluxV3.Controllers
         }
 
         // POST: api/ParentWords
+        [RoleAuth]
         [HttpPost]
         public async Task<IActionResult> PostParentWords([FromBody] ParentWords parentWords)
         {
@@ -109,6 +112,7 @@ namespace FactFluxV3.Controllers
         }
 
         // POST: api/ParentWords
+        [RoleAuth]
         [HttpPost("{parentWord}/{childWord}")]
         public async Task<IActionResult> PostParentWordFromStrings([FromRoute] string parentWord, [FromRoute] string childWord)
         {
@@ -164,6 +168,7 @@ namespace FactFluxV3.Controllers
             return CreatedAtAction("GetParentWords", new { id = newParentWord.WordJoinId }, newParentWord);
         }
         // DELETE: api/ParentWords/5
+        [RoleAuth]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteParentWords([FromRoute] int id)
         {

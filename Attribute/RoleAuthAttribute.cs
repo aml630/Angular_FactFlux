@@ -22,6 +22,11 @@ namespace FactFluxV3.Attribute
             var newdbContext = new FactFluxIdentity(optionsBuilder.Options);
             var userClaims = context.HttpContext.User.Identities.FirstOrDefault().Claims;
 
+            if (userClaims == null || userClaims.Count() == 0)
+            {
+                context.Result = new ForbidResult();
+            }
+
             var userId = userClaims.FirstOrDefault().Value.ToString();
 
             using (newdbContext)
@@ -38,7 +43,7 @@ namespace FactFluxV3.Attribute
                                where r.Name == "Admin" && ur.UserId == userId
                                select ur).FirstOrDefault();
 
-                if(isAdmin==null)
+                if (isAdmin == null)
                 {
                     context.Result = new ForbidResult();
                 }

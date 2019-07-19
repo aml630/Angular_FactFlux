@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using FactFluxV3.Models;
+using FactFluxV3.Attribute;
 
 namespace FactFluxV3.Controllers
 {
@@ -70,6 +71,7 @@ namespace FactFluxV3.Controllers
         }
 
         // PUT: api/Images/5
+        [RoleAuth]
         [HttpPut("{id}")]
         public async Task<IActionResult> PutImages([FromRoute] int id, [FromBody] Images images)
         {
@@ -105,6 +107,7 @@ namespace FactFluxV3.Controllers
         }
 
         // POST: api/Images
+        [RoleAuth]
         [HttpPost]
         public async Task<IActionResult> PostImages([FromBody] Images images)
         {
@@ -120,6 +123,7 @@ namespace FactFluxV3.Controllers
         }
 
         // DELETE: api/Images/5
+        [RoleAuth]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteImages([FromRoute] int id)
         {

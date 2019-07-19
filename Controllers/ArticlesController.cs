@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using FactFluxV3.Models;
 using FactFluxV3.Logic;
 using Microsoft.Extensions.Caching.Memory;
+using FactFluxV3.Attribute;
 
 namespace FactFluxV3.Controllers
 {
@@ -82,6 +83,7 @@ namespace FactFluxV3.Controllers
         }
 
         // PUT: api/Articles/5
+        [RoleAuth]
         [HttpPut("{id}")]
         public async Task<IActionResult> PutArticle([FromRoute] int id, [FromBody] Article article)
         {
@@ -117,6 +119,7 @@ namespace FactFluxV3.Controllers
         }
 
         // POST: api/Articles
+        [RoleAuth]
         [HttpPost]
         public async Task<IActionResult> PostArticle([FromBody] Article article)
         {
@@ -132,6 +135,7 @@ namespace FactFluxV3.Controllers
         }
 
         // DELETE: api/Articles/5
+        [RoleAuth]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteArticle([FromRoute] int id)
         {

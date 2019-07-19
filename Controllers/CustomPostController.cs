@@ -24,12 +24,22 @@ namespace FactFluxV3.Controllers
             return View();
         }
 
-
-        [Route("yay")]
-        public async Task<IActionResult> Index()
+        [Route("d3")]
+        public async Task<IActionResult> d3()
         {
             return View();
         }
 
+        //[Route("/.well-known/acme-challenge/AGfzRiDJYKfreVjGirmnihaObMRCGx2rfQB916xbjQQ")]
+        //public async Task<IActionResult> acmetwo()
+        //{
+        //    return View();
+        //}
+
+        //[Route("/.well-known/acme-challenge/21pJAlcq6RTcy3WcXf-jeCAg8QZPhyI_gLAL9ZPqOSw")]
+        //public async Task<IActionResult> acmeone()
+        //{
+        //    return View();
+        //}
     }
 }
