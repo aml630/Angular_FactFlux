@@ -18,7 +18,7 @@ namespace FactFluxV3.Controllers
             _context = context;
         }
 
-        [Route("")]
+        [Route("blog")]
         public async Task<IActionResult> Front()
         {
             return View();

@@ -1,6 +1,10 @@
 ﻿@{
     Layout = null;
 }
+
+<head>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+</head>
 <link href="~/fonts/fontawesome/css/font-awesome.min.css" rel="stylesheet" />
 <body>
     <div class="sidebar-wrapper">
@@ -19,7 +23,8 @@
             </nav>*@ -->
             <div class="social-link-group">
                 <!-- @*<a class="social-icon-link w-inline-block" href="#"><i class="fa fa-facebook"></i></a>*@ -->
-                <a class="social-icon-link w-inline-block" href="#"><i class="fa fa-twitter"></i></a>
+                <a class="social-icon-link w-inline-block" href="https://twitter.com/intent/tweet/?url=https://factflux.com/" OnClick="window.open(this.href,'targetWindow','toolbar=no,location=0,status=no,menubar=no,scrollbars=yes,resizable=yes,width=600,height=250'); return false;"><i class="fa fa-twitter"></i></a>
+                <a class="social-icon-link w-inline-block" href="https://www.facebook.com/sharer/sharer.php?u=https://factflux.com/" OnClick="window.open(this.href,'targetWindow','toolbar=no,location=0,status=no,menubar=no,scrollbars=yes,resizable=yes,width=600,height=250'); return false;"><i class="fa fa-facebook"></i></a>
             </div>
         </div>
     </div>
@@ -53,9 +58,9 @@
             <div class="w-dyn-items">
                 <div class="w-dyn-item">
                     <div class="post-wrapper">
-                        <a class="blog-image w-inline-block" href="/timeline" style="background-image: url('/images/timelinePic.png');"></a>
+                        <a class="blog-image w-inline-block" href="/" style="background-image: url('/images/timelinePic.png');"></a>
                         <div class="post-content">
-                            <a class="blog-title-link w-inline-block" href="/timeline">
+                            <a class="blog-title-link w-inline-block" href="/">
                                 <h1 class="blog-title">News Timeline Tracker</h1>
                             </a>
                             <div class="post-summary-wrapper">
@@ -63,7 +68,7 @@
                                     A tool for tracking how different topics are reported
                                     over time across different organizations and mediums.
                                 </p>
-                                <a class="read-more-link" href="/timeline">Read more...</a>
+                                <a class="read-more-link" href="/">Read more...</a>
                             </div>
                             <div class="post-info-wrapper">
                                 <div class="post-info">July 10 2019</div>
@@ -82,3 +87,4 @@
 </body>
 
 <link href="~/layoutcss/style.css" rel="stylesheet" />
+

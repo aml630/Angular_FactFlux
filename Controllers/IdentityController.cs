@@ -24,6 +24,7 @@ namespace FactFluxV3.Controllers
             UserManager = userManager;
             FactFluxIdentityContext = factFluxIdentity;
         }
+
         [HttpGet]
         public async Task<IdentityUser> Get()
         {

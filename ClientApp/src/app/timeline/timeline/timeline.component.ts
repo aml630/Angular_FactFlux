@@ -92,6 +92,7 @@ export class TimelineComponent implements OnInit {
     this.http.get<Images[]>(this.base + path).subscribe(result => {
       if (result[0]) {
         this.imageLocation = result[0].imageLocation;
+        console.log(this.imageLocation);
       }
     }, error => console.error(error));
   }

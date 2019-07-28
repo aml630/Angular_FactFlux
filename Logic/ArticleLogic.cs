@@ -26,6 +26,8 @@ namespace FactFluxV3.Logic
             string articleTitle = articleItem.Title.Text;
             articleTitle = articleTitle.Replace("&#8216;", "");
             articleTitle = articleTitle.Replace("&#8217;", "");
+            articleTitle = articleTitle.Replace("&apos;", "");
+            articleTitle = articleTitle.Replace("&rsquo;", "");
 
             newArticleLinke.ArticleTitle = articleTitle;
             newArticleLinke.ArticleUrl = articleItem.Links[0].Uri.AbsoluteUri;
@@ -56,9 +58,11 @@ namespace FactFluxV3.Logic
         {
             var newArticleLinke = new Article();
 
-            string articleTitle = video.Snippet.Title;
+            string videoTitle = video.Snippet.Title;
+            videoTitle = videoTitle.Replace("&#39;", "");
+            videoTitle = videoTitle.Replace("&amp;", "");
 
-            newArticleLinke.ArticleTitle = articleTitle;
+            newArticleLinke.ArticleTitle = videoTitle;
             newArticleLinke.ArticleUrl = video.Id.VideoId;
             newArticleLinke.DatePublished = video.Snippet.PublishedAt ?? DateTime.UtcNow;
             newArticleLinke.DateAdded = DateTime.UtcNow;

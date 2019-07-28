@@ -68,7 +68,7 @@ import { Fact1Component } from './factoids/fact1/fact1.component';
     CardModule, MenuModule,
     // OAuthModule.forRoot(),
     RouterModule.forRoot([
-      { path: 'timeline', component: StoriesComponent },
+      { path: '', component: StoriesComponent },
       { path: 'stories', component: StoriesComponent },
       { path: 'about', component: AboutComponent },
       { path: 'timeline/:word', component: TimelineComponent },

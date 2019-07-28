@@ -10,7 +10,8 @@
 
 .searchForm {
   border-radius: 15px;
-  margin-top: 15px;
+  margin-top: 7px;
+  height: 30px;
 }
 
 .image {
@@ -173,4 +174,10 @@ hr {
 
 .utility-list li.date {
   background: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/1765/icon-calendar.svg) no-repeat 0 0.1em;
+}
+
+@media only screen and (max-width: 400px) {
+  .storyBox {
+    margin: 3px;
+  }
 }
