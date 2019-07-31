@@ -202,12 +202,12 @@
 }
 
 .filterSection {
-  padding:20px;
+  padding:10px;
   text-align: center;
   border: .5px solid#D3D3D3;
   margin: 15px;
-  margin-left: 15%;
-  margin-right: 15%;
+  /* margin-left: 15%;
+  margin-right: 15%; */
 }
 
 .filterSection h3 {
@@ -219,12 +219,15 @@
   flex-wrap: wrap;
   justify-content: center;
   margin-right: 50px;
+  background-size: 300px;
 }
 
 .titleSection h1 {
   padding-top: 15px;
-  font-family: 'Fjalla One', sans-serif;
-  text-shadow: #533d4a 1px 1px, #533d4a 2px 2px, #533d4a 3px 3px, #533d4a 4px 4px, #533d4a 5px 5px, #533d4a 6px 6px;
+  color: black;
+  font-size: 30px;
+  /* font-family: 'Fjalla One', sans-serif; */
+  /* text-shadow: #533d4a 1px 1px, #533d4a 2px 2px, #533d4a 3px 3px, #533d4a 4px 4px, #533d4a 5px 5px, #533d4a 6px 6px; */
   display: block;
   position: relative;
   margin-top: 20px;
@@ -415,7 +418,7 @@ header h1 {
   position: absolute;
   top: 0;
   left: 18px;
-  height: 110%;
+  height: 125%;
   width: 4px;
   background: #d7e4ed;
 }
@@ -819,5 +822,28 @@ header h1 {
 @media only screen and (max-width: 400px) {
   .font--cabin {
     font-size: 24px;
+  }
+  .titleSection h1 {
+    font-size: 20px;
+  }
+  
+  .titleSection img {
+    height: 50px;
+    width: 50px;
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  .btn-3-video{
+    font-size: 10px;
+  }
+  .btn-3-news{
+    font-size: 10px;
+  }
+  .btn-3-twitter{
+    font-size: 10px;
+  }
+  .filterSection {
+    padding: 0px;
   }
 }
