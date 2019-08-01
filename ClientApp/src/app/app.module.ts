@@ -32,6 +32,8 @@ import { SpinnerComponent } from './spinner/spinner.component';
 import { TimelineComponent } from './timeline/timeline/timeline.component';
 import { Post1Component } from './factoids/post1/post1.component';
 import { Fact1Component } from './factoids/fact1/fact1.component';
+import { GraphComponent } from './timeline/timeline/graph/graph.component';
+// import { ChartsModule } from 'ng2-charts';
 
 @NgModule({
   declarations: [
@@ -56,7 +58,8 @@ import { Fact1Component } from './factoids/fact1/fact1.component';
     Graph1Component,
     SpinnerComponent,
     Post1Component,
-    Fact1Component
+    Fact1Component,
+    GraphComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
