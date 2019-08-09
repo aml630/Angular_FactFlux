@@ -148,6 +148,19 @@ header h1 {
   }
 }
 
+.tweetFact {
+  margin-left: 20px;
+  font-size:25px;
+ color:transparent;
+ /* color: transparent; */
+ -webkit-text-stroke-width: 2px;
+ -webkit-text-stroke-color: lightgray;
+}
+
+.tweetFact:hover {
+ -webkit-text-stroke-color: lightblue;
+}
+
 .cd-timeline-img {
   position: absolute;
   top: 0;
@@ -156,15 +169,16 @@ header h1 {
   height: 40px;
   border-radius: 50%;
   box-shadow: 0 0 0 4px #ffffff, inset 0 2px 0 rgba(0, 0, 0, 0.08), 0 3px 0 4px rgba(0, 0, 0, 0.05);
+  background-color: #75ce66;
 }
 
-.cd-timeline-img img {
+.cd-timeline-img i {
   display: block;
-  width: 24px;
-  height: 24px;
+  font-size: 30px;
+  color: blanchedalmond;
   position: relative;
-  left: 50%;
-  top: 50%;
+  left: 48%;
+  top: 43%;
   margin-left: -12px;
   margin-top: -12px;
 }
