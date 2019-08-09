@@ -13,6 +13,7 @@ import { CardModule } from 'primeng/card';
 import { AccordionModule } from 'primeng/accordion';
 import { TabMenuModule } from 'primeng/tabmenu';
 import { MenuModule } from 'primeng/menu';
+import { ChartModule} from 'primeng/chart';
 import { HeaderComponent } from './admin-components/admin-header/admin-header.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { TwitterUsersComponent } from './admin-components/twitter-users/twitter-users.component';
@@ -34,6 +35,10 @@ import { Post1Component } from './factoids/post1/post1.component';
 import { Fact1Component } from './factoids/fact1/fact1.component';
 import { TimelineStyleComponent } from './blog/timeline-style/timeline-style.component';
 import { TimelineHeaderComponent } from './blog/timeline-style/timeline-header/timeline-header.component';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { ChartjsComponent } from './blog/chartjs/chartjs.component';
+
+
 
 @NgModule({
   declarations: [
@@ -60,7 +65,8 @@ import { TimelineHeaderComponent } from './blog/timeline-style/timeline-header/t
     Post1Component,
     Fact1Component,
     TimelineStyleComponent,
-    TimelineHeaderComponent
+    TimelineHeaderComponent,
+    ChartjsComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -69,7 +75,7 @@ import { TimelineHeaderComponent } from './blog/timeline-style/timeline-header/t
     ReactiveFormsModule,
     ButtonModule,
     BrowserAnimationsModule, AccordionModule, TabMenuModule,
-    CardModule, MenuModule,
+    CardModule, MenuModule, NgxChartsModule, ChartModule,
     // OAuthModule.forRoot(),
     RouterModule.forRoot([
       { path: '', component: StoriesComponent },
