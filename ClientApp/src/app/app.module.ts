@@ -32,6 +32,8 @@ import { SpinnerComponent } from './spinner/spinner.component';
 import { TimelineComponent } from './timeline/timeline/timeline.component';
 import { Post1Component } from './factoids/post1/post1.component';
 import { Fact1Component } from './factoids/fact1/fact1.component';
+import { TimelineStyleComponent } from './blog/timeline-style/timeline-style.component';
+import { TimelineHeaderComponent } from './blog/timeline-style/timeline-header/timeline-header.component';
 
 @NgModule({
   declarations: [
@@ -56,7 +58,9 @@ import { Fact1Component } from './factoids/fact1/fact1.component';
     Graph1Component,
     SpinnerComponent,
     Post1Component,
-    Fact1Component
+    Fact1Component,
+    TimelineStyleComponent,
+    TimelineHeaderComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -73,7 +77,7 @@ import { Fact1Component } from './factoids/fact1/fact1.component';
       { path: 'about', component: AboutComponent },
       { path: 'timeline/:word', component: TimelineComponent },
       { path: 'privacy', component: PrivacyComponent },
-      { path: 'post1', component: Post1Component},
+      { path: 'post1', component: TimelineStyleComponent},
       { path: 'factoids', component: FactoidsComponent},
       {
         path: '',
