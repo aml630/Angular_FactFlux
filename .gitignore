@@ -1,0 +1,15 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/appsettings.json
+/bin/Debug/netcoreapp2.1
+/.vs/FactFluxV3/v15
+/.vs/config
+/ClientApp/node_modules
+/obj/Debug/netcoreapp2.1
+/ClientApp/src/.vscode
+/obj
+/appsettings.Development.json
+/Properties/launchSettings.json
+*.csproj
