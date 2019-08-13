@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using FactFluxV3.Models;
+using FactFluxV3.Attribute;
 
 namespace FactFluxV3.Controllers
 {
@@ -13,9 +14,9 @@ namespace FactFluxV3.Controllers
     [ApiController]
     public class ImagesController : ControllerBase
     {
-        private readonly FactFluxV3Context _context;
+        private readonly DB_A41BC9_aml630Context _context;
 
-        public ImagesController(FactFluxV3Context context)
+        public ImagesController(DB_A41BC9_aml630Context context)
         {
             _context = context;
         }
@@ -46,7 +47,31 @@ namespace FactFluxV3.Controllers
             return Ok(images);
         }
 
+        // GET: api/Images/5
+        [HttpGet("{word}")]
+        public async Task<IActionResult> GetImageFromWord([FromRoute] string word)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            string spacedWord = word.Replace("-", " ");
+
+            var findWord = await _context.Words.Where(x => x.Word.ToLower() == spacedWord.ToLower()).FirstOrDefaultAsync();
+
+            var images = await _context.Images.Where(x => x.ContentType == "Word" && x.ContentId == findWord.WordId).ToListAsync();
+
+            if (images == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(images);
+        }
+
         // PUT: api/Images/5
+        [RoleAuth]
         [HttpPut("{id}")]
         public async Task<IActionResult> PutImages([FromRoute] int id, [FromBody] Images images)
         {
@@ -82,6 +107,7 @@ namespace FactFluxV3.Controllers
         }
 
         // POST: api/Images
+        [RoleAuth]
         [HttpPost]
         public async Task<IActionResult> PostImages([FromBody] Images images)
         {
@@ -97,6 +123,7 @@ namespace FactFluxV3.Controllers
         }
 
         // DELETE: api/Images/5
+        [RoleAuth]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteImages([FromRoute] int id)
         {

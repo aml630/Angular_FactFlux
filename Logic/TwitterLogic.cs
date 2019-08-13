@@ -29,26 +29,26 @@ namespace FactFluxV3.Logic
         }
 
 
-            public List<Tweets> GetTweetsForUser(TwitterUsers twitterUser)
+        public List<Tweets> GetTweetsForUser(TwitterUsers twitterUser)
         {
             Auth.SetUserCredentials(Configuration["IntegrationSettings:Twitter:ConsumerKey"],
                                     Configuration["IntegrationSettings:Twitter:ConsumerSecret"],
                                     Configuration["IntegrationSettings:Twitter:AccessToken"],
                                     Configuration["IntegrationSettings:Twitter:AccessTokenSecret"]);
 
-            var realTwitterUser =  User.GetUserFromScreenName(twitterUser.TwitterUsername);
+            var realTwitterUser = User.GetUserFromScreenName(twitterUser.TwitterUsername);
 
             var recentUserTweets = Timeline.GetUserTimeline(realTwitterUser.Id, 10);
 
             List<Tweets> foundTweets = new List<Tweets>();
 
-            using (var db = new FactFluxV3Context())
+            using (var db = new DB_A41BC9_aml630Context())
             {
                 var lookupUser = db.TwitterUsers.Where(x => x.TwitterUserId == twitterUser.TwitterUserId).FirstOrDefault();
 
                 lookupUser.Image = realTwitterUser.ProfileImageUrl;
 
-                foreach (var tweet in recentUserTweets)
+                foreach (var tweet in recentUserTweets.Where(x=>!x.IsRetweet))
                 {
                     var newTweet = new Tweets()
                     {
@@ -67,11 +67,19 @@ namespace FactFluxV3.Logic
                     }
                     else
                     {
-                        newTweet.EmbedHtml = Tweet.GetOEmbedTweet(tweet.Id).HTML;
+                        if (tweet != null && tweet.Id != null)
+                        {
+                            var getEmbed = Tweet.GetOEmbedTweet(tweet.Id);
 
-                        db.Tweets.Add(newTweet);
+                            if (getEmbed != null)
+                            {
+                                newTweet.EmbedHtml = getEmbed.HTML;
 
-                        db.SaveChanges();
+                                db.Tweets.Add(newTweet);
+
+                                db.SaveChanges();
+                            }
+                        }
                     }
 
                     foundTweets.Add(newTweet);
@@ -85,7 +93,7 @@ namespace FactFluxV3.Logic
         {
             List<TwitterUsers> listOfAccounts;
 
-            using (var db = new FactFluxV3Context())
+            using (var db = new DB_A41BC9_aml630Context())
             {
                 listOfAccounts = db.TwitterUsers.ToList();
             }
@@ -98,6 +106,30 @@ namespace FactFluxV3.Logic
             }
 
             return listOfAccounts;
+        }
+
+        public List<Tweets> GetAllResourcesFromTwitterUser(TwitterUsers twitterUser)
+        {
+            var tweetList = GetTweetsForUser(twitterUser);
+
+            return tweetList;
+        }
+
+        public List<Tweets> GetAllTweetsForUserName(string twitterUserName)
+        {
+            using (var db = new DB_A41BC9_aml630Context())
+            {
+                var twitterUser = db.TwitterUsers.Where(x => x.TwitterUsername.ToLower() == twitterUserName.ToLower()).FirstOrDefault();
+
+                if (twitterUser == null)
+                {
+                    throw new Exception("Twitter name does not exist in FactFlux");
+                }
+
+                var tweetList = GetTweetsForUser(twitterUser);
+
+                return tweetList;
+            }
         }
     }
 }

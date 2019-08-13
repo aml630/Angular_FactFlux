@@ -1,0 +1,13 @@
+.border {
+ border: 3px solid gray;
+}
+
+.feedBox{
+    border: 1px solid black;
+}
+
+.feedEdit {
+    /* position: fixed;
+    left: 50%; */
+    width: 350px;
+}

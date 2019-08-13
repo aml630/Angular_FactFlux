@@ -1,0 +1,59 @@
+<div class='col-sm-7 body-content'>
+  <button class="btn-primary" (click)="GetAllArticles()">Get ALL Articles</button>
+  <button class="btn-primary" (click)="CreateDailyCheck()">Create Daily Check</button>
+
+  <ul>
+    <li *ngFor="let feed of foundFeeds">
+      <div class="feedBox"></div>
+      <h5>{{feed.feedTitle}}</h5>
+      <img height=50 width=50 src={{feed.feedImage}}>
+      <button class="btn-danger" onclick="return confirm('Are you sure?')"
+        (click)="DeleteFeed(feed.feedId)">Delete</button>
+      <button class="btn-warning" (click)="FillEdit(feed)">Edit</button>
+      <button class="btn-success" (click)="GetArticles(feed.feedId)">Get Articles</button>
+    </li>
+  </ul>
+</div>
+
+<p *ngFor="let article of foundArticles">{{article.articleTitle}}</p>
+
+<div class='col-sm-5 feedEdit'>
+  <form *ngIf="showEdit" [formGroup]="form" class="form-group border">
+    <label>Feed Title</label>
+    <input class="form-control" formControlName="feedTitle">
+    <label>Feed Link</label>
+    <input class="form-control" formControlName="feedLink">
+    <label>Feed Image</label>
+    <input class="form-control" formControlName="feedImage">
+    <label>Video Link</label>
+    <input class="form-control" formControlName="videoLink">
+    <label>Political Spectrum</label>
+    <input class="form-control" formControlName="politicalSpectrum">
+    <Button class="btn-primary" (click)='UpdateFeed(form.value)'>Update</Button>
+    <Button class="btn-warning" (click)='HideEdit()'>Hide</Button>
+  </form>
+
+  <form #feedForm="ngForm" class="form-group border">
+    <div class="form-group">
+      <label>Feed Title</label>
+      <input class="form-control" name="feedTitle" ngModel>
+    </div>
+    <div class="form-group">
+      <label>Feed Link</label>
+      <input class="form-control" name="feedLink" ngModel>
+    </div>
+    <div class="form-group">
+      <label>Feed Image</label>
+      <input class="form-control" name="feedImage" ngModel>
+    </div>
+    <div class="form-group">
+      <label>Video Link</label>
+      <input class="form-control" name="videoLink" ngModel>
+    </div>
+    <div class="form-group">
+      <label>Political Spectrum</label>
+      <input class="form-control" name="politicalSpectrum" ngModel>
+    </div>
+    <Button class="btn-primary" (click)='CreateFeed(feedForm.value)'> Create New Feed</Button>
+  </form>
+</div>

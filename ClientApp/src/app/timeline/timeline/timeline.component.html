@@ -1,0 +1,54 @@
+<body>
+  <div class="titleSection">
+    <img *ngIf='imageLocation' src={{imageLocation}}>
+    <h1>{{titleWord}}</h1>
+  </div>
+  <hr />
+
+  <div class="filterSection" [ngClass]="{
+    'spectrumBorderColor1': politicalSpectrum.indexOf(9) !== -1, 
+    'spectrumBorderColor2': politicalSpectrum.indexOf(1) !== -1
+    }">
+    <h3 class="filterText">Filters</h3>
+    <button [ngClass]="{'deactivated': articleTypes.indexOf(1) ===-1}" class="btn btn-3 btn-3-news"
+      (click)="toggleType(1)"> <i class="fa fa-bookmark"></i>Articles</button>
+    <button [ngClass]="{'deactivated': articleTypes.indexOf(2) ===-1}" class="btn btn-3 btn-3-video"
+      (click)="toggleType(2)"> <i class="fa fa-youtube"></i>Videos</button>
+    <button [ngClass]="{'deactivated': articleTypes.indexOf(3) ===-1}" class="btn btn-3 btn-3-twitter"
+      (click)="toggleType(3)"> <i class="fa fa-twitter"></i>Tweets</button>
+    <div class="btn btn-3 searchBox">
+      <i class="fa fa-search"></i><input [formControl]="filterLetters">
+    </div>
+
+
+    <!-- <div class="spectrumFilter">
+      <h3 class="filterText">Political Spectrum</h3>
+      <div class="checkBoxWrapper">
+        <div class="roundedOne">
+          <input type="checkbox" value="None" id="roundedOne1" name="check"
+            [checked]="politicalSpectrum.indexOf(1) !== -1" (click)="toggleSpectrum(1)" />
+          <label class="spec1" for="roundedOne1"></label>
+        </div>
+        <div class="roundedOne">
+          <input type="checkbox" value="None" id="roundedOne5" name="check"
+            [checked]="politicalSpectrum.indexOf(5) !== -1" (click)="toggleSpectrum(5)" />
+          <label class="spec5" for="roundedOne5"></label>
+        </div>
+        <div class="roundedOne">
+          <input type="checkbox" value="None" id="roundedOne9" name="check"
+            [checked]="politicalSpectrum.indexOf(9) !== -1" (click)="toggleSpectrum(9)" />
+          <label class="spec9" for="roundedOne9"></label>
+        </div>
+      </div>
+    </div> -->
+  </div>
+
+
+  <app-spinner *ngIf="showSpinner"></app-spinner>
+
+  <section id="cd-timeline" class="cd-container" *ngFor="let art of articles; let i=index">
+    <app-timeline-event [article]="art" [index]="i"></app-timeline-event>
+  </section> 
+
+  <button (click)="getNextPage()" class="showMoreButton">Show More</button>
+</body>

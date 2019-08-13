@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Stories } from '../stories';
+import { Stories } from '../models/stories';
 import { DomSanitizer } from '@angular/platform-browser';
 import { FormControl } from '@angular/forms';
+import { strictEqual } from 'assert';
+import "rxjs/add/operator/debounceTime";
 
 
 @Component({
@@ -21,11 +23,12 @@ export class StoriesComponent implements OnInit {
   wordTypes: number[];
   wordTyping: FormControl;
   storyPageNumber = 0;
+  showSpinner = true;
 
   ngOnInit() {
     this.wordTyping = new FormControl();
     this.wordTyping.valueChanges.debounceTime(400).subscribe(x => {
-      if (x == "") {
+      if (x === '') {
         this.RestoreStories();
       } else {
         this.GetMatchingStories(x);
@@ -35,13 +38,14 @@ export class StoriesComponent implements OnInit {
   }
 
   GetStories() {
+    this.showSpinner = true;
     this.storyPageNumber++;
-    let path = `api/Stories?pageNumber=${this.storyPageNumber}`;
+    const path = `api/Stories?pageNumber=${this.storyPageNumber}`;
     this.http.get<Stories[]>(this.base + path).subscribe(result => {
-      var newBigArray = this.mainStories.concat(result);
+      const newBigArray = this.mainStories.concat(result);
       this.mainStories = newBigArray;
       this.pagedList = this.mainStories;
-      console.log(this.mainStories);
+      this.showSpinner = false;
     }, error => console.error(error));
   }
 
@@ -50,9 +54,11 @@ export class StoriesComponent implements OnInit {
   }
 
   GetMatchingStories(typedStuff: string) {
+    this.showSpinner = true;
     this.http.get<Stories[]>(this.base + `api/Stories/GetMatching/${typedStuff}`)
       .subscribe(result => {
         this.mainStories = result;
+        this.showSpinner = false;
       }, error => console.error(error));
   }
 
@@ -62,7 +68,11 @@ export class StoriesComponent implements OnInit {
     } else {
       this.wordTypes.splice(this.wordTypes.indexOf(type), 1)
     }
-    console.log(this.wordTypes);
+  }
+
+  getRouteString(word: string) {
+    let routeWord = word;
+    return routeWord.replace(/\s+/g, '-').toLowerCase();
   }
 
   photoURL(url: string) {

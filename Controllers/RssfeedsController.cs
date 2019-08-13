@@ -11,6 +11,8 @@ using FactFluxV3.Models;
 using FactFluxV3.Logic;
 using Microsoft.Extensions.Configuration;
 using Hangfire;
+using Microsoft.Extensions.Caching.Memory;
+using FactFluxV3.Attribute;
 
 namespace FactFluxV3.Controllers
 {
@@ -21,12 +23,15 @@ namespace FactFluxV3.Controllers
     {
         private readonly IConfiguration Configuration;
 
-        private readonly FactFluxV3Context Context;
+        private readonly DB_A41BC9_aml630Context Context;
 
-        public RssfeedsController(FactFluxV3Context context, IConfiguration configuration)
+        private readonly IMemoryCache Cache;
+
+        public RssfeedsController(DB_A41BC9_aml630Context context, IConfiguration configuration, IMemoryCache cache)
         {
             Context = context;
             Configuration = configuration;
+            Cache = cache;
         }
 
         // GET: api/Rssfeeds
@@ -56,6 +61,7 @@ namespace FactFluxV3.Controllers
         }
 
         // PUT: api/Rssfeeds/5
+        [RoleAuth]
         [HttpPut("{id}")]
         public async Task<IActionResult> PutRssfeeds([FromRoute] int id, [FromBody] Rssfeeds rssfeeds)
         {
@@ -68,6 +74,8 @@ namespace FactFluxV3.Controllers
             {
                 return BadRequest();
             }
+
+            rssfeeds.LastUpdated = DateTime.UtcNow;
 
             Context.Entry(rssfeeds).State = EntityState.Modified;
 
@@ -91,6 +99,7 @@ namespace FactFluxV3.Controllers
         }
 
         // POST: api/Rssfeeds
+        [RoleAuth]
         [HttpPost]
         public async Task<IActionResult> PostRssfeeds([FromBody] Rssfeeds rssfeeds)
         {
@@ -116,6 +125,7 @@ namespace FactFluxV3.Controllers
         }
 
         // DELETE: api/Rssfeeds/5
+        [RoleAuth]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteRssfeeds([FromRoute] int id)
         {
@@ -130,6 +140,10 @@ namespace FactFluxV3.Controllers
                 return NotFound();
             }
 
+            var articlesTORemove = Context.Article.Where(x => x.FeedId == id);
+
+            Context.Article.RemoveRange(articlesTORemove);
+
             Context.Rssfeeds.Remove(rssfeeds);
             await Context.SaveChangesAsync();
 
@@ -141,6 +155,7 @@ namespace FactFluxV3.Controllers
             return Context.Rssfeeds.Any(e => e.FeedId == id);
         }
 
+        [RoleAuth]
         [HttpPost("{id}/GetArticles")]
         public List<Article> GetFeedArticles([FromRoute] int id)
         {
@@ -148,7 +163,7 @@ namespace FactFluxV3.Controllers
 
             List<Article> articleList;
 
-            using (FactFluxV3Context db = new FactFluxV3Context())
+            using (DB_A41BC9_aml630Context db = new DB_A41BC9_aml630Context())
             {
                 foundFeed = db.Rssfeeds.Where(x => x.FeedId == id).FirstOrDefault();
             }
@@ -160,26 +175,55 @@ namespace FactFluxV3.Controllers
 
         public List<Article> GetAllResourcesFromFeed(Rssfeeds foundFeed)
         {
-            List<Article> articleList;
-            var articleLogic = new ArticleLogic();
+            List<Article> articleList = new List<Article>();
 
-            articleList = articleLogic.CheckNewsEntityForArticles(foundFeed);
+            if (!string.IsNullOrEmpty(foundFeed.FeedLink))
+            {
+                var articleLogic = new ArticleLogic(Cache);
 
-            var newYouTubeLogic = new YouTubeLogic(Configuration);
+                var feedArticles = articleLogic.CheckNewsEntityForArticles(foundFeed);
 
-            var vidList = newYouTubeLogic.CheckNewsEntityForVideos(foundFeed);
+                articleList.AddRange(feedArticles);
+            }
 
-            articleList.AddRange(vidList);
+            if (!string.IsNullOrEmpty(foundFeed.VideoLink))
+            {
+                var newYouTubeLogic = new YouTubeLogic(Configuration, Cache);
+
+                var vidList = newYouTubeLogic.CheckNewsEntityForVideos(foundFeed);
+
+                articleList.AddRange(vidList);
+            }
+
             return articleList;
         }
 
-        public List<Tweets> GetAllResourcesFromTwitterUser(TwitterUsers twitterUser)
+        [RoleAuth]
+        [HttpPost("CreateDailyCheck")]
+        public string CreateDailyCheck()
         {
-            var twitterLogic = new TwitterLogic(Configuration);
+            List<Rssfeeds> allFeeds;
 
-            var tweetList = twitterLogic.GetTweetsForUser(twitterUser);
-            
-            return tweetList;
+            using (DB_A41BC9_aml630Context db = new DB_A41BC9_aml630Context())
+            {
+                allFeeds = db.Rssfeeds.ToList();
+
+                foreach (var feed in allFeeds)
+                {
+                    RecurringJob.AddOrUpdate("RSS:-" + feed.FeedTitle, () => GetAllResourcesFromFeed(feed), Cron.Daily);
+                }
+
+                var allTwitterAccounts = db.TwitterUsers.ToList();
+
+                var twitterLogic = new TwitterLogic(Configuration);
+
+                foreach (var twtUser in allTwitterAccounts)
+                {
+                    RecurringJob.AddOrUpdate("Twtr:-" + twtUser.TwitterUsername, () => twitterLogic.GetAllResourcesFromTwitterUser(twtUser), Cron.Daily);
+                }
+            }
+
+            return "Success";
         }
 
         [HttpPost("GetAllArticles")]
@@ -187,7 +231,7 @@ namespace FactFluxV3.Controllers
         {
             List<Rssfeeds> allFeeds;
 
-            using (FactFluxV3Context db = new FactFluxV3Context())
+            using (DB_A41BC9_aml630Context db = new DB_A41BC9_aml630Context())
             {
                 allFeeds = db.Rssfeeds.ToList();
 
@@ -198,9 +242,11 @@ namespace FactFluxV3.Controllers
 
                 var allTwitterAccounts = db.TwitterUsers.ToList();
 
+                var twitterLogic = new TwitterLogic(Configuration);
+
                 foreach (var twtUser in allTwitterAccounts)
                 {
-                    BackgroundJob.Enqueue(() => GetAllResourcesFromTwitterUser(twtUser));
+                    BackgroundJob.Enqueue(() => twitterLogic.GetAllResourcesFromTwitterUser(twtUser));
                 }
             }
 

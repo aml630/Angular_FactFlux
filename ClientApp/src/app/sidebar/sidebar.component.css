@@ -1,16 +1,29 @@
+
 .sidebar-content {
-  height: 1000px;
+  height: auto;
+  min-height: 400px;
   background: #FFF;
   padding: 5px;
+  position: fixed !important;
+  width: 10%;
+  margin-top: 20px;
+  /* z-index: 1;
+  top: 20px;
+  left: 10px;
+  background: #eee;
+  overflow-x: hidden;
+  padding: 8px 0; */
 }
 
 .fa-twitter {
   color: #38A1F3;
+  width:80%;
 }
 
 .fa-facebook {
   color: #4267b2;
   margin-left: -11px;
+  width:80%;
 }
 
 .shareSection {
@@ -32,4 +45,12 @@
   -webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
   -moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
+}
+
+@media only screen and (max-width: 600px) {
+  .sidebar-content {
+
+    position: relative;
+
+  }
 }

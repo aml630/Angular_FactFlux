@@ -9,6 +9,12 @@ using FactFluxV3.Models;
 using System.Net.Http.Headers;
 using System.IO;
 using FactFluxV3.Logic;
+using FactFluxV3.Attribute;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
+using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Identity;
+using FactFluxV3.Areas.Identity.Data;
 
 namespace FactFluxV3.Controllers
 {
@@ -16,18 +22,21 @@ namespace FactFluxV3.Controllers
     [ApiController]
     public class WordsController : ControllerBase
     {
-        private readonly FactFluxV3Context _context;
+        private readonly DB_A41BC9_aml630Context _context;
 
-        public WordsController(FactFluxV3Context context)
+        public WordsController(DB_A41BC9_aml630Context context)
         {
             _context = context;
         }
 
         // GET: api/Words
+        [RoleAuth]
         [HttpGet]
         public IEnumerable<Words> GetWords()
         {
-            return _context.Words.Take(500).OrderByDescending(x => x.Yearly);
+            return _context.Words.Where
+                (x=>x.DateIncremented > DateTime.UtcNow.AddDays(-2) && (x.Word.Length > 4|| !x.Word.Any(z => char.IsUpper(z)))) 
+                .Take(500).OrderByDescending(x => x.Yearly);
         }
 
         [HttpGet("GetMatching/{letters}")]
@@ -67,6 +76,7 @@ namespace FactFluxV3.Controllers
         }
 
         // PUT: api/Words/5
+        [RoleAuth]
         [HttpPut("{id}")]
         public async Task<IActionResult> PutWords([FromRoute] int id, [FromBody] Words words)
         {
@@ -102,6 +112,7 @@ namespace FactFluxV3.Controllers
         }
 
         // POST: api/Words
+        [RoleAuth]
         [HttpPost]
         public async Task<IActionResult> PostWords([FromBody] Words words)
         {
@@ -120,21 +131,55 @@ namespace FactFluxV3.Controllers
             return CreatedAtAction("GetWords", new { id = words.WordId }, words);
         }
 
+        [RoleAuth]
         [HttpPost("AddImage/{contentType}/{contentId}")]
-        public async Task<IActionResult> PostImageToWord([FromRoute] string contentType, int contentId)
+        public async Task<IActionResult> PostImageToWord([FromRoute] string contentType, int contentId, string hotLink = null)
         {
-            var filesUploaded = HttpContext.Request.Form.Files;
+            var findImage = _context.Images.Where(x => x.ContentId == contentId && x.ContentType == contentType).FirstOrDefault();
 
-            if (filesUploaded != null)
+            if (!string.IsNullOrEmpty(hotLink))
             {
-                var imageLogic = new ImageLogic();
+                CreateImageFromHotlink(contentType, contentId, hotLink, findImage);
+            }
+            else
+            {
+                var filesUploaded = HttpContext.Request.Form.Files;
 
-                imageLogic.CreateImage(contentType, contentId, filesUploaded);
+                if (filesUploaded != null)
+                {
+                    var imageLogic = new ImageLogic();
+
+                    imageLogic.CreateImage(contentType, contentId, filesUploaded, findImage);
+                }
             }
             return Ok();
         }
 
+        [RoleAuth]
+        private void CreateImageFromHotlink(string contentType, int contentId, string hotLink, Images findImage)
+        {
+            if (findImage==null)
+            {
+                var newImage = new Images()
+                {
+                    ContentType = contentType,
+                    ContentId = contentId,
+                    ImageLocation = hotLink
+                };
+
+                _context.Images.Add(newImage);
+
+                _context.SaveChanges();
+            }
+            else
+            {
+                findImage.ImageLocation = hotLink;
+                _context.SaveChanges();
+            }
+        }
+
         // DELETE: api/Words/5
+        [RoleAuth]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteWords([FromRoute] int id)
         {

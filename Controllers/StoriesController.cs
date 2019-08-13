@@ -15,9 +15,9 @@ namespace FactFluxV3.Controllers
     [ApiController]
     public class StoriesController : ControllerBase
     {
-        private readonly FactFluxV3Context _context;
+        private readonly DB_A41BC9_aml630Context _context;
 
-        public StoriesController(FactFluxV3Context context)
+        public StoriesController(DB_A41BC9_aml630Context context)
         {
             _context = context;
         }
@@ -27,18 +27,21 @@ namespace FactFluxV3.Controllers
         {
             int Page = pageNumber;
 
-            int RecordsPerPage = 3;
+            int RecordsPerPage = 40;
 
-            var storyList = _context.Words.Where(x => x.Main).Select(x => new Stories()
+            var storyList = _context.Words.Where(x => x.Main && x.DateIncremented > DateTime.UtcNow.AddDays(-2)).Select(x => new Stories()
             {
                 WordId = x.WordId,
                 Word = x.Word,
                 Type = x.Type,
-                Images = _context.Images.Where(z => z.ContentType == "Word" && z.ContentId == x.WordId).ToList()
+                Description = x.Description,
+                Images = _context.Images.Where(z => z.ContentType == "Word" && z.ContentId == x.WordId).ToList(),
+                Monthly = x.Monthly,
+                Weekly = x.Weekly,
+                DateIncremented = x.DateIncremented
             });
 
-            var pagedList = storyList.Skip((Page - 1) * RecordsPerPage).Take(RecordsPerPage).ToList();
-
+            var pagedList = storyList.OrderByDescending(x => x.Weekly).Skip((Page - 1) * RecordsPerPage).Take(RecordsPerPage).ToList();
 
             return pagedList;
         }

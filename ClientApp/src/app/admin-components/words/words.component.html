@@ -1,0 +1,29 @@
+<h2 class="test">Words</h2>
+
+<label>Sort Words Down</label>
+<input [formControl]="wordTyping">
+<!-- <input [(ngModel)]="newPhrase"> -->
+<!-- <button (click) = "CreateWord()">Create New Word</button> -->
+<div class="d-flex p-2">
+  <div class="p-2" *ngFor="let word of wordList">
+    <button (click)="SetShowTrue(word)" class="btn btn-success">{{word.word}}--{{word.yearly}}</button>
+
+    <div *ngIf="word.show">
+      
+      <button [routerLink]="'/timeline/' + word.word" class="btn btn-light">Link</button>
+      <select [(ngModel)]="word.type" name="Word Type">
+        <option value=0>None</option>
+        <option value=1>Person</option>
+        <option value=2>Place</option>
+        <option value=3>Thing</option>
+      </select>
+      <button (click)="UpdateWord(word)" class="btn btn-warning">Add To Main</button>
+
+      <input style="display: none" type="file" (change)="onFileChanged($event)" #fileInput>
+      <button (click)="fileInput.click()">Select Image</button>
+      <button (click)="onUpload('Word', word.wordId)">Upload!</button>
+
+    </div>
+
+  </div>
+</div>

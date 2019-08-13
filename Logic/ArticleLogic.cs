@@ -1,5 +1,6 @@
 ﻿using FactFluxV3.Models;
 using Google.Apis.YouTube.v3.Data;
+using Microsoft.Extensions.Caching.Memory;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,13 @@ namespace FactFluxV3.Logic
 {
     public class ArticleLogic
     {
+        private readonly IMemoryCache _cache;
+
+        public ArticleLogic(IMemoryCache memoryCache)
+        {
+            _cache = memoryCache;
+        }
+
         public Article CreateArticleFromRSSItem(Rssfeeds foundFeed, SyndicationItem articleItem, bool isDuplicate = false)
         {
             var newArticleLinke = new Article();
@@ -18,6 +26,8 @@ namespace FactFluxV3.Logic
             string articleTitle = articleItem.Title.Text;
             articleTitle = articleTitle.Replace("&#8216;", "");
             articleTitle = articleTitle.Replace("&#8217;", "");
+            articleTitle = articleTitle.Replace("&apos;", "");
+            articleTitle = articleTitle.Replace("&rsquo;", "");
 
             newArticleLinke.ArticleTitle = articleTitle;
             newArticleLinke.ArticleUrl = articleItem.Links[0].Uri.AbsoluteUri;
@@ -27,7 +37,7 @@ namespace FactFluxV3.Logic
             newArticleLinke.Active = true;
             newArticleLinke.ArticleType = 1;
 
-            using (FactFluxV3Context db = new FactFluxV3Context())
+            using (DB_A41BC9_aml630Context db = new DB_A41BC9_aml630Context())
             {
                 var isDupe = db.Article.Where(x => x.ArticleTitle == newArticleLinke.ArticleTitle).FirstOrDefault();
 
@@ -48,9 +58,11 @@ namespace FactFluxV3.Logic
         {
             var newArticleLinke = new Article();
 
-            string articleTitle = video.Snippet.Title;
+            string videoTitle = video.Snippet.Title;
+            videoTitle = videoTitle.Replace("&#39;", "");
+            videoTitle = videoTitle.Replace("&amp;", "");
 
-            newArticleLinke.ArticleTitle = articleTitle;
+            newArticleLinke.ArticleTitle = videoTitle;
             newArticleLinke.ArticleUrl = video.Id.VideoId;
             newArticleLinke.DatePublished = video.Snippet.PublishedAt ?? DateTime.UtcNow;
             newArticleLinke.DateAdded = DateTime.UtcNow;
@@ -58,9 +70,9 @@ namespace FactFluxV3.Logic
             newArticleLinke.Active = true;
             newArticleLinke.ArticleType = 2;
 
-            using (FactFluxV3Context db = new FactFluxV3Context())
+            using (DB_A41BC9_aml630Context db = new DB_A41BC9_aml630Context())
             {
-                var isDupe = db.Article.Where(x => x.ArticleTitle == newArticleLinke.ArticleTitle).FirstOrDefault();
+                var isDupe = db.Article.Where(x => x.ArticleTitle == newArticleLinke.ArticleTitle || x.ArticleUrl == newArticleLinke.ArticleUrl).FirstOrDefault();
 
                 if (isDupe != null)
                 {
@@ -79,16 +91,22 @@ namespace FactFluxV3.Logic
         {
             var articleList = new List<Article>();
 
+            SyndicationFeed syndyFeed;
+
             var r = XmlReader.Create(feed.FeedLink);
 
-            var rssArticleList = SyndicationFeed.Load(r);
-
-            var newArticleLogic = new ArticleLogic();
-
-
-            foreach (var articleItem in rssArticleList.Items)
+            try
             {
-                Article newArticle = newArticleLogic.CreateArticleFromRSSItem(feed, articleItem);
+                syndyFeed = SyndicationFeed.Load(r);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+
+            foreach (var articleItem in syndyFeed.Items)
+            {
+                Article newArticle = CreateArticleFromRSSItem(feed, articleItem);
 
                 articleList.Add(newArticle);
 
@@ -105,81 +123,122 @@ namespace FactFluxV3.Logic
             return articleList;
         }
 
-        public List<Article> GetArticlesFromSearchString(string word, int[] articleTypes = null, string letterFilter = null)
+        public List<TimelineArticle> GetArticlesFromSearchString(string word, int page, int pageSize, List<int> articleTypes, List<int> politicalSpectrum, string letterFilter = null)
         {
-            List<Article> orderedArticleList;
+            List<TimelineArticle> orderedArticleList;
 
-            using (var db = new FactFluxV3Context())
+            using (var db = new DB_A41BC9_aml630Context())
             {
-                var findWord = db.Words.Where(x => x.Word == word).FirstOrDefault();
+                string spacedWord = word.Replace("-", " ");
+
+                var findWord = db.Words.Where(x => x.Word.ToLower() == spacedWord.ToLower()).FirstOrDefault();
 
                 var childWords = db.ParentWords.Where(x => x.ParentWordId == findWord.WordId).Select(x => x.ChildWordId).ToList();
 
                 var childWordStrings = db.Words.Where(x => childWords.Contains(x.WordId)).ToList();
 
-                var fullArticleList = new List<Article>();
+                var fullArticleList = new List<TimelineArticle>();
 
                 foreach (var childWord in childWordStrings)
                 {
-                    List<Article> childArticleList = GetArticlesFromWord(childWord.Word, db, fullArticleList, articleTypes);
+                    List<TimelineArticle> childArticleList = GetArticlesFromWord(childWord.Word, db, fullArticleList, articleTypes, politicalSpectrum);
 
                     fullArticleList.AddRange(childArticleList);
                 }
 
-                List<Article> articleList = GetArticlesFromWord(word, db, fullArticleList, articleTypes);
+                List<TimelineArticle> articlesFromMainWord = GetArticlesFromWord(spacedWord, db, fullArticleList, articleTypes, politicalSpectrum);
 
-                fullArticleList.AddRange(articleList);
+                fullArticleList.AddRange(articlesFromMainWord);
 
                 if (!string.IsNullOrEmpty(letterFilter))
                 {
-                    fullArticleList = articleList.Where(x => x.ArticleTitle.ToLower().Contains(letterFilter.ToLower())).ToList();
+                    fullArticleList = fullArticleList.Where(x => x.ArticleTitle.ToLower().Contains(letterFilter.ToLower())).ToList();
                 }
 
                 orderedArticleList = fullArticleList.OrderByDescending(x => x.DatePublished).ToList();
             }
 
+            orderedArticleList = orderedArticleList.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+
             return orderedArticleList;
         }
 
-        private List<Article> GetArticlesFromWord(string word, FactFluxV3Context db, List<Article> fullArticleList, int[] articleTypes = null)
+        private List<TimelineArticle> GetArticlesFromWord(string word, DB_A41BC9_aml630Context db, List<TimelineArticle> fullArticleList, List<int> articleTypes, List<int> politicalSpectrum)
         {
             string beginning = word + " ";
             string end = " " + word;
             string middle = " " + word + " ";
 
             var articleListQuery = db.Article.Where(x =>
-           (x.ArticleTitle.ToLower().StartsWith(beginning) || x.ArticleTitle.ToLower().EndsWith(end) || x.ArticleTitle.ToLower().Contains(middle)) && !fullArticleList.Contains(x));
+            (x.ArticleTitle.ToLower().StartsWith(beginning) ||
+            x.ArticleTitle.ToLower().EndsWith(end) ||
+            x.ArticleTitle.ToLower().Contains(middle)) &&
+            !fullArticleList.Select(z => z.ArticleTitle).Contains(x.ArticleTitle));
 
-            if (articleTypes != null)
+            articleListQuery = articleListQuery.Where(x => articleTypes.Contains(x.ArticleType));
+
+
+            if (politicalSpectrum.FirstOrDefault() == 9)
             {
-                articleListQuery = articleListQuery.Where(x => articleTypes.Contains(x.ArticleType));
+                articleListQuery = articleListQuery.Where(x => x.Feed.PoliticalSpectrum > 6);
             }
 
-            var articleList = articleListQuery.ToList();
+            if (politicalSpectrum.FirstOrDefault() == 1)
+            {
+                articleListQuery = articleListQuery.Where(x => x.Feed.PoliticalSpectrum < 4);
+            }
+
+            List<TimelineArticle> timeLineList = articleListQuery.Select(x => new TimelineArticle()
+            {
+                ArticleId = x.ArticleId,
+                ArticleTitle = x.ArticleTitle,
+                ArticleUrl = x.ArticleUrl,
+                ArticleType = x.ArticleType,
+                Active = true,
+                DatePublished = x.DatePublished,
+                FeedId = x.FeedId,
+                TimelineImage = db.Rssfeeds.Where(y => y.FeedId == x.FeedId).Select(y => y.FeedImage).FirstOrDefault(),
+                PoliticalSpectrum = db.Rssfeeds.Where(y => y.FeedId == x.FeedId).Select(y => y.PoliticalSpectrum).FirstOrDefault()
+            }).ToList();
 
             if (articleTypes == null || articleTypes.Contains(3))
             {
-                List<Article> tweetList = GetTweetListAsArticles(db, fullArticleList, beginning, end, middle);
+                List<TimelineArticle> tweetList = GetTweetListAsArticles(db, fullArticleList, beginning, end, middle, politicalSpectrum);
 
-                articleList.AddRange(tweetList);
+                timeLineList.AddRange(tweetList);
             }
 
-            return articleList;
+            return timeLineList;
         }
 
-        private static List<Article> GetTweetListAsArticles(FactFluxV3Context db, List<Article> fullArticleList, string beginning, string end, string middle)
+        private static List<TimelineArticle> GetTweetListAsArticles(DB_A41BC9_aml630Context db, List<TimelineArticle> fullArticleList, string beginning, string end, string middle, List<int> politicalSpectrum)
         {
-            return db.Tweets.Where(x => (x.TweetText.ToLower().StartsWith(beginning) || x.TweetText.ToLower().EndsWith(end) || x.TweetText.ToLower().Contains(middle)) && !fullArticleList.Select(y => y.ArticleId).Contains(x.TweetId)).Select(g =>
-            new Article
+            var tweetList = db.Tweets.Where(x => (x.TweetText.ToLower().StartsWith(beginning) || x.TweetText.ToLower().EndsWith(end) || x.TweetText.ToLower().Contains(middle)) && !fullArticleList.Select(y => y.ArticleId).Contains(x.TweetId)).Select(g =>
+           new TimelineArticle
+           {
+               ArticleId = g.TweetId,
+               ArticleTitle = g.TweetText,
+               ArticleUrl = g.EmbedHtml,
+               ArticleType = 3,
+               Active = true,
+               DatePublished = g.DateTweeted,
+               FeedId = g.TwitterUserId,
+               //TimelineImage = db.TwitterUsers.Where(y => y.TwitterUserId == g.TwitterUserId).Select(x => x.Image).FirstOrDefault(),
+               TimelineImage = g.TwitterUser.Image,
+               PoliticalSpectrum = g.TwitterUser.PoliticalSpectrum
+           });
+
+            if (politicalSpectrum.FirstOrDefault() == 9)
             {
-                ArticleId = g.TweetId,
-                ArticleTitle = g.TweetText,
-                ArticleUrl = g.EmbedHtml,
-                ArticleType = 3,
-                Active = true,
-                DatePublished = g.DateTweeted,
-                FeedId = g.TwitterUserId
-            }).ToList();
+                tweetList = tweetList.Where(x => x.PoliticalSpectrum > 6);
+            }
+
+            if (politicalSpectrum.FirstOrDefault() == 1)
+            {
+                tweetList = tweetList.Where(x => x.PoliticalSpectrum < 4);
+            }
+
+            return tweetList.ToList();
         }
     }
 }

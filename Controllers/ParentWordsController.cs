@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using FactFluxV3.Models;
 using FactFluxV3.Logic;
+using FactFluxV3.Attribute;
 
 namespace FactFluxV3.Controllers
 {
@@ -14,9 +15,9 @@ namespace FactFluxV3.Controllers
     [ApiController]
     public class ParentWordsController : ControllerBase
     {
-        private readonly FactFluxV3Context _context;
+        private readonly DB_A41BC9_aml630Context _context;
 
-        public ParentWordsController(FactFluxV3Context context)
+        public ParentWordsController(DB_A41BC9_aml630Context context)
         {
             _context = context;
         }
@@ -25,7 +26,16 @@ namespace FactFluxV3.Controllers
         [HttpGet]
         public List<ParentWords> GetParentWords()
         {
-            var parentWords = _context.ParentWords.OrderBy(x=>x.ParentWordId).ToList();
+
+            //var parentWords = _context.ParentWords.OrderBy(x => x.ParentWordId).Select(x => new ParentWithWords
+            //{
+            //    ParentWordId = x.ParentWordId,
+            //    ParentWord = x.ParentWord,
+            //    ChildWords = _context.Words.Where(z => _context.ParentWords.Where(y => y.ParentWordId == x.ParentWordId))
+
+            //}).ToList();
+
+            var parentWords = _context.ParentWords.OrderBy(x => x.ParentWordId).ToList();
 
             return parentWords;
         }
@@ -50,6 +60,7 @@ namespace FactFluxV3.Controllers
         }
 
         // PUT: api/ParentWords/5
+        [RoleAuth]
         [HttpPut("{id}")]
         public async Task<IActionResult> PutParentWords([FromRoute] int id, [FromBody] ParentWords parentWords)
         {
@@ -85,6 +96,7 @@ namespace FactFluxV3.Controllers
         }
 
         // POST: api/ParentWords
+        [RoleAuth]
         [HttpPost]
         public async Task<IActionResult> PostParentWords([FromBody] ParentWords parentWords)
         {
@@ -100,6 +112,7 @@ namespace FactFluxV3.Controllers
         }
 
         // POST: api/ParentWords
+        [RoleAuth]
         [HttpPost("{parentWord}/{childWord}")]
         public async Task<IActionResult> PostParentWordFromStrings([FromRoute] string parentWord, [FromRoute] string childWord)
         {
@@ -117,11 +130,30 @@ namespace FactFluxV3.Controllers
                 foundParentWord = wordLogic.CreateWord(parentWord);
             }
 
+            var mainWordLookup = _context.Words.Where(x => x.WordId == foundParentWord.WordId).FirstOrDefault();
+
+            mainWordLookup.Main = true;
+
             var foundChildWord = wordLogic.GetWordByString(childWord);
 
-            if(foundChildWord==null)
+            if (foundChildWord == null)
             {
                 foundChildWord = wordLogic.CreateWord(childWord);
+            }
+
+            if (mainWordLookup.Weekly < foundChildWord.Weekly)
+            {
+                mainWordLookup.Weekly = foundChildWord.Weekly;
+            }
+
+            if (mainWordLookup.Monthly < foundChildWord.Monthly)
+            {
+                mainWordLookup.Monthly = foundChildWord.Monthly;
+            }
+
+            if (mainWordLookup.Yearly < foundChildWord.Yearly)
+            {
+                mainWordLookup.Yearly = foundChildWord.Yearly;
             }
 
             var newParentWord = new ParentWords()
@@ -136,6 +168,7 @@ namespace FactFluxV3.Controllers
             return CreatedAtAction("GetParentWords", new { id = newParentWord.WordJoinId }, newParentWord);
         }
         // DELETE: api/ParentWords/5
+        [RoleAuth]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteParentWords([FromRoute] int id)
         {

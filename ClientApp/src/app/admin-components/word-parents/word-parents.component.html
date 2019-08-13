@@ -1,0 +1,25 @@
+<label>Parent Word</label>
+<input [(ngModel)]="parentWord">
+<label>Child Word</label>
+<input [(ngModel)]="childWord">
+<button class="btn btn-primary" (click)="CreateParent()">Create Parent Child Connection</button>
+
+<h3>Parent Word</h3>
+<input [formControl]="parentTyping">
+<div class="p-2" *ngFor="let word of parentWordList">
+  <span (click)="SetParent(word)" class="btn btn-success">{{word.word}}</span>
+</div>
+
+<h3>Child Word</h3>
+<input [formControl]="childTyping">
+<div class="p-2" *ngFor="let word of childWordList">
+  <span (click)="SetChild(word)" class="btn btn-success">{{word.word}}</span>
+</div>
+
+<div class="p-2" *ngFor="let word of wordParents">
+  <span *ngIf="word.parentWord.word">{{word.parentWord.word}}</span>
+  <span class="btn-small btn-warning">{{word.childWord.word}}</span>
+  <button class="btn-danger" (click)="DeleteChild(word.wordJoinId)">Delete</button>
+  <br>
+</div>
+

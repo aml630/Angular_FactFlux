@@ -10,7 +10,7 @@ namespace FactFluxV3.Logic
     {
         public WordLogs CreateWordLog(int wordId, int articleId)
         {
-            using (var db = new FactFluxV3Context())
+            using (var db = new DB_A41BC9_aml630Context())
             {
                 WordLogs newWord = new WordLogs()
                 {
@@ -38,7 +38,7 @@ namespace FactFluxV3.Logic
 
             var words = newArticle.ArticleTitle.Split().Select(x => x.Trim(punctuation));
 
-            using (FactFluxV3Context db = new FactFluxV3Context())
+            using (DB_A41BC9_aml630Context db = new DB_A41BC9_aml630Context())
             {
                 foreach (var word in words)
                 {
@@ -47,62 +47,72 @@ namespace FactFluxV3.Logic
             }
         }
 
-        private void CreateWordOrWordLog(Article newArticle, FactFluxV3Context db, string word)
+        private void CreateWordOrWordLog(Article newArticle, DB_A41BC9_aml630Context db, string word)
         {
             string beginning = word + " ";
             string end = " " + word;
             string middle = " " + word + " ";
+    
+                var wordList = db.Words.Where(x => x.Word == word || x.Word.StartsWith(beginning) || x.Word.EndsWith(end) || x.Word.Contains(middle)).OrderByDescending(x => x.Word.Length).ToList();
 
-            var wordList = db.Words.Where(x => x.Word == word || x.Word.StartsWith(beginning) || x.Word.EndsWith(end) || x.Word.Contains(middle)).OrderByDescending(x => x.Word.Length).ToList();
 
-            if (wordList.Count == 0)
-            {
-                var newWordLogic = new WordLogic();
-
-                newWordLogic.CreateWord(word);
-            }
-            else
-            {
-                foreach (var phrase in wordList)
+                if (wordList.Count == 0)
                 {
-                    if (newArticle.ArticleTitle.Contains(phrase.Word))
+                    var newWordLogic = new WordLogic();
+
+                    newWordLogic.CreateWord(word);
+                }
+                else
+                {
+                    foreach (var wordOrPhrase in wordList)
                     {
-                        IncrementWordCount(phrase);
+                        if (newArticle.ArticleTitle.Contains(wordOrPhrase.Word))
+                        {
+                            IncrementWordCount(wordOrPhrase);
 
-                        db.SaveChanges();
-
-                        var newWordLogLogic = new WordLogLogic();
-
-                        newWordLogLogic.CreateWordLog(phrase.WordId, newArticle.ArticleId);
-
-                        break;
+                            db.SaveChanges();
+                        }
                     }
                 }
-            }
+
         }
 
-        private void IncrementWordCount(Words isDupe)
+        private void IncrementWordCount(Words wordToInc)
         {
-            if (isDupe.DateIncremented == null)
+            if (wordToInc.DateIncremented == null)
             {
-                isDupe.DateIncremented = DateTime.UtcNow;
+                wordToInc.DateIncremented = DateTime.UtcNow;
             }
 
-            if (isDupe.DateIncremented.Value < DateTime.UtcNow.Date)
+            var incrementedMonday = (StartOfWeek(wordToInc.DateIncremented.Value, DayOfWeek.Monday));
+
+            var nowMonday = StartOfWeek(DateTime.UtcNow, DayOfWeek.Monday);
+
+            if (incrementedMonday != nowMonday)
             {
-                isDupe.Daily = 0;
+                wordToInc.Weekly = 0;
             }
 
-            if (isDupe.DateIncremented.Value.Month != DateTime.UtcNow.Month)
+            if (wordToInc.DateIncremented.Value.Month != DateTime.UtcNow.Month)
             {
-                isDupe.Monthly = 0;
+                wordToInc.Monthly = 0;
             }
 
-            isDupe.Daily++;
+            wordToInc.DateIncremented = DateTime.UtcNow;
 
-            isDupe.Monthly++;
+            wordToInc.Weekly++;
 
-            isDupe.Yearly++;
+            wordToInc.Monthly++;
+
+            wordToInc.Yearly++;
         }
+
+
+        public DateTime StartOfWeek(DateTime dt, DayOfWeek startOfWeek)
+        {
+            int diff = (7 + (dt.DayOfWeek - startOfWeek)) % 7;
+            return dt.AddDays(-1 * diff).Date;
+        }
+
     }
 }

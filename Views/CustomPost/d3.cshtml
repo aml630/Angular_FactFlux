@@ -1,0 +1,35 @@
+﻿@{
+    Layout = "";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="https://d3js.org/d3.v4.js"></script>
+
+</head>
+<body>
+    <!-- Create a div where the graph will take place -->
+    <div id="svgcontainer"></div>
+
+
+
+    <script>
+
+        var width = 300;
+        var height = 300;
+        //Create SVG element
+        var svg = d3.select("#svgcontainer")
+            .append("svg")
+            .attr("width", width)
+            .attr("height", height);
+        //Append circle
+        svg.append("circle")
+            .attr("cx", 200)
+            .attr("cy", 50)
+            .attr("r", 20)
+            .attr("fill", "green");
+
+    </script>
+</body>
+</html>
+<script src="https://d3js.org/d3.v4.js"></script>

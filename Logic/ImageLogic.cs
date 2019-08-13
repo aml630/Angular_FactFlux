@@ -10,7 +10,7 @@ namespace FactFluxV3.Logic
 {
     public class ImageLogic
     {
-        public string CreateImage(string contentType, int contentId, IFormFileCollection filesUploaded)
+        public string CreateImage(string contentType, int contentId, IFormFileCollection filesUploaded, Images foundImage = null)
         {
             var fileName = string.Empty;
 
@@ -39,27 +39,33 @@ namespace FactFluxV3.Logic
 
                     var savePath = "/assets/images/" + newFileName;
 
-                    using (FileStream fs = System.IO.File.Create(fileName))
+                    using (FileStream fs = File.Create(fileName))
                     {
                         file.CopyTo(fs);
                         fs.Flush();
                     }
 
-                    var newImage = new Images()
+                    using (var db = new DB_A41BC9_aml630Context())
                     {
-                        ContentType = contentType,
-                        ContentId = contentId,
-                        ImageLocation = savePath
-                    };
+                        if (foundImage == null)
+                        {
+                            var newImage = new Images()
+                            {
+                                ContentType = contentType,
+                                ContentId = contentId,
+                                ImageLocation = savePath
+                            };
 
-                    using (var db = new FactFluxV3Context())
-                    {
-                        db.Images.Add(newImage);
+                            db.Images.Add(newImage);
+                        }
+                        else
+                        {
+                            foundImage.ImageLocation = savePath;
+                        }
                         db.SaveChanges();
                     }
                 }
             }
-
             return newFileName;
         }
     }

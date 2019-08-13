@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using FactFluxV3.Models;
 using Microsoft.Extensions.Configuration;
 using FactFluxV3.Logic;
+using FactFluxV3.Attribute;
 
 namespace FactFluxV3.Controllers
 {
@@ -14,22 +15,22 @@ namespace FactFluxV3.Controllers
     [ApiController]
     public class TwitterController : ControllerBase
     {
-        private readonly FactFluxV3Context _context;
+        private readonly DB_A41BC9_aml630Context _context;
         private readonly IConfiguration Configuration;
 
-        public TwitterController(FactFluxV3Context context, IConfiguration configuration)
+        public TwitterController(DB_A41BC9_aml630Context context, IConfiguration configuration)
         {
             _context = context;
             Configuration = configuration;
         }
 
-
+        [RoleAuth]
         [HttpPost("AddUser/{twitterUser}")]
         public TwitterUsers CreateTwitterUser([FromRoute] string twitterUser)
         {
             TwitterUsers newTwitterUser;
 
-            using (var db = new FactFluxV3Context())
+            using (var db = new DB_A41BC9_aml630Context())
             {
                 newTwitterUser = new TwitterUsers()
                 {
@@ -50,6 +51,17 @@ namespace FactFluxV3.Controllers
             var twitterLogic = new TwitterLogic(Configuration);
             return twitterLogic.GetTweetsForAllUsers();
         }
+
+        [HttpPost("AddTweetsForUser/{twitterUser}")]
+        public List<Tweets> GetTweetsForSpecificUsers([FromRoute] string twitterUser)
+        {
+            var twitterLogic = new TwitterLogic(Configuration);
+
+            var tweetList = twitterLogic.GetAllTweetsForUserName(twitterUser);
+
+            return tweetList;
+        }
+
 
         // GET: api/Twitter
         [HttpGet]
@@ -77,6 +89,7 @@ namespace FactFluxV3.Controllers
             return Ok(twitterUsers);
         }
 
+        [RoleAuth]
         // PUT: api/Twitter/5
         [HttpPut("{id}")]
         public async Task<IActionResult> PutTwitterUsers([FromRoute] int id, [FromBody] TwitterUsers twitterUsers)
@@ -120,6 +133,7 @@ namespace FactFluxV3.Controllers
         }
 
         // POST: api/Twitter
+        [RoleAuth]
         [HttpPost]
         public async Task<IActionResult> PostTwitterUsers([FromBody] TwitterUsers twitterUsers)
         {
@@ -144,6 +158,7 @@ namespace FactFluxV3.Controllers
         }
 
         // DELETE: api/Twitter/5
+        [RoleAuth]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTwitterUsers([FromRoute] int id)
         {
@@ -152,16 +167,21 @@ namespace FactFluxV3.Controllers
                 return BadRequest(ModelState);
             }
 
-            var twitterUsers = await _context.TwitterUsers.FindAsync(id);
-            if (twitterUsers == null)
+            var twitterUser = await _context.TwitterUsers.FindAsync(id);
+
+            var allTweets =  _context.Tweets.Where(x => x.TwitterUserId == twitterUser.TwitterUserId).ToList();
+
+            _context.Tweets.RemoveRange(allTweets);
+
+            if (twitterUser == null)
             {
                 return NotFound();
             }
 
-            _context.TwitterUsers.Remove(twitterUsers);
+            _context.TwitterUsers.Remove(twitterUser);
             await _context.SaveChangesAsync();
 
-            return Ok(twitterUsers);
+            return Ok(twitterUser);
         }
 
         private bool TwitterUsersExists(int id)

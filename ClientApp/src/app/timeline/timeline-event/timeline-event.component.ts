@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
-import { Article } from '../../article';
+import { Article } from '../../models/article';
 import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
@@ -9,25 +9,23 @@ import { DomSanitizer } from '@angular/platform-browser';
 })
 export class TimelineEventComponent implements OnInit {
 
-  @Input() article: Article
-  @Input() index: number
-  @Input() feedImage: string
-  @ViewChild("vid", { read: ElementRef }) vid: ElementRef;
-  @ViewChild("tweet", { read: ElementRef }) tweet: ElementRef;
-
-  constructor(private sanitizer: DomSanitizer) {
-  }
+  @Input() article: Article;
+  @Input() index: number;
+  @ViewChild('vid', { read: ElementRef }) vid: ElementRef;
+  @ViewChild('tweet', { read: ElementRef }) tweet: ElementRef;
 
   ngOnInit() {
+ 
   }
 
   ngAfterViewInit(): void {
+
     if (this.vid) {
-      this.getVideos(this.vid.nativeElement)
+      this.getVideos(this.vid.nativeElement);
     }
 
     if (this.tweet) {
-      this.loadTwitter()
+      this.loadTwitter();
     }
   }
 
@@ -40,7 +38,7 @@ export class TimelineEventComponent implements OnInit {
         js.src = p + "://platform.twitter.com/widgets.js";
         fjs.parentNode.insertBefore(js, fjs);
       }
-    } (document, "script", "twitter-wjs");
+    }(document, "script", "twitter-wjs");
   }
 
   getVideos(el) {
@@ -50,7 +48,7 @@ export class TimelineEventComponent implements OnInit {
     // Add class to img
     img.setAttribute('class', 'thumb');
     img.setAttribute('width', '100%');
-    img.setAttribute('height', '250px');
+    img.setAttribute('style', 'max-height:230px;');
 
     // Make div to embed videos
     var video = document.createElement("div");
@@ -67,9 +65,16 @@ export class TimelineEventComponent implements OnInit {
       iframe.setAttribute('height', '250px');
 
       iframe.setAttribute('src', 'https://www.youtube.com/embed/' +
-        this.id + '?autoplay=1&autohide=1&border=0&wmode=opaque&enablejsapi=1');
+        this.id + '?autoplay=1&mute=1&enablejsapi=1');
       // Remplace img for video
       this.parentNode.replaceChild(iframe, this);
     }, false);
+  }
+
+  formatDate(date) {
+    var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+     var newDate = new Date(date);
+    var longDate = newDate.toLocaleDateString("en-US", options);
+    return longDate;
   }
 }

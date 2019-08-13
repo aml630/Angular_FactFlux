@@ -4,9 +4,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using FactFluxV3.Models;
 using FactFluxV3.Logic;
+using Microsoft.Extensions.Caching.Memory;
+using FactFluxV3.Attribute;
 
 namespace FactFluxV3.Controllers
 {
@@ -14,18 +17,20 @@ namespace FactFluxV3.Controllers
     [ApiController]
     public class ArticlesController : ControllerBase
     {
-        private readonly FactFluxV3Context _context;
+        private readonly DB_A41BC9_aml630Context Context;
+        private readonly IMemoryCache Cache;
 
-        public ArticlesController(FactFluxV3Context context)
+        public ArticlesController(DB_A41BC9_aml630Context context, IMemoryCache cache)
         {
-            _context = context;
+            Context = context;
+            Cache = cache;
         }
 
         // GET: api/Articles
         [HttpGet]
         public IEnumerable<Article> GetArticle()
         {
-            return _context.Article;
+            return Context.Article;
         }
 
         // GET: api/Articles/5
@@ -37,7 +42,7 @@ namespace FactFluxV3.Controllers
                 return BadRequest(ModelState);
             }
 
-            var article = await _context.Article.FindAsync(id);
+            var article = await Context.Article.FindAsync(id);
 
             if (article == null)
             {
@@ -48,17 +53,37 @@ namespace FactFluxV3.Controllers
         }
 
         [HttpGet("timeline/{word}")]
-        public List<Article> GetTimelineArticle([FromRoute] string word, int[] articleTypes, int page = 1, int pageSize = 10, string letterFilter = null)
+        public List<TimelineArticle> GetTimelineArticle([FromRoute] string word,
+                                                        [FromQuery] string articleTypes,
+                                                        [FromQuery] string politicalSpectrum,
+                                                        [FromQuery] int page = 1,
+                                                        [FromQuery] int pageSize = 20,
+                                                        [FromQuery] string letterFilter = null)
         {
-            var articleLogic = new ArticleLogic();
 
-            List<Article> orderedList = articleLogic.GetArticlesFromSearchString(word, articleTypes, letterFilter);
+            var articleTypeList = new List<int>();
+
+            if (articleTypes != null)
+            {
+                articleTypeList = articleTypes.Split("|").Select(Int32.Parse).ToList();
+            }
+
+            var politicalSpectrumList = new List<int>();
+
+            if (politicalSpectrum != null)
+            {
+                politicalSpectrumList = politicalSpectrum.Split("|").Select(Int32.Parse).ToList();
+            }
+
+            var articleLogic = new ArticleLogic(Cache);
+
+            List<TimelineArticle> orderedList = articleLogic.GetArticlesFromSearchString(word, page, pageSize, articleTypeList, politicalSpectrumList, letterFilter);
 
             return orderedList;
         }
 
-
         // PUT: api/Articles/5
+        [RoleAuth]
         [HttpPut("{id}")]
         public async Task<IActionResult> PutArticle([FromRoute] int id, [FromBody] Article article)
         {
@@ -72,11 +97,11 @@ namespace FactFluxV3.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(article).State = EntityState.Modified;
+            Context.Entry(article).State = EntityState.Modified;
 
             try
             {
-                await _context.SaveChangesAsync();
+                await Context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -94,6 +119,7 @@ namespace FactFluxV3.Controllers
         }
 
         // POST: api/Articles
+        [RoleAuth]
         [HttpPost]
         public async Task<IActionResult> PostArticle([FromBody] Article article)
         {
@@ -102,13 +128,14 @@ namespace FactFluxV3.Controllers
                 return BadRequest(ModelState);
             }
 
-            _context.Article.Add(article);
-            await _context.SaveChangesAsync();
+            Context.Article.Add(article);
+            await Context.SaveChangesAsync();
 
             return CreatedAtAction("GetArticle", new { id = article.ArticleId }, article);
         }
 
         // DELETE: api/Articles/5
+        [RoleAuth]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteArticle([FromRoute] int id)
         {
@@ -117,21 +144,21 @@ namespace FactFluxV3.Controllers
                 return BadRequest(ModelState);
             }
 
-            var article = await _context.Article.FindAsync(id);
+            var article = await Context.Article.FindAsync(id);
             if (article == null)
             {
                 return NotFound();
             }
 
-            _context.Article.Remove(article);
-            await _context.SaveChangesAsync();
+            Context.Article.Remove(article);
+            await Context.SaveChangesAsync();
 
             return Ok(article);
         }
 
         private bool ArticleExists(int id)
         {
-            return _context.Article.Any(e => e.ArticleId == id);
+            return Context.Article.Any(e => e.ArticleId == id);
         }
     }
 }
