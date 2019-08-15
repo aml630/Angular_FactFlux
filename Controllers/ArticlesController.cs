@@ -82,6 +82,11 @@ namespace FactFluxV3.Controllers
             return orderedList;
         }
 
+        [HttpGet]
+        public void GetDateCounts()
+        {
+        }
+
         // PUT: api/Articles/5
         [RoleAuth]
         [HttpPut("{id}")]
