@@ -83,8 +83,16 @@ namespace FactFluxV3.Controllers
         }
 
         [HttpGet]
-        public void GetDateCounts()
+        public void GetDateCounts([FromRoute] string word)
         {
+            var articleLogic = new ArticleLogic(Cache);
+
+
+            //Started this, need to do it for all 52 weeks.  but only once.
+            List<TimelineArticle> orderedList = articleLogic.GetFullArticleList(word, new List<int>() {0, 1, 2, 3 }, new List<int>() { }, "", DateTime.UtcNow, DateTime.UtcNow);
+
+
+
         }
 
         // PUT: api/Articles/5

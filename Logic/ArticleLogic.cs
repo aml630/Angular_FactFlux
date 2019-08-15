@@ -125,6 +125,15 @@ namespace FactFluxV3.Logic
 
         public List<TimelineArticle> GetArticlesFromSearchString(string word, int page, int pageSize, List<int> articleTypes, List<int> politicalSpectrum, string letterFilter = null)
         {
+            List<TimelineArticle> orderedArticleList = GetFullArticleList(word, articleTypes, politicalSpectrum, letterFilter);
+
+            orderedArticleList = orderedArticleList.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+
+            return orderedArticleList;
+        }
+
+        public List<TimelineArticle> GetFullArticleList(string word, List<int> articleTypes, List<int> politicalSpectrum, string letterFilter, DateTime? startDate = null, DateTime? endDate = null)
+        {
             List<TimelineArticle> orderedArticleList;
 
             using (var db = new DB_A41BC9_aml630Context())
@@ -158,12 +167,10 @@ namespace FactFluxV3.Logic
                 orderedArticleList = fullArticleList.OrderByDescending(x => x.DatePublished).ToList();
             }
 
-            orderedArticleList = orderedArticleList.Skip((page - 1) * pageSize).Take(pageSize).ToList();
-
             return orderedArticleList;
         }
 
-        private List<TimelineArticle> GetArticlesFromWord(string word, DB_A41BC9_aml630Context db, List<TimelineArticle> fullArticleList, List<int> articleTypes, List<int> politicalSpectrum)
+        private List<TimelineArticle> GetArticlesFromWord(string word, DB_A41BC9_aml630Context db, List<TimelineArticle> fullArticleList, List<int> articleTypes, List<int> politicalSpectrum, DateTime? startDate = null, DateTime? endDate = null)
         {
             string beginning = word + " ";
             string end = " " + word;
@@ -186,6 +193,16 @@ namespace FactFluxV3.Logic
             if (politicalSpectrum.FirstOrDefault() == 1)
             {
                 articleListQuery = articleListQuery.Where(x => x.Feed.PoliticalSpectrum < 4);
+            }
+
+            if(startDate !=null)
+            {
+                articleListQuery = articleListQuery.Where(x => x.DatePublished > startDate);
+            }
+
+            if (endDate != null)
+            {
+                articleListQuery = articleListQuery.Where(x => x.DatePublished < endDate);
             }
 
             List<TimelineArticle> timeLineList = articleListQuery.Select(x => new TimelineArticle()
@@ -211,9 +228,9 @@ namespace FactFluxV3.Logic
             return timeLineList;
         }
 
-        private static List<TimelineArticle> GetTweetListAsArticles(DB_A41BC9_aml630Context db, List<TimelineArticle> fullArticleList, string beginning, string end, string middle, List<int> politicalSpectrum)
+        private static List<TimelineArticle> GetTweetListAsArticles(DB_A41BC9_aml630Context db, List<TimelineArticle> fullArticleList, string beginning, string end, string middle, List<int> politicalSpectrum, DateTime? startDate = null, DateTime? endDate = null)
         {
-            var tweetList = db.Tweets.Where(x => (x.TweetText.ToLower().StartsWith(beginning) || x.TweetText.ToLower().EndsWith(end) || x.TweetText.ToLower().Contains(middle)) && !fullArticleList.Select(y => y.ArticleId).Contains(x.TweetId)).Select(g =>
+            var tweetListQuery = db.Tweets.Where(x => (x.TweetText.ToLower().StartsWith(beginning) || x.TweetText.ToLower().EndsWith(end) || x.TweetText.ToLower().Contains(middle)) && !fullArticleList.Select(y => y.ArticleId).Contains(x.TweetId)).Select(g =>
            new TimelineArticle
            {
                ArticleId = g.TweetId,
@@ -230,15 +247,25 @@ namespace FactFluxV3.Logic
 
             if (politicalSpectrum.FirstOrDefault() == 9)
             {
-                tweetList = tweetList.Where(x => x.PoliticalSpectrum > 6);
+                tweetListQuery = tweetListQuery.Where(x => x.PoliticalSpectrum > 6);
             }
 
             if (politicalSpectrum.FirstOrDefault() == 1)
             {
-                tweetList = tweetList.Where(x => x.PoliticalSpectrum < 4);
+                tweetListQuery = tweetListQuery.Where(x => x.PoliticalSpectrum < 4);
             }
 
-            return tweetList.ToList();
+            if (startDate != null)
+            {
+                tweetListQuery = tweetListQuery.Where(x => x.DatePublished > startDate);
+            }
+
+            if (endDate != null)
+            {
+                tweetListQuery = tweetListQuery.Where(x => x.DatePublished < endDate);
+            }
+
+            return tweetListQuery.ToList();
         }
     }
 }
