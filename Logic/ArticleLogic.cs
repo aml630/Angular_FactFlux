@@ -228,6 +228,12 @@ namespace FactFluxV3.Logic
             return timeLineList;
         }
 
+        public DateTime StartOfWeek(this DateTime dt, DayOfWeek startOfWeek)
+        {
+            int diff = (7 + (dt.DayOfWeek - startOfWeek)) % 7;
+            return dt.AddDays(-1 * diff).Date;
+        }
+
         private static List<TimelineArticle> GetTweetListAsArticles(DB_A41BC9_aml630Context db, List<TimelineArticle> fullArticleList, string beginning, string end, string middle, List<int> politicalSpectrum, DateTime? startDate = null, DateTime? endDate = null)
         {
             var tweetListQuery = db.Tweets.Where(x => (x.TweetText.ToLower().StartsWith(beginning) || x.TweetText.ToLower().EndsWith(end) || x.TweetText.ToLower().Contains(middle)) && !fullArticleList.Select(y => y.ArticleId).Contains(x.TweetId)).Select(g =>

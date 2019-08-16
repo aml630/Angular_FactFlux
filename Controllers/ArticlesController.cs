@@ -87,12 +87,37 @@ namespace FactFluxV3.Controllers
         {
             var articleLogic = new ArticleLogic(Cache);
 
-
             //Started this, need to do it for all 52 weeks.  but only once.
-            List<TimelineArticle> orderedList = articleLogic.GetFullArticleList(word, new List<int>() {0, 1, 2, 3 }, new List<int>() { }, "", DateTime.UtcNow, DateTime.UtcNow);
+            List<TimelineArticle> orderedList = articleLogic.GetFullArticleList(word, new List<int>() { 0, 1, 2, 3 }, new List<int>() { }, "", null, DateTime.UtcNow);
 
+            var firstArticle = orderedList.LastOrDefault();
 
+            var firstDate = firstArticle.DatePublished;
 
+            var startOfWeek = articleLogic.StartOfWeek(firstDate, DayOfWeek.Monday);
+
+            var startSearchDate = startOfWeek;
+
+            string spacedWord = word.Replace("-", " ");
+
+            for (var newDate = startSearchDate; newDate < DateTime.UtcNow; newDate.AddDays(7))
+            {
+                var getCount = articleLogic.GetFullArticleList(word, new List<int>() { 0, 1, 2, 3 }, new List<int>() { }, "", startSearchDate, newDate.AddDays(7)).Count();
+
+                var findWord = Context.Words.Where(y => y.Word.ToLower() == spacedWord.ToLower()).FirstOrDefault();
+
+                var dateCountRecord = new DateCounts()
+                {
+                    StartDate = startSearchDate,
+                    EndDate = newDate.AddDays(7),
+                    OccuranceCount = getCount,
+                    WordId = findWord.WordId
+                };
+
+                Context.DateCounts.Add(dateCountRecord);
+
+                Context.SaveChanges();
+            }
         }
 
         // PUT: api/Articles/5
