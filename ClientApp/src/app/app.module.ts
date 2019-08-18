@@ -13,6 +13,7 @@ import { CardModule } from 'primeng/card';
 import { AccordionModule } from 'primeng/accordion';
 import { TabMenuModule } from 'primeng/tabmenu';
 import { MenuModule } from 'primeng/menu';
+import { ChartModule } from 'primeng/chart';
 import { HeaderComponent } from './admin-components/admin-header/admin-header.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { TwitterUsersComponent } from './admin-components/twitter-users/twitter-users.component';
@@ -69,7 +70,7 @@ import { TimelineHeaderComponent } from './blog/timeline-style/timeline-header/t
     ReactiveFormsModule,
     ButtonModule,
     BrowserAnimationsModule, AccordionModule, TabMenuModule,
-    CardModule, MenuModule,
+    CardModule, MenuModule, ChartModule,
     // OAuthModule.forRoot(),
     RouterModule.forRoot([
       { path: '', component: StoriesComponent },
