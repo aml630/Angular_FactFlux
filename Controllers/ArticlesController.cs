@@ -82,33 +82,40 @@ namespace FactFluxV3.Controllers
             return orderedList;
         }
 
-        [HttpGet]
-        public void GetDateCounts([FromRoute] string word)
+        [HttpGet("GetDateCount/{word}")]
+        public List<DateCounts> GetDateCounts([FromRoute] string word)
         {
-            var articleLogic = new ArticleLogic(Cache);
+            var dateCountList = new List<DateCounts>();
 
-            //Started this, need to do it for all 52 weeks.  but only once.
-            List<TimelineArticle> orderedList = articleLogic.GetFullArticleList(word, new List<int>() { 0, 1, 2, 3 }, new List<int>() { }, "", null, DateTime.UtcNow);
-
-            var firstArticle = orderedList.LastOrDefault();
-
-            var firstDate = firstArticle.DatePublished;
-
-            var startOfWeek = articleLogic.StartOfWeek(firstDate, DayOfWeek.Monday);
-
-            var startSearchDate = startOfWeek;
+            var firstDate = new DateTime(2019, 1, 1);
 
             string spacedWord = word.Replace("-", " ");
 
-            for (var newDate = startSearchDate; newDate < DateTime.UtcNow; newDate.AddDays(7))
+            for (var newDate = firstDate; newDate < DateTime.UtcNow; newDate = newDate.AddDays(7))
             {
-                var getCount = articleLogic.GetFullArticleList(word, new List<int>() { 0, 1, 2, 3 }, new List<int>() { }, "", startSearchDate, newDate.AddDays(7)).Count();
-
                 var findWord = Context.Words.Where(y => y.Word.ToLower() == spacedWord.ToLower()).FirstOrDefault();
+
+                if (findWord == null)
+                {
+                    return dateCountList;
+                }
+
+                var checkDateCount = Context.DateCounts.Where(x => x.WordId == findWord.WordId && x.StartDate == newDate && x.EndDate == newDate.AddDays(7)).FirstOrDefault();
+
+                if (checkDateCount != null)
+                {
+                    dateCountList.Add(checkDateCount);
+
+                    continue;
+                }
+
+                var articleLogic = new ArticleLogic(Cache);
+
+                var getCount = articleLogic.GetFullArticleList(word, new List<int>() { 0, 1, 2, 3 }, new List<int>() { }, "", newDate, newDate.AddDays(7)).Count();
 
                 var dateCountRecord = new DateCounts()
                 {
-                    StartDate = startSearchDate,
+                    StartDate = newDate,
                     EndDate = newDate.AddDays(7),
                     OccuranceCount = getCount,
                     WordId = findWord.WordId
@@ -117,7 +124,11 @@ namespace FactFluxV3.Controllers
                 Context.DateCounts.Add(dateCountRecord);
 
                 Context.SaveChanges();
+
+                dateCountList.Add(dateCountRecord);
             }
+
+            return dateCountList;
         }
 
         // PUT: api/Articles/5

@@ -150,12 +150,12 @@ namespace FactFluxV3.Logic
 
                 foreach (var childWord in childWordStrings)
                 {
-                    List<TimelineArticle> childArticleList = GetArticlesFromWord(childWord.Word, db, fullArticleList, articleTypes, politicalSpectrum);
+                    List<TimelineArticle> childArticleList = GetArticlesFromWord(childWord.Word, db, fullArticleList, articleTypes, politicalSpectrum, startDate, endDate);
 
                     fullArticleList.AddRange(childArticleList);
                 }
 
-                List<TimelineArticle> articlesFromMainWord = GetArticlesFromWord(spacedWord, db, fullArticleList, articleTypes, politicalSpectrum);
+                List<TimelineArticle> articlesFromMainWord = GetArticlesFromWord(spacedWord, db, fullArticleList, articleTypes, politicalSpectrum, startDate, endDate);
 
                 fullArticleList.AddRange(articlesFromMainWord);
 
@@ -220,7 +220,7 @@ namespace FactFluxV3.Logic
 
             if (articleTypes == null || articleTypes.Contains(3))
             {
-                List<TimelineArticle> tweetList = GetTweetListAsArticles(db, fullArticleList, beginning, end, middle, politicalSpectrum);
+                List<TimelineArticle> tweetList = GetTweetListAsArticles(db, fullArticleList, beginning, end, middle, politicalSpectrum, startDate, endDate);
 
                 timeLineList.AddRange(tweetList);
             }
