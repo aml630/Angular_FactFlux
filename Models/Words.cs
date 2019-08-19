@@ -7,7 +7,6 @@ namespace FactFluxV3.Models
     {
         public Words()
         {
-            DateCounts = new HashSet<DateCounts>();
             ParentWordsChildWord = new HashSet<ParentWords>();
             ParentWordsParentWord = new HashSet<ParentWords>();
             WordLogs = new HashSet<WordLogs>();
@@ -25,7 +24,6 @@ namespace FactFluxV3.Models
         public int Type { get; set; }
         public string Description { get; set; }
 
-        public ICollection<DateCounts> DateCounts { get; set; }
         public ICollection<ParentWords> ParentWordsChildWord { get; set; }
         public ICollection<ParentWords> ParentWordsParentWord { get; set; }
         public ICollection<WordLogs> WordLogs { get; set; }

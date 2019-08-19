@@ -10,7 +10,5 @@ namespace FactFluxV3.Models
         public DateTime EndDate { get; set; }
         public int OccuranceCount { get; set; }
         public int WordId { get; set; }
-
-        public Words Word { get; set; }
     }
 }

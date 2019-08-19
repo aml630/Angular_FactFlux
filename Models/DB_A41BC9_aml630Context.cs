@@ -214,12 +214,6 @@ namespace FactFluxV3.Models
                 entity.Property(e => e.EndDate).HasColumnType("date");
 
                 entity.Property(e => e.StartDate).HasColumnType("date");
-
-                entity.HasOne(d => d.Word)
-                    .WithMany(p => p.DateCounts)
-                    .HasForeignKey(d => d.WordId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__DateCount__WordI__3C34F16F");
             });
 
             modelBuilder.Entity<Hash>(entity =>
