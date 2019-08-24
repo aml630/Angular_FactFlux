@@ -6,6 +6,7 @@ import { RssFeed } from '../../models/rssFeed';
 import { FormControl } from '@angular/forms';
 import "rxjs/add/operator/debounceTime";
 import { Images } from '../../models/images';
+import { DateCounts } from 'src/app/models/dateCounts';
 
 
 @Component({
@@ -19,6 +20,11 @@ export class TimelineComponent implements OnInit {
   titleWord: string;
   base: string = document.getElementsByTagName('base')[0].href;
   articles: Article[];
+  dateCounts: DateCounts[];
+  dateCountOccuranceAverage: number;
+  startDateFilter: Date;
+  endDateFilter: Date;
+  selectedDateFilter: DateCounts;
   rssFeeds: RssFeed[];
   imageLocation: string;
   articleTypes = [1, 2, 3];
@@ -46,6 +52,7 @@ export class TimelineComponent implements OnInit {
     this.GetTimelineContent();
     this.GetImage();
     this.ClearTwitter();
+    this.GetDateCounts();
   }
 
   toTitleCase(str) {
@@ -60,22 +67,30 @@ export class TimelineComponent implements OnInit {
 
     if (this.articleTypes.length > 0) {
       path += `&articleTypes=`;
-      for (const type in this.articleTypes) {
-        path += `${this.articleTypes[type]}|`
-      }
+
+      this.articleTypes.forEach((type, i) => {
+        path += `${this.articleTypes[i]}|`;
+      });
       path = path.substring(0, path.length - 1);
     }
 
     if (this.politicalSpectrum.length > 0) {
       path += `&politicalSpectrum=`;
-      for (const spectrumRank in this.politicalSpectrum) {
-        path += `${this.politicalSpectrum[spectrumRank]}|`
-      }
+
+      this.politicalSpectrum.forEach((obj, i) => {
+        path += `${this.politicalSpectrum[i]}|`;
+      });
+
       path = path.substring(0, path.length - 1);
     }
 
     if (this.currentLetters) {
       path += `&letterFilter=${this.currentLetters}`;
+    }
+
+    if (this.selectedDateFilter) {
+      path += `&startDate=${this.selectedDateFilter.startDate}`;
+      path += `&endDate=${this.selectedDateFilter.endDate}`;
     }
 
     this.http.get<Article[]>(this.base + path).subscribe(result => {
@@ -97,14 +112,24 @@ export class TimelineComponent implements OnInit {
     }, error => console.error(error));
   }
 
+  GetDateCounts() {
+    this.showSpinner = true;
+    const path = `api/Articles/GetDateCount/${this.word}`;
+    this.http.get<DateCounts[]>(this.base + path).subscribe(result => {
+      this.dateCounts = result;
+      this.dateCountOccuranceAverage = (result.reduce((a, b) => a + (b['occuranceCount'] || 0), 0)) / result.length;
+
+    }, error => console.error(error));
+  }
+
   private ClearTwitter() {
-    if (document.getElementById("twitter-wjs")) {
-      document.getElementById("twitter-wjs").outerHTML = '';
+    if (document.getElementById('twitter-wjs')) {
+      document.getElementById('twitter-wjs').outerHTML = '';
     }
   }
 
   toggleType(articleType: number) {
-    let doesContain = this.articleTypes.indexOf(articleType);
+    const doesContain = this.articleTypes.indexOf(articleType);
 
     if (doesContain === -1) {
       this.articleTypes.push(articleType);
@@ -120,6 +145,17 @@ export class TimelineComponent implements OnInit {
 
     if (doesContain === -1) {
       this.politicalSpectrum = [politicalSpectrumRank];
+    }
+
+    this.GetTimelineContent();
+  }
+
+  toggleDate(dateCount: DateCounts) {
+
+    if (this.selectedDateFilter === dateCount) {
+      this.selectedDateFilter = undefined;
+    } else {
+      this.selectedDateFilter = dateCount;
     }
 
     this.GetTimelineContent();

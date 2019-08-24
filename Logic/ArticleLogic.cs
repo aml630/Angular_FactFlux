@@ -123,9 +123,9 @@ namespace FactFluxV3.Logic
             return articleList;
         }
 
-        public List<TimelineArticle> GetArticlesFromSearchString(string word, int page, int pageSize, List<int> articleTypes, List<int> politicalSpectrum, string letterFilter = null)
+        public List<TimelineArticle> GetArticlesFromSearchString(string word, int page, int pageSize, List<int> articleTypes, List<int> politicalSpectrum, string letterFilter = null, DateTime? startDate = null, DateTime? endDate = null)
         {
-            List<TimelineArticle> orderedArticleList = GetFullArticleList(word, articleTypes, politicalSpectrum, letterFilter);
+            List<TimelineArticle> orderedArticleList = GetFullArticleList(word, articleTypes, politicalSpectrum, letterFilter, startDate, endDate);
 
             orderedArticleList = orderedArticleList.Skip((page - 1) * pageSize).Take(pageSize).ToList();
 
