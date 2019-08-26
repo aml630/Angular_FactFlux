@@ -2,9 +2,7 @@
 .dateCounts {
   display: flex;
   flex-wrap: wrap;
-  margin-left: auto;
-  margin-right: auto;
-  text-align: center;
+  justify-content: space-around;
 }
 
 .activatedDate {
@@ -12,8 +10,7 @@
 }
 
 .dateCircle {
-  /* background: green; */
-  border-radius: 50%;
+  width: 20px;
 }
 
 .spectrumBorderColor1 {

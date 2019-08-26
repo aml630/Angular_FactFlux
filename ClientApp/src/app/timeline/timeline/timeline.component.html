@@ -44,8 +44,7 @@
     <!-- <div class="dateCountHolder"> -->
       <div *ngIf='dateCounts' class="dateCounts">
         <div [style.border]="'4px solid grey'"
-          [style.width]="(dateCount.occuranceCount/dateCountOccuranceAverage) *30 +'px'"
-          [style.height]="(dateCount.occuranceCount/dateCountOccuranceAverage) *30 +'px'"
+          [style.height]="(dateCount.occuranceCount/dateCountOccuranceAverage) *60 +'px'"
           [ngClass]="{'activatedDate': selectedDateFilter && selectedDateFilter.dateCountId === dateCount.dateCountId}"
           (click)="toggleDate(dateCount)" class="dateCircle" *ngFor="let dateCount of dateCounts; let i=index">
         </div>
