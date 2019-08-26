@@ -41,15 +41,26 @@
       </div>
     </div> -->
 
-    <!-- <div class="dateCountHolder"> -->
-      <div *ngIf='dateCounts' class="dateCounts">
-        <div [style.border]="'4px solid grey'"
-          [style.height]="(dateCount.occuranceCount/dateCountOccuranceAverage) *60 +'px'"
-          [ngClass]="{'activatedDate': selectedDateFilter && selectedDateFilter.dateCountId === dateCount.dateCountId}"
-          (click)="toggleDate(dateCount)" class="dateCircle" *ngFor="let dateCount of dateCounts; let i=index">
+    <!-- <div *ngIf='dateCounts' class="dateCounts">
+      <div [style.border]="'4px solid grey'"
+        [style.height]="(dateCount.occuranceCount/dateCountOccuranceAverage) *60 +'px'"
+        [ngClass]="{'activatedDate': selectedDateFilter && selectedDateFilter.dateCountId === dateCount.dateCountId}"
+        (click)="toggleDate(dateCount)" class="dateCircle" *ngFor="let dateCount of dateCounts; let i=index">
+      </div>
+    </div> -->
+
+    <div class="mini-graph">
+      <div class="mini-graph-bars">
+        <div class="bar bar-1" style="height: 100%;"  
+        *ngFor="let dateCount of dateCounts; let i=index"
+        [style.left]="(30*i) +'px'"
+        >
+          <div class="bar bar-inner" style="height: 70%;"></div>
         </div>
-      <!-- </div> -->
+      </div>
     </div>
+
+
   </div>
 
   <app-spinner *ngIf="showSpinner"></app-spinner>

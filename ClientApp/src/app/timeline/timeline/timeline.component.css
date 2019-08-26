@@ -1,4 +1,50 @@
 @import url(https://fonts.googleapis.com/css?family=Fjalla+One);
+
+.mini-graph-bars {
+  /* background: #fff; */
+  position: relative;
+  height: 100px;
+  width: 140px;
+}
+.mini-graph-bars .bar {
+  background-color: #C7EFCF;
+  width: 20px;
+}
+/* .mini-graph-bars .bar:nth-of-type(2) {
+  left: 28px;
+}
+.mini-graph-bars .bar:nth-of-type(3) {
+  left: 56px;
+}
+.mini-graph-bars .bar:nth-of-type(4) {
+  left: 84px;
+}
+.mini-graph-bars .bar:nth-of-type(5) {
+  left: 112px;
+}
+.mini-graph-bars .bar:nth-of-type(6) {
+  left: 140px;
+}
+.mini-graph-bars .bar:nth-of-type(7) {
+  left: 168px;
+}
+.mini-graph-bars .bar:nth-of-type(8) {
+  left: 196px;
+}
+.mini-graph-bars .bar:nth-of-type(9) {
+  left: 224px;
+} */
+.mini-graph-bars .bar-inner {
+  background-color: #FE5F55;
+}
+.mini-graph-bars .bar {
+  position: absolute;
+  bottom: 0;
+}
+
+
+
+
 .dateCounts {
   display: flex;
   flex-wrap: wrap;
