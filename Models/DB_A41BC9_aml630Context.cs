@@ -26,6 +26,7 @@ namespace FactFluxV3.Models
         public virtual DbSet<AspNetUsers> AspNetUsers { get; set; }
         public virtual DbSet<AspNetUserTokens> AspNetUserTokens { get; set; }
         public virtual DbSet<Counter> Counter { get; set; }
+        public virtual DbSet<DateCounts> DateCounts { get; set; }
         public virtual DbSet<Hash> Hash { get; set; }
         public virtual DbSet<Images> Images { get; set; }
         public virtual DbSet<Job> Job { get; set; }
@@ -204,6 +205,15 @@ namespace FactFluxV3.Models
                 entity.Property(e => e.Key)
                     .IsRequired()
                     .HasMaxLength(100);
+            });
+
+            modelBuilder.Entity<DateCounts>(entity =>
+            {
+                entity.HasKey(e => e.DateCountId);
+
+                entity.Property(e => e.EndDate).HasColumnType("date");
+
+                entity.Property(e => e.StartDate).HasColumnType("date");
             });
 
             modelBuilder.Entity<Hash>(entity =>

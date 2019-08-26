@@ -58,7 +58,9 @@ namespace FactFluxV3.Controllers
                                                         [FromQuery] string politicalSpectrum,
                                                         [FromQuery] int page = 1,
                                                         [FromQuery] int pageSize = 20,
-                                                        [FromQuery] string letterFilter = null)
+                                                        [FromQuery] string letterFilter = null,
+                                                        [FromQuery] DateTime? startDate = null,
+                                                        [FromQuery] DateTime? endDate = null)
         {
 
             var articleTypeList = new List<int>();
@@ -77,9 +79,65 @@ namespace FactFluxV3.Controllers
 
             var articleLogic = new ArticleLogic(Cache);
 
-            List<TimelineArticle> orderedList = articleLogic.GetArticlesFromSearchString(word, page, pageSize, articleTypeList, politicalSpectrumList, letterFilter);
+            List<TimelineArticle> orderedList = articleLogic.GetArticlesFromSearchString(word, page, pageSize, articleTypeList, politicalSpectrumList, letterFilter, startDate, endDate);
 
             return orderedList;
+        }
+
+        [HttpGet("GetDateCount/{word}")]
+        public List<DateCounts> GetDateCounts([FromRoute] string word)
+        {
+            var articleLogic = new ArticleLogic(Cache);
+
+            var dateCountList = new List<DateCounts>();
+
+            var firstDate = new DateTime(2019, 1, 1);
+
+            var beginningOfWeek = articleLogic.StartOfWeek(DateTime.UtcNow, DayOfWeek.Monday);
+
+            string spacedWord = word.Replace("-", " ");
+
+            for (var newDate = beginningOfWeek; newDate > firstDate; newDate = newDate.AddDays(-7))
+            {
+                var findWord = Context.Words.Where(y => y.Word.ToLower() == spacedWord.ToLower()).FirstOrDefault();
+
+                if (findWord == null)
+                {
+                    return dateCountList;
+                }
+
+                var checkDateCount = Context.DateCounts.Where(x => x.WordId == findWord.WordId && x.StartDate == newDate && x.EndDate == newDate.AddDays(7)).FirstOrDefault();
+
+                if (checkDateCount != null)
+                {
+                    if(checkDateCount.StartDate < DateTime.UtcNow && checkDateCount.EndDate > DateTime.UtcNow)
+                    {
+                        checkDateCount.OccuranceCount = articleLogic.GetFullArticleList(word, new List<int>() { 0, 1, 2, 3 }, new List<int>() { }, "", newDate, newDate.AddDays(7)).Count();
+
+                        Context.SaveChanges();
+                    }
+
+                    return Context.DateCounts.Where(x => x.WordId == findWord.WordId).OrderBy(x=>x.StartDate).ToList();
+                }
+
+                var getCount = articleLogic.GetFullArticleList(word, new List<int>() { 0, 1, 2, 3 }, new List<int>() { }, "", newDate, newDate.AddDays(7)).Count();
+
+                var dateCountRecord = new DateCounts()
+                {
+                    StartDate = newDate,
+                    EndDate = newDate.AddDays(7),
+                    OccuranceCount = getCount,
+                    WordId = findWord.WordId
+                };
+
+                Context.DateCounts.Add(dateCountRecord);
+
+                Context.SaveChanges();
+
+                dateCountList.Add(dateCountRecord);
+            }
+
+            return dateCountList.OrderBy(x => x.StartDate).ToList();
         }
 
         // PUT: api/Articles/5

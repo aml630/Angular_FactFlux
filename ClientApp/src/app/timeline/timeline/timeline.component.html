@@ -20,7 +20,6 @@
       <i class="fa fa-search"></i><input [formControl]="filterLetters">
     </div>
 
-
     <!-- <div class="spectrumFilter">
       <h3 class="filterText">Political Spectrum</h3>
       <div class="checkBoxWrapper">
@@ -41,14 +40,24 @@
         </div>
       </div>
     </div> -->
-  </div>
 
+    <!-- <div class="dateCountHolder"> -->
+      <div *ngIf='dateCounts' class="dateCounts">
+        <div [style.border]="'4px solid grey'"
+          [style.width]="(dateCount.occuranceCount/dateCountOccuranceAverage) *30 +'px'"
+          [style.height]="(dateCount.occuranceCount/dateCountOccuranceAverage) *30 +'px'"
+          [ngClass]="{'activatedDate': selectedDateFilter && selectedDateFilter.dateCountId === dateCount.dateCountId}"
+          (click)="toggleDate(dateCount)" class="dateCircle" *ngFor="let dateCount of dateCounts; let i=index">
+        </div>
+      <!-- </div> -->
+    </div>
+  </div>
 
   <app-spinner *ngIf="showSpinner"></app-spinner>
 
   <section id="cd-timeline" class="cd-container" *ngFor="let art of articles; let i=index">
     <app-timeline-event [article]="art" [index]="i"></app-timeline-event>
-  </section> 
+  </section>
 
   <button (click)="getNextPage()" class="showMoreButton">Show More</button>
 </body>

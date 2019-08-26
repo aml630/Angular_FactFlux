@@ -1,18 +1,35 @@
 @import url(https://fonts.googleapis.com/css?family=Fjalla+One);
+.dateCounts {
+  display: flex;
+  flex-wrap: wrap;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
 
-.spectrumBorderColor1{
+.activatedDate {
+  border: 5px solid red !important;
+}
+
+.dateCircle {
+  /* background: green; */
+  border-radius: 50%;
+}
+
+.spectrumBorderColor1 {
   box-shadow: inset 0px 1px 1px white, 0px 1px 3px #ff392e;
 }
 
-.spectrumBorderColor2{
+.spectrumBorderColor2 {
   box-shadow: inset 0px 1px 1px white, 0px 1px 3px #779ecb;
 }
+
 .filterText {
   font-size: 13px;
 }
 
 .checkBoxWrapper input {
-  display:none;
+  display: none;
 }
 
 .roundedOne {
@@ -81,31 +98,39 @@
 }
 
 .spec1:after {
-  background:#0000ff;
+  background: #0000ff;
 }
+
 .spec2:after {
-  background:#3333ff;
+  background: #3333ff;
 }
+
 .spec3:after {
-  background:#6666ff;
+  background: #6666ff;
 }
+
 .spec4:after {
-  background:#9999ff;
+  background: #9999ff;
 }
+
 .spec5:after {
-  background:grey;
+  background: grey;
 }
+
 .spec6:after {
-  background:#ff9999;
+  background: #ff9999;
 }
+
 .spec7:after {
-  background:#ff6666;
+  background: #ff6666;
 }
+
 .spec8:after {
-  background:#ff3333;
+  background: #ff3333;
 }
+
 .spec9:after {
-  background:#ff0000;
+  background: #ff0000;
 }
 
 .roundedOne label:hover::after {
@@ -202,7 +227,7 @@
 }
 
 .filterSection {
-  padding:10px;
+  padding: 10px;
   text-align: center;
   border: .5px solid#D3D3D3;
   margin: 15px;
@@ -826,7 +851,6 @@ header h1 {
   .titleSection h1 {
     font-size: 20px;
   }
-  
   .titleSection img {
     height: 50px;
     width: 50px;
@@ -834,13 +858,13 @@ header h1 {
 }
 
 @media only screen and (max-width: 480px) {
-  .btn-3-video{
+  .btn-3-video {
     font-size: 10px;
   }
-  .btn-3-news{
+  .btn-3-news {
     font-size: 10px;
   }
-  .btn-3-twitter{
+  .btn-3-twitter {
     font-size: 10px;
   }
   .filterSection {
