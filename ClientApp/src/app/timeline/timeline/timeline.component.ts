@@ -22,6 +22,7 @@ export class TimelineComponent implements OnInit {
   articles: Article[];
   dateCounts: DateCounts[];
   dateCountOccuranceAverage: number;
+  largestOccuranceCount: number;
   startDateFilter: Date;
   endDateFilter: Date;
   selectedDateFilter: DateCounts;
@@ -118,6 +119,10 @@ export class TimelineComponent implements OnInit {
     this.http.get<DateCounts[]>(this.base + path).subscribe(result => {
       this.dateCounts = result;
       this.dateCountOccuranceAverage = (result.reduce((a, b) => a + (b['occuranceCount'] || 0), 0)) / result.length;
+      const resultHolder = result;
+      this.largestOccuranceCount = resultHolder
+        .sort((a, b) => a.occuranceCount < b.occuranceCount ? -1 : a.occuranceCount > b.occuranceCount ? 1 : 0)
+        [resultHolder.length - 1].occuranceCount;
 
     }, error => console.error(error));
   }
